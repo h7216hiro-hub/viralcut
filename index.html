@@ -142,7 +142,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div class="step-header"><div class="step-num">2</div><div class="step-title">📝 トランスクリプト</div></div>
 <div class="step-body">
 <div class="info-tip"><span>💡</span><span>Whisper等で文字起こしするか、YouTube自動字幕をコピー貼付けでもOKです。</span></div>
-<textarea id="transcript" placeholder="[0.0-5.0] 今日は話します...&#10;[5.0-15.0] やりがちなミスですが..."></textarea>
+<textarea id="transcript" placeholder="[0.0-5.0] 今日は話します..."></textarea>
 <div class="row">
 <button class="btn btn-secondary" style="font-size:12px" onclick="loadDemo()">📋 サンプル</button>
 <button class="btn btn-secondary" style="font-size:12px;flex:.5" onclick="document.getElementById('transcript').value=''">🗑️</button>
@@ -299,7 +299,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div class="step-header"><div class="step-num" style="background:var(--blue)">⚙</div><div class="step-title">出力設定</div></div>
 <div class="step-body">
 <div style="display:flex;flex-direction:column;gap:6px"><label>解像度</label><select><option>1080×1920 (Full HD)</option><option>720×1280 (HD)</option></select></div>
-<div style="display:flex;flex-direction:column;gap:6px"><label>フレームレート</label><select><option>60fps（なめらか）</option><option>30fps（標準）</option><option>24fps（映画風）</option></select></div>
+<div style="display:flex;flex-direction:column;gap:6px"><label>フレームレート</label><select><option>60fps</option><option>30fps</option><option>24fps</option></select></div>
 <div style="display:flex;flex-direction:column;gap:6px"><label>出力形式</label><select><option>MP4 (H.264)</option><option>MP4 (H.265)</option><option>MOV</option></select></div>
 <div class="slider-group">
 <div class="slider-row"><span class="slider-label">ビットレート (Mbps)</span><span class="slider-val" id="bitrateVal">8</span></div>
@@ -349,7 +349,7 @@ function sv(k,v,sfx){S[k]=parseFloat(v);const el=document.getElementById(k+'Val'
 function sc(el,gid){document.querySelectorAll('#'+gid+' .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active')}
 function sp(el,n){document.querySelectorAll('.color-preset').forEach(p=>p.classList.remove('active'));el.classList.add('active');S.colorPreset=n}
 function handleFile(inp){if(inp.files[0]){const i=document.getElementById('fileInfo');i.textContent='✅ '+inp.files[0].name+' ('+(inp.files[0].size/1024/1024).toFixed(1)+'MB)';i.style.display='block'}}
-function loadDemo(){document.getElementById('transcript').value='[0.0-5.0] 今日は絶対にやってはいけないプログラミングの習慣について話します。\n[5.0-15.0] 多くの初心者がやりがちなミスですが、これをやるとシステムが崩壊します。\n[15.0-30.0] そのミスとは、「エラーメッセージを読まずに勘でコードを直すこと」です。\n[30.0-45.0] 実際、ある大企業でこれが原因で数億円の損害が出た事例もあります。やばいですよね。\n[45.0-60.0] だから必ず、エラーログは一行ずつ読んでください。以上です。'}
+function loadDemo(){document.getElementById('transcript').value='[0.0-5.0] 今日は絶対にやってはいけないプログラミングの習慣について話します。\n[5.0-15.0] 多くの初心者がやりがちなミスですが、これをやるとシステムが崩壊します。\n[15.0-30.0] そのミスとは、「エラーメッセージを読まずに勘でコードを直すこと」です。\n[30.0-45.0] 実際、ある大企業でこれが原因で数億円の損害が出た事例もあります。\n[45.0-60.0] だから必ず、エラーログは一行ずつ読んでください。'}
 function showLoading(t,s){document.getElementById('loadingText').textContent=t;document.getElementById('loadingSub').textContent=s;document.getElementById('loadingOverlay').classList.add('show')}
 function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
 async function analyze(){
@@ -359,41 +359,55 @@ if(!tr){alert('トランスクリプトを入力してください');return}
 if(!key){alert('Claude APIキーを入力してください');return}
 showLoading('🧠 Claude AIが解析中...','バズるポイント・テロップ・BGM・色調を最適化中');
 const cfg={toggles:S.toggles,colorPreset:S.colorPreset,bgmGenre:document.getElementById('bgmGenre').value,fontStyle:document.getElementById('fontStyle').value,targetAudience:document.getElementById('targetAudience').value,targetViews:document.getElementById('targetViews').value,audio:{bgmVol:S.bgmVol,voiceVol:S.voiceVol,sfxVol:S.sfxVol},color:{brightness:S.brightness,contrast:S.contrast,saturation:S.saturation,sharpness:S.sharpness},fontSize:S.fontSize};
+const body=JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:'You are a YouTube Shorts producer. Analyze this transcript and return ONLY a JSON object (no other text) with this exact structure: {"viral_segment":{"start_time":0,"end_time":30,"reason":"reason in Japanese"},"scores":{"viral":"A","retention":"70%","impact":"80/100"},"production_plan":[{"icon":"🎯","color":"#7c3aed","title":"title","description":"description"}],"caption_script":[{"time":0,"text":"caption","style":"normal"}],"bgm_recommendation":"bgm","sfx_timings":[{"time":0,"type":"boom","reason":"reason"}],"color_grading":{"preset":"VIRAL","reason":"reason"},"hashtags":["tag1","tag2"],"title_suggestion":"title","hook_text":"hook"}\n\nTranscript:\n'+tr+'\n\nSettings:\n'+JSON.stringify(cfg)}]});
 try{
-const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:`あなたは世界最高峰のYouTubeショート動画プロデューサーです。${document.getElementById('targetViews').value==='1m'?'100万回':''}再生を達成するための完全なプロダクション設定を生成してください。\n\n【トランスクリプト】\n${tr}\n\n【現在の設定】\n${JSON.stringify(cfg,null,2)}\n\n【回答フォーマット - JSONのみ】\n{"viral_segment":{"start_time":開始秒数,"end_time":終了秒数,"reason":"理由100字以内"},"scores":{"viral":"A+/A/B+/B","retention":"〇〇%","impact":"〇〇/100"},"production_plan":[{"icon":"絵文字","color":"#カラー","title":"施策","description":"説明50字以内"}],"caption_script":[{"time":秒数,"text":"テロップ","style":"normal/emphasis/big"}],"bgm_recommendation":"BGM説明","sfx_timings":[{"time":秒数,"type":"swoosh/boom/ding","reason":"理由"}],"color_grading":{"preset":"推奨プリセット","reason":"理由"},"hashtags":["タグ1","タグ2","タグ3"],"title_suggestion":"バズるタイトル","hook_text":"冒頭3秒キャッチコピー"}`}]})});
-const d=await res.json();
+const d=await new Promise((resolve,reject)=>{
+const xhr=new XMLHttpRequest();
+xhr.open('POST','https://api.anthropic.com/v1/messages',true);
+xhr.setRequestHeader('Content-Type','application/json');
+xhr.setRequestHeader('x-api-key',key);
+xhr.setRequestHeader('anthropic-version','2023-06-01');
+xhr.setRequestHeader('anthropic-dangerous-direct-browser-calls','true');
+xhr.timeout=60000;
+xhr.onload=function(){
+if(xhr.status>=200&&xhr.status<300){try{resolve(JSON.parse(xhr.responseText));}catch(e){reject(new Error('Parse error: '+xhr.responseText.substring(0,100)));}}
+else{try{const err=JSON.parse(xhr.responseText);reject(new Error(err.error?.message||'HTTP '+xhr.status));}catch(e){reject(new Error('HTTP '+xhr.status));}}
+};
+xhr.onerror=function(){reject(new Error('Network error - check internet connection'));};
+xhr.ontimeout=function(){reject(new Error('Request timed out'));};
+xhr.send(body);
+});
 if(d.error)throw new Error(d.error.message);
 const txt=d.content[0].text;
 const m=txt.match(/\{[\s\S]*\}/);
-if(!m)throw new Error('JSON解析エラー');
+if(!m)throw new Error('JSON parse error: '+txt.substring(0,100));
 S.lastResult=JSON.parse(m[0]);
 hideLoading();
 renderResult(S.lastResult);
-}catch(e){hideLoading();alert('エラー: '+e.message)}
+}catch(e){hideLoading();alert('エラー: '+e.message);}
 }
 function renderResult(r){
 const rc=document.getElementById('resultCard');rc.classList.add('show');setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
 const vs=r.viral_segment;
-document.getElementById('viralTime').textContent=`${vs.start_time}秒 〜 ${vs.end_time}秒（${vs.end_time-vs.start_time}秒間）`;
+document.getElementById('viralTime').textContent=vs.start_time+'秒 〜 '+vs.end_time+'秒（'+(vs.end_time-vs.start_time)+'秒間）';
 document.getElementById('viralReason').textContent=vs.reason;
 if(r.scores){document.getElementById('scoreViral').textContent=r.scores.viral||'--';document.getElementById('scoreRet').textContent=r.scores.retention||'--';document.getElementById('scoreImp').textContent=r.scores.impact||'--'}
 const pg=document.getElementById('planGrid');pg.innerHTML='';
-(r.production_plan||[]).slice(0,5).forEach(item=>{pg.innerHTML+=`<div class="plan-item"><div class="plan-icon-wrap" style="background:${item.color||'#ffffff'}22">${item.icon||'✨'}</div><div class="plan-text"><h4>${item.title}</h4><p>${item.description}</p></div></div>`});
+(r.production_plan||[]).slice(0,5).forEach(item=>{pg.innerHTML+='<div class="plan-item"><div class="plan-icon-wrap" style="background:'+(item.color||'#ffffff')+'22">'+item.icon+'</div><div class="plan-text"><h4>'+item.title+'</h4><p>'+item.description+'</p></div></div>';});
 }
 function showExport(){
 if(!S.lastResult)return;
-document.getElementById('configOutput').textContent=JSON.stringify({viral_segment:S.lastResult.viral_segment,captions:S.lastResult.caption_script,bgm:S.lastResult.bgm_recommendation,sfx:S.lastResult.sfx_timings,color:S.lastResult.color_grading,hashtags:S.lastResult.hashtags,title:S.lastResult.title_suggestion,hook:S.lastResult.hook_text,scores:S.lastResult.scores},null,2);
+document.getElementById('configOutput').textContent=JSON.stringify(S.lastResult,null,2);
 document.getElementById('exportModal').classList.add('show');
 }
 function closeModal(){document.getElementById('exportModal').classList.remove('show')}
-function copyConfig(){navigator.clipboard.writeText(document.getElementById('configOutput').textContent).then(()=>alert('✅ コピーしました！'))}
+function copyConfig(){navigator.clipboard.writeText(document.getElementById('configOutput').textContent).then(()=>alert('コピーしました！'))}
 function copyPython(){
 if(!S.lastResult)return;
 const r=S.lastResult,vs=r.viral_segment;
-const sc=`#!/usr/bin/env python3\n# VIRALCUT AI\nfrom moviepy.editor import VideoFileClip,CompositeVideoClip,TextClip\nfrom moviepy.video.fx.all import colorx,lum_contrast\nimport os\nINPUT="source_video.mp4"\nOUTPUT="viral_short.mp4"\nSTART=${vs.start_time}\nEND=${vs.end_time}\nCAPTIONS=${JSON.stringify(r.caption_script||[])}\ndef main():\n  c=VideoFileClip(INPUT).subclip(START,END)\n  w,h=c.size;tw=int(h*9/16)\n  c=c.crop(x1=(w-tw)//2,y1=0,x2=(w+tw)//2,y2=h)\n  txts=[]\n  for cap in CAPTIONS:\n    try:\n      t=TextClip(cap['text'],fontsize=52,color='white',stroke_color='black',stroke_width=3)\n      t=t.set_start(cap['time']-START).set_duration(2.0).set_pos(('center','bottom'))\n      txts.append(t)\n    except:pass\n  if txts:c=CompositeVideoClip([c]+txts)\n  c.write_videofile(OUTPUT,codec='libx264',audio_codec='aac',fps=60,threads=4)\n  print('完成:',OUTPUT)\nif os.path.exists(INPUT):main()\nelse:print('ファイルが見つかりません')\n`;
-navigator.clipboard.writeText(sc).then(()=>alert('✅ コピーしました！'));
+const sc='#!/usr/bin/env python3\n# VIRALCUT AI\nfrom moviepy.editor import VideoFileClip\nimport os\nINPUT="source_video.mp4"\nOUTPUT="viral_short.mp4"\nSTART='+vs.start_time+'\nEND='+vs.end_time+'\ndef main():\n  c=VideoFileClip(INPUT).subclip(START,END)\n  w,h=c.size;tw=int(h*9/16)\n  c=c.crop(x1=(w-tw)//2,y1=0,x2=(w+tw)//2,y2=h)\n  c.write_videofile(OUTPUT,codec="libx264",audio_codec="aac",fps=60)\n  print("完成:",OUTPUT)\nif os.path.exists(INPUT):main()\n';
+navigator.clipboard.writeText(sc).then(()=>alert('コピーしました！'));
 }
 </script>
 </body>
 </html>
-
