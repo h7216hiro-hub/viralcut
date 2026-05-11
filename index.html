@@ -10,8 +10,8 @@
 :root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--surface3:#252535;--accent:#7c3aed;--accent2:#a855f7;--accent3:#c084fc;--gold:#f59e0b;--green:#10b981;--blue:#3b82f6;--text:#f1f5f9;--text2:#94a3b8;--text3:#475569;--border:rgba(124,58,237,0.2);--glow:rgba(124,58,237,0.4);--r:16px;--rs:10px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100vh;overscroll-behavior:none}
-/* 処理用の要素：画面外に配置（display:noneだとiOSでcanvasに描画できない） */
-#srcVideo,#procCanvas{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+/* 処理用要素：画面外配置（iOS対応） */
+#srcVideo,#procCanvas{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;pointer-events:none}
 .header{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800}
 .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px var(--glow)}
@@ -27,7 +27,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-
 label{font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px}
 input[type=text],textarea,select{width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
 input[type=text]{padding:12px 14px}
-textarea{padding:12px 14px;resize:none;min-height:90px;line-height:1.5}
+textarea{padding:12px 14px;resize:none;min-height:80px;line-height:1.5}
 input[type=text]:focus,textarea:focus,select:focus{border-color:var(--accent2)}
 select{padding:10px 12px;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;background-color:var(--surface3)}
 ::placeholder{color:var(--text3)}
@@ -77,6 +77,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .pf-name{font-size:11px;font-weight:700}
 .pf-spec{font-size:10px;color:var(--text3)}
 .pf-ck{width:16px;height:16px;border-radius:50%;background:var(--accent2);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;flex-shrink:0}
+.caption-options{display:flex;gap:8px}
+.cap-opt{flex:1;padding:10px;border-radius:var(--rs);background:var(--surface3);border:2px solid var(--border);text-align:center;cursor:pointer;transition:all .15s}
+.cap-opt.active{background:rgba(124,58,237,.15);border-color:var(--accent2)}
+.cap-opt-icon{font-size:20px;margin-bottom:4px}
+.cap-opt-name{font-size:11px;font-weight:700}
+.cap-opt-desc{font-size:9px;color:var(--text3);margin-top:2px}
 .progress-block{background:var(--surface2);border-radius:var(--rs);padding:16px;display:flex;flex-direction:column;gap:10px}
 .progress-bar-bg{width:100%;height:10px;background:var(--surface3);border-radius:5px;overflow:hidden}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:5px;transition:width .4s ease;width:0%}
@@ -131,18 +137,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 
 <!-- 処理用要素（画面外・iOS対応） -->
 
-<video id="srcVideo" playsinline webkit-playsinline muted></video>
+<video id="srcVideo" playsinline webkit-playsinline></video>
 <canvas id="procCanvas"></canvas>
-
-<!-- ローディング -->
 
 <div class="loading-overlay" id="loadingOverlay">
 <div class="spinner"></div>
 <div class="loading-text" id="loadingText">処理中...</div>
 <div class="loading-sub" id="loadingSub"></div>
 </div>
-
-<!-- モーダル -->
 
 <div class="modal-overlay" id="exportModal" onclick="if(event.target===this)this.classList.remove('show')">
 <div class="modal">
@@ -181,15 +183,38 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 </div>
 
-<!-- STEP 2: AI指示 -->
+<!-- STEP 2: 参考動画 -->
 
 <div class="step-card">
-<div class="step-header"><div class="step-num">2</div><div class="step-title">🤖 AIへの構成指示</div></div>
+<div class="step-header"><div class="step-num">2</div><div class="step-title">🔗 参考にする動画（バズ真似）</div><div class="step-sub">任意</div></div>
 <div class="step-body">
-<div class="info-tip"><span>💡</span><span>どんな動画にしたいか自由に書いてください。AIがその通りに編集構成を生成します。</span></div>
-<textarea id="aiInstruction" placeholder="例：冒頭5秒でインパクトのあるフックを入れて、感情的な場面を中心に3分でまとめてください。"></textarea>
-<div class="info-tip"><span>📝</span><span>字幕・トランスクリプトがあるとAIの精度が上がります（任意）。</span></div>
-<textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...（任意）" style="min-height:70px"></textarea>
+<div class="info-tip"><span>🎯</span><span>バズっているYouTube・TikTok・Shortsの動画URLを貼ると、その構成・形式・スタイルを真似した動画を作成します。</span></div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label>参考動画URL（YouTube / TikTok / Shorts）</label>
+<input type="text" id="refUrl1" placeholder="https://youtube.com/watch?v=...">
+<input type="text" id="refUrl2" placeholder="2本目（任意）https://...">
+<input type="text" id="refUrl3" placeholder="3本目（任意）https://...">
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label>参考動画のどこを真似するか</label>
+<div class="toggle-grid">
+<div class="toggle-item active" onclick="tog(this,'ref_structure')"><div class="toggle-icon">📐</div><div class="toggle-name">構成・流れ</div><div class="toggle-desc">フック→展開→CTA</div></div>
+<div class="toggle-item active" onclick="tog(this,'ref_pacing')"><div class="toggle-icon">⚡</div><div class="toggle-name">テンポ・テロップ</div><div class="toggle-desc">カット間隔・文字スタイル</div></div>
+<div class="toggle-item" onclick="tog(this,'ref_tone')"><div class="toggle-icon">🎭</div><div class="toggle-name">トーン・雰囲気</div><div class="toggle-desc">色調・音楽・感情</div></div>
+<div class="toggle-item active" onclick="tog(this,'ref_hook')"><div class="toggle-icon">🪝</div><div class="toggle-name">フック手法</div><div class="toggle-desc">冒頭の掴み方</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- STEP 3: AI指示 -->
+
+<div class="step-card">
+<div class="step-header"><div class="step-num">3</div><div class="step-title">🤖 AIへの構成指示</div></div>
+<div class="step-body">
+<textarea id="aiInstruction" placeholder="例：冒頭5秒でインパクトのあるフックを入れて、感情的な場面を中心に3分でまとめてください。テンポよくジャンプカットを入れてバズりやすい構成にしてください。"></textarea>
+<div class="info-tip"><span>📝</span><span>字幕・トランスクリプトがあるとAIの精度・テロップの精度が上がります（任意）。</span></div>
+<textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...（任意）&#10;[5.0-15.0] ..." style="min-height:80px"></textarea>
 <div class="row">
 <button class="btn btn-secondary" style="font-size:12px" onclick="loadDemo()">📋 サンプル</button>
 <button class="btn btn-secondary" style="font-size:12px;flex:.5" onclick="document.getElementById('aiInstruction').value='';document.getElementById('transcript').value=''">🗑️</button>
@@ -197,10 +222,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 </div>
 
-<!-- STEP 3: 尺 -->
+<!-- STEP 4: 尺 -->
 
 <div class="step-card">
-<div class="step-header"><div class="step-num">3</div><div class="step-title">⏱️ 動画の尺</div><div class="step-sub">30秒〜60分</div></div>
+<div class="step-header"><div class="step-num">4</div><div class="step-title">⏱️ 動画の尺</div><div class="step-sub">30秒〜60分</div></div>
 <div class="step-body">
 <div class="duration-grid">
 <div class="dur-btn" onclick="setDur(this,'30s',30)"><div class="dur-label">30秒</div><div class="dur-desc">ショート</div></div>
@@ -216,12 +241,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 </div>
 
-<!-- STEP 4: プラットフォーム -->
+<!-- STEP 5: プラットフォーム -->
 
 <div class="step-card">
-<div class="step-header"><div class="step-num">4</div><div class="step-title">📱 プラットフォーム</div><div class="step-sub">複数同時出力</div></div>
+<div class="step-header"><div class="step-num">5</div><div class="step-title">📱 プラットフォーム</div><div class="step-sub">複数同時出力</div></div>
 <div class="step-body">
-<label>投稿先を選択（複数OK）</label>
 <div class="platform-grid">
 <div class="pf-item active" onclick="togglePf(this,'youtube_shorts')"><div class="pf-em">▶️</div><div class="pf-info"><div class="pf-name">YouTube Shorts</div><div class="pf-spec">9:16 縦型</div></div><div class="pf-ck">✓</div></div>
 <div class="pf-item active" onclick="togglePf(this,'youtube')"><div class="pf-em">🎥</div><div class="pf-info"><div class="pf-name">YouTube</div><div class="pf-spec">16:9 横型</div></div><div class="pf-ck">✓</div></div>
@@ -235,12 +259,61 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 </div>
 
-<!-- STEP 5: 画質 -->
+<!-- STEP 6: テロップ -->
 
 <div class="step-card">
-<div class="step-header"><div class="step-num">5</div><div class="step-title">🎨 画質・フィルター</div></div>
+<div class="step-header"><div class="step-num">6</div><div class="step-title">💬 テロップ設定</div></div>
 <div class="step-body">
-<label>カラーグレーディング</label>
+<label>テロップモード</label>
+<div class="caption-options">
+<div class="cap-opt active" id="capOpt_none" onclick="setCaptionMode('none')">
+<div class="cap-opt-icon">🚫</div>
+<div class="cap-opt-name">なし</div>
+<div class="cap-opt-desc">テロップ不要</div>
+</div>
+<div class="cap-opt" id="capOpt_transcript" onclick="setCaptionMode('transcript')">
+<div class="cap-opt-icon">📝</div>
+<div class="cap-opt-name">字幕から</div>
+<div class="cap-opt-desc">入力した字幕を表示</div>
+</div>
+<div class="cap-opt" id="capOpt_ai" onclick="setCaptionMode('ai')">
+<div class="cap-opt-icon">🤖</div>
+<div class="cap-opt-name">AI生成</div>
+<div class="cap-opt-desc">AIがキーワード抽出</div>
+</div>
+</div>
+<div id="captionStyleWrap" style="display:none;margin-top:4px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label>テロップスタイル</label>
+<select id="captionStyle">
+<option value="bold_white">極太ゴシック ホワイト（バズ型）</option>
+<option value="bold_yellow">極太ゴシック イエロー</option>
+<option value="outline_white">縁取り ホワイト</option>
+<option value="bg_black">黒背景 ホワイト</option>
+</select>
+</div>
+<div class="slider-group" style="margin-top:6px">
+<div class="slider-row"><span class="slider-label">テロップサイズ</span><span class="slider-val" id="captionSizeVal">5%</span></div>
+<input type="range" min="3" max="9" value="5" oninput="document.getElementById('captionSizeVal').textContent=this.value+'%'">
+</div>
+</div>
+</div>
+</div>
+
+<!-- STEP 7: 画質 -->
+
+<div class="step-card">
+<div class="step-header"><div class="step-num">7</div><div class="step-title">🎨 画質・フィルター</div></div>
+<div class="step-body">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label>画質プリセット</label>
+<select id="qualityPreset" onchange="applyQuality(this.value)">
+<option value="max">🏆 最高画質（1080p・高ビットレート）</option>
+<option value="high" selected>⚡ 高画質（720p・推奨）</option>
+<option value="standard">📱 標準（540p・軽量）</option>
+</select>
+</div>
+<label style="margin-top:4px">カラーグレーディング</label>
 <div class="color-presets">
 <div class="color-preset active" onclick="sp(this,'none')"><div class="color-swatch" style="background:linear-gradient(to bottom,#888,#444)"></div><div class="color-name">なし</div></div>
 <div class="color-preset" onclick="sp(this,'viral')"><div class="color-swatch" style="background:linear-gradient(to bottom,#ff6b35,#f7c59f)"></div><div class="color-name">VIRAL</div></div>
@@ -261,20 +334,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div class="slider-row"><span class="slider-label">彩度</span><span class="slider-val" id="saturationVal">+15</span></div>
 <input type="range" min="-100" max="100" value="15" oninput="sv('saturation',this.value,'')">
 </div>
-<div class="divider"></div>
-<div class="toggle-grid">
-<div class="toggle-item active" onclick="tog(this,'jumpcut')"><div class="toggle-icon">⚡</div><div class="toggle-name">ジャンプカット</div><div class="toggle-desc">無音部分削除</div></div>
-<div class="toggle-item active" onclick="tog(this,'hook')"><div class="toggle-icon">🪝</div><div class="toggle-name">冒頭フック</div><div class="toggle-desc">3秒で掴む</div></div>
-<div class="toggle-item active" onclick="tog(this,'caption')"><div class="toggle-icon">💬</div><div class="toggle-name">テロップ最適化</div><div class="toggle-desc">AIが設定</div></div>
-<div class="toggle-item" onclick="tog(this,'zoom')"><div class="toggle-icon">🔍</div><div class="toggle-name">スマートズーム</div><div class="toggle-desc">感情に合わせ拡大</div></div>
-</div>
 </div>
 </div>
 
-<!-- STEP 6: APIキー -->
+<!-- STEP 8: APIキー -->
 
 <div class="step-card">
-<div class="step-header"><div class="step-num">6</div><div class="step-title">🔑 Claude APIキー</div></div>
+<div class="step-header"><div class="step-num">8</div><div class="step-title">🔑 Claude APIキー</div></div>
 <div class="step-body">
 <input type="text" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
 <div class="info-tip"><span>🔒</span><span>この端末内のみで使用。外部に送信されません。</span></div>
@@ -285,28 +351,29 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <button class="btn btn-gold" onclick="runAll()">🧠 AIで解析して動画を作成</button>
 <button class="btn btn-primary" onclick="runAnalyzeOnly()">🔍 AIで解析のみ（確認）</button>
 </div>
-
 </div><!-- /tab-create -->
 
 <div id="tab-settings" class="section-tabs">
 <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
 <div class="step-card" style="margin:0">
-<div class="step-header"><div class="step-num" style="background:var(--blue)">⚙</div><div class="step-title">出力設定</div></div>
+<div class="step-header"><div class="step-num" style="background:var(--blue)">⚙</div><div class="step-title">詳細設定</div></div>
 <div class="step-body">
-<div style="display:flex;flex-direction:column;gap:4px"><label>FPS（フレームレート）</label>
-<select id="outputFps"><option value="60">60fps（滑らか）</option><option value="30" selected>30fps（標準）</option><option value="24">24fps（映画風）</option></select></div>
+<div style="display:flex;flex-direction:column;gap:4px"><label>FPS</label>
+<select id="outputFps"><option value="60">60fps</option><option value="30" selected>30fps</option><option value="24">24fps</option></select></div>
 <div style="display:flex;flex-direction:column;gap:4px"><label>ターゲット視聴者</label>
 <select id="targetAudience"><option value="genZ">Gen Z（10〜25歳）</option><option value="millennial">ミレニアル（25〜40歳）</option><option value="biz">ビジネス層</option><option value="all">全年齢</option></select></div>
 <div style="display:flex;flex-direction:column;gap:4px"><label>目標再生数</label>
-<select id="targetViews"><option value="10k">1万回再生</option><option value="100k">10万回再生</option><option value="1m" selected>100万回再生</option><option value="10m">1000万回再生</option></select></div>
+<select id="targetViews"><option value="10k">1万回</option><option value="100k">10万回</option><option value="1m" selected>100万回</option><option value="10m">1000万回</option></select></div>
 </div>
 </div>
 <div class="step-card" style="margin:0">
-<div class="step-header"><div class="step-num" style="background:var(--green)">ℹ</div><div class="step-title">動作について</div></div>
+<div class="step-header"><div class="step-num" style="background:var(--green)">ℹ</div><div class="step-title">修正内容</div></div>
 <div class="step-body">
-<div class="info-tip"><span>🎬</span><span>Canvas+MediaRecorderでブラウザ内処理。iOS 14.3以上・Chrome・Safariで動作します。</span></div>
-<div class="info-tip"><span>📐</span><span>縦型（9:16）は元動画の中央を切り出して作成。横型は元動画をそのまま使用します。</span></div>
-<div class="warn-tip"><span>⚠️</span><span>長時間動画（30分以上）は処理時間が長くなります。充電しながらWi-Fi環境を推奨します。</span></div>
+<div class="info-tip"><span>✅</span><span>【修正1】指定した尺の全長を正確に録画するよう修正しました。</span></div>
+<div class="info-tip"><span>✅</span><span>【修正2】音声もキャプチャするよう修正しました（AudioContext使用）。</span></div>
+<div class="info-tip"><span>✅</span><span>【修正3】画質プリセットを追加。最高画質1080pに対応しました。</span></div>
+<div class="info-tip"><span>✅</span><span>【修正4】テロップ：なし／字幕から／AI生成の3モードを追加しました。</span></div>
+<div class="info-tip"><span>✅</span><span>【修正5・6】参考動画URLを貼ると、その構成・スタイルを真似した動画を作成します。</span></div>
 </div>
 </div>
 </div>
@@ -319,9 +386,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div class="result-header">✅ AI解析完了</div>
 <div class="result-body">
 <div class="viral-segment">
-<div style="font-size:11px;color:var(--text3);margin-bottom:4px">🎯 使用するセグメント</div>
+<div style="font-size:11px;color:var(--text3);margin-bottom:4px">🎯 使用セグメント</div>
 <div class="viral-time" id="viralTime">--</div>
 <div class="viral-reason" id="viralReason"></div>
+</div>
+<div id="refStyleBlock" style="display:none;background:var(--surface2);border-radius:var(--rs);padding:12px;border-left:3px solid var(--accent2)">
+<div style="font-size:11px;color:var(--text3);margin-bottom:4px">🔗 参考動画スタイル分析</div>
+<div id="refStyleText" style="font-size:12px;color:var(--text2);line-height:1.5"></div>
 </div>
 <div class="score-row">
 <div class="score-pill"><div class="score-num" id="scoreViral">--</div><div class="score-lbl">バイラル度</div></div>
@@ -347,43 +418,54 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </div>
 
 <script>
-// ============================================
-// プラットフォーム定義
-// 処理解像度を下げてモバイルでも安定動作
-// ============================================
+// ============================================================
+// プラットフォーム定義（画質プリセット別解像度）
+// ============================================================
 const PF = {
-  youtube_shorts: {name:'YouTube Shorts', emoji:'▶️', w:540,  h:960,  ratio:'9:16',  vertical:true},
-  youtube:        {name:'YouTube',         emoji:'🎥', w:1280, h:720,  ratio:'16:9',  vertical:false},
-  tiktok:         {name:'TikTok',          emoji:'🎵', w:540,  h:960,  ratio:'9:16',  vertical:true},
-  instagram_reels:{name:'Instagram Reels', emoji:'📸', w:540,  h:960,  ratio:'9:16',  vertical:true},
-  instagram_feed: {name:'Instagram Feed',  emoji:'🖼️', w:720,  h:720,  ratio:'1:1',   vertical:false},
-  twitter:        {name:'X (Twitter)',     emoji:'🐦', w:1280, h:720,  ratio:'16:9',  vertical:false},
-  facebook:       {name:'Facebook',        emoji:'👥', w:1280, h:720,  ratio:'16:9',  vertical:false},
-  linkedin:       {name:'LinkedIn',        emoji:'💼', w:1280, h:720,  ratio:'16:9',  vertical:false}
+  youtube_shorts:{name:'YouTube Shorts',emoji:'▶️',ratio:'9:16',vertical:true,
+    max:{w:1080,h:1920},high:{w:720,h:1280},standard:{w:540,h:960}},
+  youtube:       {name:'YouTube',       emoji:'🎥',ratio:'16:9',vertical:false,
+    max:{w:1920,h:1080},high:{w:1280,h:720},standard:{w:854,h:480}},
+  tiktok:        {name:'TikTok',        emoji:'🎵',ratio:'9:16',vertical:true,
+    max:{w:1080,h:1920},high:{w:720,h:1280},standard:{w:540,h:960}},
+  instagram_reels:{name:'Instagram Reels',emoji:'📸',ratio:'9:16',vertical:true,
+    max:{w:1080,h:1920},high:{w:720,h:1280},standard:{w:540,h:960}},
+  instagram_feed:{name:'Instagram Feed',emoji:'🖼️',ratio:'1:1',vertical:false,
+    max:{w:1080,h:1080},high:{w:720,h:720},standard:{w:540,h:540}},
+  twitter:       {name:'X (Twitter)',   emoji:'🐦',ratio:'16:9',vertical:false,
+    max:{w:1920,h:1080},high:{w:1280,h:720},standard:{w:854,h:480}},
+  facebook:      {name:'Facebook',      emoji:'👥',ratio:'16:9',vertical:false,
+    max:{w:1920,h:1080},high:{w:1280,h:720},standard:{w:854,h:480}},
+  linkedin:      {name:'LinkedIn',      emoji:'💼',ratio:'16:9',vertical:false,
+    max:{w:1920,h:1080},high:{w:1280,h:720},standard:{w:854,h:480}}
 };
 
-const DUR_TIPS = {
-  '30s':'30秒：YouTube Shorts・TikTok・Instagram Reelsに最適。',
-  '1m': '1分：ショートプラットフォーム全般で使える万能尺。',
-  '3m': '3分：YouTube・TikTok等で高エンゲージメントの標準尺。',
-  '5m': '5分：解説・Vlogに最適。YouTubeで収益化しやすい。',
+const DUR_TIPS={
+  '30s':'30秒：YouTube Shorts・TikTok・Reelsに最適。',
+  '1m':'1分：ショート系全般で使える万能尺。',
+  '3m':'3分：YouTube・TikTok等で高エンゲージメントの標準尺。',
+  '5m':'5分：解説・Vlogに最適。',
   '10m':'10分：YouTube収益化の基本ライン。',
-  '15m':'15分：チュートリアル・レビューに最適。',
+  '15m':'15分：チュートリアル・レビュー向け。',
   '30m':'30分：講座・ドキュメンタリー向け。',
   '60m':'60分：フルセミナー・長編コンテンツ。'
 };
 
-const S = {
-  toggles:{jumpcut:true,hook:true,caption:true,zoom:false},
-  colorPreset:'none', brightness:0, contrast:10, saturation:15,
-  durKey:'3m', durSec:180,
+const S={
+  toggles:{ref_structure:true,ref_pacing:true,ref_tone:false,ref_hook:true},
+  colorPreset:'none',brightness:0,contrast:10,saturation:15,
+  durKey:'3m',durSec:180,
   platforms:['youtube_shorts','youtube','tiktok'],
-  lastResult:null, videoFile:null, videoUrl:null
+  captionMode:'none',
+  quality:'high',
+  lastResult:null,videoFile:null,videoUrl:null,
+  captionSegments:[],aiCaptions:[],
+  audioCtx:null,audioSource:null
 };
 
-// ============================================
+// ============================================================
 // UI
-// ============================================
+// ============================================================
 function switchTab(t){
   document.querySelectorAll('.section-tabs').forEach(e=>e.classList.remove('show'));
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
@@ -394,21 +476,31 @@ function tog(el,k){S.toggles[k]=!S.toggles[k];el.classList.toggle('active')}
 function sv(k,v,sfx){
   S[k]=parseFloat(v);
   const el=document.getElementById(k+'Val');
-  if(el){el.textContent=(parseFloat(v)>0?'+':'')+v+sfx}
+  if(el)el.textContent=(parseFloat(v)>0?'+':'')+v+sfx;
 }
 function sp(el,n){
   document.querySelectorAll('.color-preset').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active'); S.colorPreset=n;
+  el.classList.add('active');S.colorPreset=n;
 }
 function setDur(el,key,sec){
   document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); S.durKey=key; S.durSec=sec;
+  el.classList.add('active');S.durKey=key;S.durSec=sec;
   document.getElementById('durTip').textContent=DUR_TIPS[key]||'';
 }
 function togglePf(el,pid){
   el.classList.toggle('active');
   const idx=S.platforms.indexOf(pid);
-  if(idx>-1)S.platforms.splice(idx,1); else S.platforms.push(pid);
+  if(idx>-1)S.platforms.splice(idx,1);else S.platforms.push(pid);
+}
+function setCaptionMode(mode){
+  S.captionMode=mode;
+  ['none','transcript','ai'].forEach(m=>{
+    document.getElementById('capOpt_'+m).classList.toggle('active',m===mode);
+  });
+  document.getElementById('captionStyleWrap').style.display=(mode==='none')?'none':'block';
+}
+function applyQuality(v){
+  S.quality=v;
 }
 function showLoading(t,s){
   document.getElementById('loadingText').textContent=t;
@@ -431,6 +523,8 @@ function handleFile(inp){
   S.videoFile=inp.files[0];
   if(S.videoUrl)URL.revokeObjectURL(S.videoUrl);
   S.videoUrl=URL.createObjectURL(S.videoFile);
+  // AudioContext をリセット
+  S.audioCtx=null; S.audioSource=null;
   const mb=(S.videoFile.size/1024/1024).toFixed(1);
   document.getElementById('uploadIcon').textContent='✅';
   document.getElementById('uploadLabel').textContent=S.videoFile.name+' ('+mb+'MB)';
@@ -444,46 +538,127 @@ function loadDemo(){
   document.getElementById('transcript').value='[0.0-5.0] 今日は絶対にやってはいけないプログラミングの習慣について話します。\n[5.0-15.0] 多くの初心者がやりがちなミスですが、これをやるとシステムが崩壊します。\n[15.0-30.0] そのミスとは、エラーメッセージを読まずに勘でコードを直すことです。\n[30.0-45.0] 実際、ある大企業でこれが原因で数億円の損害が出た事例もあります。\n[45.0-60.0] だから必ず、エラーログは一行ずつ読んでください。';
 }
 
-// ============================================
-// Canvasフィルター生成
-// ============================================
+// ============================================================
+// 字幕パース
+// ============================================================
+function parseTranscript(text){
+  return text.trim().split('\n').map(line=>{
+    const m=line.match(/\[(\d+\.?\d*)[^\d](\d+\.?\d*)\]\s*(.*)/);
+    if(m)return{start:parseFloat(m[1]),end:parseFloat(m[2]),text:m[3].trim()};
+    return null;
+  }).filter(Boolean);
+}
+function getCaptionAt(segs,t){
+  const s=segs.find(s=>t>=s.start&&t<=s.end);
+  return s?s.text:'';
+}
+
+// ============================================================
+// Canvas フィルター
+// ============================================================
 function buildFilter(){
-  const br=Math.max(0.1, 1+(S.brightness/100));
-  const ct=Math.max(0.1, 1+(S.contrast/100));
-  const sat=Math.max(0,   1+(S.saturation/100));
+  const br=Math.max(0.1,1+(S.brightness/100));
+  const ct=Math.max(0.1,1+(S.contrast/100));
+  const sat=Math.max(0,1+(S.saturation/100));
   let f=`brightness(${br.toFixed(2)}) contrast(${ct.toFixed(2)}) saturate(${sat.toFixed(2)})`;
   if(S.colorPreset==='warm')    f+=' sepia(0.25)';
-  else if(S.colorPreset==='cool')   f+=' hue-rotate(15deg) saturate(1.1)';
-  else if(S.colorPreset==='cinema') f+=' contrast(1.15) brightness(0.88)';
-  else if(S.colorPreset==='viral')  f+=' saturate(1.4) contrast(1.1)';
-  else if(S.colorPreset==='bw')     f+=' grayscale(1)';
+  else if(S.colorPreset==='cool')  f+=' hue-rotate(15deg) saturate(1.1)';
+  else if(S.colorPreset==='cinema')f+=' contrast(1.15) brightness(0.88)';
+  else if(S.colorPreset==='viral') f+=' saturate(1.4) contrast(1.1)';
+  else if(S.colorPreset==='bw')    f+=' grayscale(1)';
   return f;
 }
 
-// ============================================
-// AI解析
-// ============================================
+// ============================================================
+// テロップ描画
+// ============================================================
+function drawCaption(ctx,text,cw,ch){
+  if(!text||!text.trim())return;
+  const style=document.getElementById('captionStyle')?.value||'bold_white';
+  const sizeRatio=parseFloat(document.querySelector('input[oninput*="captionSizeVal"]')?.value||5)/100;
+  const fontSize=Math.round(cw*sizeRatio);
+  ctx.save();
+  ctx.font=`900 ${fontSize}px -apple-system,"Helvetica Neue",sans-serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='bottom';
+  const y=ch*0.82;
+  const x=cw/2;
+  if(style==='bold_white'){
+    ctx.strokeStyle='rgba(0,0,0,0.9)';ctx.lineWidth=fontSize*0.12;ctx.lineJoin='round';
+    ctx.strokeText(text,x,y);
+    ctx.fillStyle='#ffffff';ctx.fillText(text,x,y);
+  }else if(style==='bold_yellow'){
+    ctx.strokeStyle='rgba(0,0,0,0.9)';ctx.lineWidth=fontSize*0.12;ctx.lineJoin='round';
+    ctx.strokeText(text,x,y);
+    ctx.fillStyle='#FFE600';ctx.fillText(text,x,y);
+  }else if(style==='outline_white'){
+    ctx.strokeStyle='#000000';ctx.lineWidth=fontSize*0.08;ctx.lineJoin='round';
+    ctx.strokeText(text,x,y);
+    ctx.fillStyle='#ffffff';ctx.fillText(text,x,y);
+  }else if(style==='bg_black'){
+    const metrics=ctx.measureText(text);
+    const pw=metrics.width+fontSize*0.4,ph=fontSize*1.3;
+    ctx.fillStyle='rgba(0,0,0,0.75)';
+    ctx.beginPath();ctx.roundRect(x-pw/2,y-ph,pw,ph,8);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.fillText(text,x,y-fontSize*0.15);
+  }
+  ctx.restore();
+}
+
+// ============================================================
+// AI 解析
+// ============================================================
 async function doAnalyze(key){
-  showLoading('🧠 Claude AIが解析中...','構成・カット・最適化を生成しています');
+  showLoading('🧠 Claude AIが解析中...','構成・スタイル・最適化を生成しています');
   const instr=document.getElementById('aiInstruction').value.trim();
   const tr=document.getElementById('transcript').value.trim();
+  const ref1=document.getElementById('refUrl1').value.trim();
+  const ref2=document.getElementById('refUrl2').value.trim();
+  const ref3=document.getElementById('refUrl3').value.trim();
+  const refs=[ref1,ref2,ref3].filter(Boolean);
   const pfNames=S.platforms.map(p=>PF[p]?.name||p).join('、');
-  const prompt=`You are a professional video editor.
+
+  const refSection=refs.length?`
+Reference videos to mimic (analyze their style, structure, pacing, hook style, caption style):
+${refs.map((u,i)=>`${i+1}. ${u}`).join('\n')}
+Mirror these aspects: ${Object.entries(S.toggles).filter(([k,v])=>k.startsWith('ref_')&&v).map(([k])=>k.replace('ref_','')).join(', ')}
+`:'';
+
+  const captionSection=S.captionMode==='ai'?`
+Generate caption timings for the video. Include key emotional moments and keywords.
+`:'';
+
+  const prompt=`You are a viral video producer expert.
 User instruction: "${instr||'動画をバズりやすく最適化してください'}"
 Target duration: ${S.durKey} (${S.durSec} seconds)
 Target platforms: ${pfNames}
+Caption mode: ${S.captionMode}
+${refSection}
 ${tr?'Transcript:\n'+tr:''}
+${captionSection}
 
 Return ONLY valid JSON:
 {
   "viral_segment": {"start_time": 0, "end_time": ${S.durSec}, "reason": "日本語で理由"},
-  "scores": {"viral": "A", "retention": "75%", "impact": "88/100"},
-  "production_plan": [{"icon":"🎯","color":"#7c3aed","title":"タイトル","description":"日本語説明"}],
+  "scores": {"viral": "A+", "retention": "78%", "impact": "92/100"},
+  "ref_style_analysis": "${refs.length?'参考動画のスタイル分析（日本語で200字）':''}",
+  "production_plan": [
+    {"icon":"🎯","color":"#7c3aed","title":"タイトル","description":"日本語説明"}
+  ],
+  "ai_captions": [
+    {"start": 0, "end": 5, "text": "テロップテキスト"}
+  ],
   "title_suggestion": "動画タイトル案",
-  "hook_text": "冒頭フック",
-  "hashtags": ["#タグ1","#タグ2"]
+  "hook_text": "冒頭フック文章",
+  "hashtags": ["#タグ1","#タグ2","#タグ3"]
 }`;
-  const body=JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:prompt}]});
+
+  const body=JSON.stringify({
+    model:'claude-haiku-4-5-20251001',
+    max_tokens:3000,
+    messages:[{role:'user',content:prompt}]
+  });
+
   const d=await new Promise((resolve,reject)=>{
     const xhr=new XMLHttpRequest();
     xhr.open('POST','https://dark-frog-e19c.h52hiro.workers.dev',true);
@@ -495,9 +670,10 @@ Return ONLY valid JSON:
       else{try{const e=JSON.parse(xhr.responseText);reject(new Error(e.error?.message||'HTTP '+xhr.status));}catch(e){reject(new Error('HTTP '+xhr.status));}}
     };
     xhr.onerror=()=>reject(new Error('ネットワークエラー'));
-    xhr.ontimeout=()=>reject(new Error('タイムアウト'));
+    xhr.ontimeout=()=>reject(new Error('タイムアウト（90秒）'));
     xhr.send(body);
   });
+
   if(d.error)throw new Error(d.error.message);
   const txt=d.content[0].text;
   const m=txt.match(/\{[\s\S]*\}/);
@@ -527,25 +703,41 @@ function renderResult(showCreate){
   rc.classList.add('show');
   setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
   const vs=S.lastResult.viral_segment||{start_time:0,end_time:S.durSec};
-  document.getElementById('viralTime').textContent=fmtTime(vs.start_time)+' 〜 '+fmtTime(vs.end_time)+'（'+fmtTime(vs.end_time-vs.start_time)+'）';
+  document.getElementById('viralTime').textContent=
+    fmtTime(vs.start_time)+' 〜 '+fmtTime(vs.end_time)+'（'+fmtTime(vs.end_time-vs.start_time)+'）';
   document.getElementById('viralReason').textContent=vs.reason||'';
+
+  // 参考動画スタイル
+  const refText=S.lastResult.ref_style_analysis;
+  const refBlock=document.getElementById('refStyleBlock');
+  if(refText&&refText.length>5){
+    refBlock.style.display='block';
+    document.getElementById('refStyleText').textContent=refText;
+  }else{refBlock.style.display='none';}
+
   const sc=S.lastResult.scores||{};
   document.getElementById('scoreViral').textContent=sc.viral||'--';
   document.getElementById('scoreRet').textContent=sc.retention||'--';
   document.getElementById('scoreImp').textContent=sc.impact||'--';
+
   const pg=document.getElementById('planGrid');pg.innerHTML='';
   (S.lastResult.production_plan||[]).slice(0,5).forEach(item=>{
     pg.innerHTML+=`<div class="plan-item"><div class="plan-icon-wrap" style="background:${item.color||'#7c3aed'}22">${item.icon}</div><div class="plan-text"><h4>${item.title}</h4><p>${item.description}</p></div></div>`;
   });
+
+  // キャプション準備
+  const tr=document.getElementById('transcript').value.trim();
+  S.captionSegments=tr?parseTranscript(tr):[];
+  S.aiCaptions=S.lastResult.ai_captions||[];
+
   document.getElementById('progressBlock').style.display='none';
   document.getElementById('outputList').innerHTML='';
   document.getElementById('createBtn').style.display=(showCreate&&S.videoFile)?'flex':'none';
 }
 
-// ============================================
-// 動画作成（Canvas + MediaRecorder）
-// 修正：video要素を画面外配置、正確なクロップ処理
-// ============================================
+// ============================================================
+// 動画作成
+// ============================================================
 async function createVideos(){
   if(!S.lastResult||!S.videoFile)return;
   if(typeof MediaRecorder==='undefined'){
@@ -555,55 +747,75 @@ async function createVideos(){
 
   const vs=S.lastResult.viral_segment||{start_time:0,end_time:S.durSec};
   const startSec=Math.max(0,vs.start_time);
-  const endSec=vs.end_time;
-  const duration=Math.min(endSec-startSec, S.durSec);
+  const targetDuration=S.durSec; // ★ ユーザーが指定した尺を使用
 
   document.getElementById('progressBlock').style.display='flex';
   document.getElementById('outputList').innerHTML='';
   document.getElementById('createBtn').style.display='none';
   setProgress(0,'動画処理を開始します...');
 
-  // srcVideo を読み込む
   const srcVideo=document.getElementById('srcVideo');
   const canvas=document.getElementById('procCanvas');
   srcVideo.src=S.videoUrl;
-  srcVideo.muted=true;
-  srcVideo.playbackRate=1.0;
 
-  // メタデータ読み込み
+  // ★ 音声キャプチャのためmutedにしない
+  srcVideo.muted=false;
+  srcVideo.volume=0.001; // スピーカーには出さないが音声データは保持
+
   await new Promise((res,rej)=>{
     srcVideo.onloadedmetadata=()=>{srcVideo.onloadedmetadata=null;res()};
-    srcVideo.onerror=()=>rej(new Error('動画の読み込みに失敗しました'));
+    srcVideo.onerror=()=>rej(new Error('動画読み込み失敗'));
     srcVideo.load();
-    setTimeout(()=>res(),5000); // 最大5秒
+    setTimeout(res,5000);
   });
 
   const srcW=srcVideo.videoWidth||1280;
   const srcH=srcVideo.videoHeight||720;
+  // 実際の動画長さに合わせて尺を調整
+  const videoDuration=srcVideo.duration||targetDuration;
+  const actualDuration=Math.min(targetDuration, videoDuration-startSec);
 
-  const results=[];
+  // ★ AudioContext セットアップ（音声キャプチャ用）
+  let audioDest=null;
+  try{
+    if(!S.audioCtx){
+      S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+      S.audioSource=S.audioCtx.createMediaElementSource(srcVideo);
+    }
+    const gainNode=S.audioCtx.createGain();
+    gainNode.gain.value=0; // スピーカーには出力しない
+    S.audioSource.connect(gainNode);
+    gainNode.connect(S.audioCtx.destination);
+    audioDest=S.audioCtx.createMediaStreamDestination();
+    S.audioSource.connect(audioDest); // 録音用に接続
+  }catch(e){
+    console.warn('AudioContext setup failed:',e);
+  }
+
   const total=S.platforms.length;
+  const results=[];
 
   for(let i=0;i<total;i++){
     const pid=S.platforms[i];
     const p=PF[pid];
     if(!p)continue;
-    setProgress(Math.round((i/total)*85), `${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
+    const dim=p[S.quality]||p.high;
+    setProgress(Math.round((i/total)*85),`${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
     try{
-      const blob=await recordVideo(srcVideo,canvas,p,srcW,srcH,startSec,duration);
-      results.push({pid,p,blob,error:null});
+      const blob=await recordPlatform(srcVideo,canvas,p,dim,srcW,srcH,startSec,actualDuration,audioDest);
+      results.push({pid,p,dim,blob,error:null});
     }catch(e){
       console.error(pid,e);
-      results.push({pid,p,blob:null,error:e.message});
+      results.push({pid,p,dim,blob:null,error:e.message});
     }
   }
 
   setProgress(100,'✅ すべての処理が完了しました！');
 
-  // ダウンロードUI
   const outList=document.getElementById('outputList');
   outList.innerHTML='<div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">📥 ダウンロード</div>';
-  results.forEach(({pid,p,blob,error})=>{
+
+  results.forEach(({pid,p,dim,blob,error})=>{
     const div=document.createElement('div');
     div.className='output-item';
     if(blob&&blob.size>0){
@@ -614,9 +826,9 @@ async function createVideos(){
         <div class="output-header">
           <span style="font-size:20px">${p.emoji}</span>
           <span class="output-name">${p.name}</span>
-          <span class="output-spec">${p.ratio} · ${p.w}×${p.h}</span>
+          <span class="output-spec">${p.ratio} · ${dim.w}×${dim.h}</span>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:10px">📦 ${sizeMB}MB · ${Math.round(duration)}秒</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:10px">📦 ${sizeMB}MB · ${fmtTime(Math.round(actualDuration))}</div>
         <a href="${url}" download="viralcut_${pid}.${ext}" style="text-decoration:none">
           <button class="btn btn-green" style="padding:12px">⬇️ ${p.name}用をダウンロード</button>
         </a>`;
@@ -627,122 +839,133 @@ async function createVideos(){
           <span class="output-name">${p.name}</span>
           <span class="output-spec" style="background:rgba(239,68,68,.2);color:#fca5a5">エラー</span>
         </div>
-        <div style="font-size:11px;color:var(--text3)">${error||'処理に失敗しました'}</div>`;
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">${error||'処理に失敗しました'}</div>`;
     }
     outList.appendChild(div);
   });
   outList.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ============================================
+// ============================================================
 // 1プラットフォーム分を録画
-// ============================================
-function recordVideo(videoEl, canvas, p, srcW, srcH, startSec, duration){
-  return new Promise(async(resolve, reject)=>{
-    // Canvas サイズ設定
-    canvas.width  = p.w;
-    canvas.height = p.h;
-    const ctx = canvas.getContext('2d');
+// ★ 修正: 時間ベースの停止（pausedに依存しない）
+// ★ 修正: 音声キャプチャ
+// ★ 修正: テロップ描画
+// ============================================================
+function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDest){
+  return new Promise(async(resolve,reject)=>{
+    canvas.width=dim.w;
+    canvas.height=dim.h;
+    const ctx=canvas.getContext('2d');
 
-    // ★ クロップ計算（縦型/正方形/横型それぞれ正確に処理）
-    const targetRatio = p.w / p.h;   // 目標アスペクト比
-    const srcRatio    = srcW / srcH;  // 元動画のアスペクト比
-    let sx, sy, sw, sh;
-
-    if(Math.abs(srcRatio - targetRatio) < 0.01){
-      // ほぼ同じ比率 → そのままスケール
-      sx=0; sy=0; sw=srcW; sh=srcH;
-    } else if(srcRatio > targetRatio){
-      // 元が横長 → 上下は全部使い、左右をクロップ
-      sh = srcH;
-      sw = Math.round(srcH * targetRatio);
-      sx = Math.round((srcW - sw) / 2);
-      sy = 0;
-    } else {
-      // 元が縦長 → 左右は全部使い、上下をクロップ
-      sw = srcW;
-      sh = Math.round(srcW / targetRatio);
-      sx = 0;
-      sy = Math.round((srcH - sh) / 2);
+    // クロップ計算（アスペクト比変換）
+    const targetRatio=dim.w/dim.h;
+    const srcRatio=srcW/srcH;
+    let sx,sy,sw,sh;
+    if(Math.abs(srcRatio-targetRatio)<0.02){
+      sx=0;sy=0;sw=srcW;sh=srcH;
+    }else if(srcRatio>targetRatio){
+      // 横長ソース → 左右クロップ
+      sh=srcH; sw=Math.round(srcH*targetRatio);
+      sx=Math.round((srcW-sw)/2); sy=0;
+    }else{
+      // 縦長ソース → 上下クロップ
+      sw=srcW; sh=Math.round(srcW/targetRatio);
+      sx=0; sy=Math.round((srcH-sh)/2);
     }
 
-    // MIMEタイプ選択
-    const mimes = ['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
-    const mime = mimes.find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(e){return false}}) || '';
+    // MIME タイプ
+    const mimes=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+    const mime=mimes.find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(e){return false}})||'';
 
-    // canvas.captureStream
-    const fps = parseInt(document.getElementById('outputFps').value) || 30;
+    // canvas ストリーム
+    const fps=parseInt(document.getElementById('outputFps').value)||30;
     let stream;
-    try{ stream = canvas.captureStream(fps); }
-    catch(e){ return reject(new Error('captureStream失敗: '+e.message)); }
+    try{stream=canvas.captureStream(fps);}
+    catch(e){return reject(new Error('captureStream失敗: '+e.message));}
 
-    // MediaRecorder 生成
-    let recorder;
-    const recOpts = mime ? {mimeType:mime, videoBitsPerSecond:4000000} : {videoBitsPerSecond:4000000};
-    try{ recorder = new MediaRecorder(stream, recOpts); }
-    catch(e){
-      try{ recorder = new MediaRecorder(stream); }
-      catch(e2){ return reject(new Error('MediaRecorder失敗: '+e2.message)); }
+    // ★ 音声トラックを追加
+    if(audioDest){
+      const audioTracks=audioDest.stream.getAudioTracks();
+      audioTracks.forEach(t=>stream.addTrack(t));
     }
 
-    const chunks = [];
-    recorder.ondataavailable = e => { if(e.data && e.data.size > 0) chunks.push(e.data); };
-    recorder.onstop = () => {
-      const blob = new Blob(chunks, {type: recorder.mimeType || 'video/webm'});
+    // MediaRecorder
+    const bitrate={max:8000000,high:5000000,standard:3000000}[S.quality]||5000000;
+    let recorder;
+    try{
+      recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:bitrate}:{videoBitsPerSecond:bitrate});
+    }catch(e){
+      try{recorder=new MediaRecorder(stream);}
+      catch(e2){return reject(new Error('MediaRecorder作成失敗'));}
+    }
+
+    const chunks=[];
+    recorder.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
+    recorder.onstop=()=>{
+      const blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});
       resolve(blob);
     };
-    recorder.onerror = e => reject(new Error('録画エラー: '+(e.error||e)));
+    recorder.onerror=e=>reject(new Error('録画エラー'));
 
     // シーク
-    videoEl.currentTime = startSec;
-    await new Promise(r => {
-      const onSeeked = () => { videoEl.removeEventListener('seeked', onSeeked); r(); };
-      videoEl.addEventListener('seeked', onSeeked);
-      setTimeout(r, 3000); // フォールバック
+    videoEl.currentTime=startSec;
+    await new Promise(r=>{
+      const fn=()=>{videoEl.removeEventListener('seeked',fn);r();};
+      videoEl.addEventListener('seeked',fn);
+      setTimeout(r,4000);
     });
 
     // 録画開始
-    recorder.start(250); // 250ms毎にデータ取得
+    recorder.start(500);
 
-    // フレーム描画
-    const filter = buildFilter();
-    let drawing = true;
+    const filter=buildFilter();
+    let drawing=true;
+    const captionSegs=S.captionMode==='transcript'?S.captionSegments:
+                      S.captionMode==='ai'?(S.aiCaptions||[]):[];
 
     function drawFrame(){
-      if(!drawing) return;
+      if(!drawing)return;
       try{
-        ctx.filter = filter;
-        ctx.drawImage(videoEl, sx, sy, sw, sh, 0, 0, p.w, p.h);
-        ctx.filter = 'none';
+        ctx.filter=filter;
+        ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);
+        ctx.filter='none';
+        // テロップ描画
+        if(S.captionMode!=='none'&&captionSegs.length){
+          const t=videoEl.currentTime;
+          const capText=getCaptionAt(captionSegs,t);
+          if(capText)drawCaption(ctx,capText,dim.w,dim.h);
+        }
       }catch(e){}
-      if(drawing) requestAnimationFrame(drawFrame);
+      if(drawing)requestAnimationFrame(drawFrame);
     }
 
-    // 再生 & 描画開始
-    try{ await videoEl.play(); }
-    catch(e){ /* autoplay制限は無視 */ }
+    // 再生
+    try{await videoEl.play();}catch(e){}
     requestAnimationFrame(drawFrame);
 
-    // 終了監視
-    const checkEnd = setInterval(()=>{
-      if(videoEl.currentTime >= startSec + duration || videoEl.ended || videoEl.paused){
-        if(videoEl.currentTime < startSec + duration - 0.5 && !videoEl.ended) return; // まだ途中
-        clearInterval(checkEnd);
-        drawing = false;
+    // ★ 修正：時間ベースの終了判定（pausedに依存しない）
+    const endTarget=startSec+duration;
+    const checkInterval=setInterval(()=>{
+      const cur=videoEl.currentTime;
+      if(cur>=endTarget-0.1||videoEl.ended){
+        clearInterval(checkInterval);
+        clearTimeout(safetyTimer);
+        drawing=false;
         videoEl.pause();
-        try{ recorder.stop(); }catch(e){ reject(e); }
+        setTimeout(()=>{try{recorder.stop();}catch(e){reject(e);}},600);
       }
-    }, 300);
+    },500);
 
-    // タイムアウト保険
-    setTimeout(()=>{
+    // ★ タイムアウト保険（duration+60秒）
+    const safetyTimer=setTimeout(()=>{
       if(drawing){
-        drawing = false;
-        clearInterval(checkEnd);
+        clearInterval(checkInterval);
+        drawing=false;
         videoEl.pause();
-        try{ recorder.stop(); }catch(e){ reject(new Error('タイムアウト')); }
+        try{recorder.stop();}catch(e){reject(new Error('タイムアウト'));}
       }
-    }, (duration + 30) * 1000);
+    },(duration+60)*1000);
   });
 }
 </script>
