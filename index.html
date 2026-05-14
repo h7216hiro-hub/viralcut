@@ -7,233 +7,123 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>VIRALCUT AI</title>
 <style>
-/* ── Spotify-inspired Design System ── */
 :root{
-  --bg:#121212;
-  --bg2:#181818;
-  --bg3:#282828;
-  --bg4:#3e3e3e;
-  --sp:#1DB954;
-  --sp2:#1ed760;
-  --sp3:#169c46;
-  --gold:#f59e0b;
-  --red:#e91429;
-  --text:#ffffff;
-  --text2:#b3b3b3;
-  --text3:#535353;
-  --border:rgba(255,255,255,0.1);
-  --r:8px;
-  --rs:6px;
+  --bg:#121212;--bg2:#181818;--bg3:#282828;--bg4:#3e3e3e;
+  --sp:#1DB954;--sp2:#1ed760;
+  --gold:#f59e0b;--red:#e91429;
+  --text:#fff;--text2:#b3b3b3;--text3:#535353;
+  --border:rgba(255,255,255,.1);
+  --r:8px;--rs:6px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,"Circular",sans-serif;min-height:100%;overscroll-behavior:none}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100%;overscroll-behavior:none}
 
-/* 処理用 canvas/video – opacity 0.01 で実際にレンダリングさせる (iOS 必須) */
-#procCanvas{
-position:fixed;bottom:0;right:0;
-width:1px;height:1px;
-opacity:0.01;pointer-events:none;z-index:-1;
-}
-#srcVideo{
-position:fixed;bottom:0;right:0;
-width:1px;height:1px;
-opacity:0.01;pointer-events:none;z-index:-1;
-}
+/* ★ canvas/video: opacity>0 & visible rect → iOSでもCanvasに描画される */
+#procCanvas{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:0}
+#srcVideo{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:0}
 
-/* ── Header ── */
-.header{
-position:sticky;top:0;z-index:100;
-background:rgba(18,18,18,.95);
-backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-padding:16px 20px 14px;
-border-bottom:1px solid var(–border);
-display:flex;align-items:center;justify-content:space-between;
-}
-.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;letter-spacing:-0.5px}
-.logo-icon{
-width:34px;height:34px;border-radius:50%;
-background:var(–sp);
-display:flex;align-items:center;justify-content:center;
-font-size:16px;
-}
-.badge{
-font-size:10px;font-weight:700;padding:4px 10px;
-background:var(–sp);color:#000;border-radius:20px;
-}
+.header{position:sticky;top:0;z-index:100;background:rgba(18,18,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;border-bottom:1px solid var(–border);display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900}
+.logo-icon{width:34px;height:34px;border-radius:50%;background:var(–sp);display:flex;align-items:center;justify-content:center;font-size:16px}
+.badge{font-size:10px;font-weight:700;padding:4px 10px;background:var(–sp);color:#000;border-radius:20px}
 
-/* ── Main scroll area ── */
-.main{
-padding:0 0 100px;
-overflow-y:auto;
--webkit-overflow-scrolling:touch;
-}
+.main{padding:0 0 100px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.card{margin:12px 16px;border-radius:var(–r);background:var(–bg2);border:1px solid var(–border);overflow:hidden}
+.card-header{padding:13px 16px;display:flex;align-items:center;gap:10px;background:var(–bg3);border-bottom:1px solid var(–border)}
+.snum{width:24px;height:24px;border-radius:50%;background:var(–sp);color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.ctitle{font-size:14px;font-weight:700}
+.csub{font-size:11px;color:var(–text2);margin-left:auto}
+.cbody{padding:16px;display:flex;flex-direction:column;gap:12px}
 
-/* ── Cards ── */
-.card{
-margin:12px 16px;border-radius:var(–r);
-background:var(–bg2);
-border:1px solid var(–border);
-overflow:hidden;
-}
-.card-header{
-padding:14px 16px;
-display:flex;align-items:center;gap:10px;
-background:var(–bg3);
-border-bottom:1px solid var(–border);
-}
-.step-num{
-width:24px;height:24px;border-radius:50%;
-background:var(–sp);color:#000;
-display:flex;align-items:center;justify-content:center;
-font-size:11px;font-weight:900;flex-shrink:0;
-}
-.card-title{font-size:14px;font-weight:700}
-.card-sub{font-size:11px;color:var(–text2);margin-left:auto}
-.card-body{padding:16px;display:flex;flex-direction:column;gap:12px}
-
-/* ── Form elements ── */
-label{font-size:11px;color:var(–text2);font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px}
-input[type=text],textarea,select{
-width:100%;background:var(–bg3);
-border:1px solid var(–border);border-radius:var(–rs);
-color:var(–text);font-size:14px;font-family:inherit;
-outline:none;transition:border-color .15s;
-}
-input[type=text]{padding:12px 14px}
-textarea{padding:12px 14px;resize:none;min-height:80px;line-height:1.5}
+label{font-size:11px;color:var(–text2);font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
+input[type=text],textarea,select{width:100%;background:var(–bg3);border:1px solid var(–border);border-radius:var(–rs);color:var(–text);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+input[type=text]{padding:11px 14px}
+textarea{padding:11px 14px;resize:none;min-height:80px;line-height:1.5}
 input[type=text]:focus,textarea:focus,select:focus{border-color:var(–sp)}
-select{
-padding:11px 12px;-webkit-appearance:none;cursor:pointer;
-background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23b3b3b3’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);
-background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
-background-color:var(–bg3);
-}
+select{padding:11px 12px;-webkit-appearance:none;cursor:pointer;background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23b3b3b3’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;background-color:var(–bg3)}
 ::placeholder{color:var(–text3)}
-input[type=range]{
-width:100%;height:4px;-webkit-appearance:none;
-background:var(–bg4);border-radius:2px;outline:none;cursor:pointer;
-}
-input[type=range]::-webkit-slider-thumb{
--webkit-appearance:none;width:18px;height:18px;border-radius:50%;
-background:var(–sp);cursor:pointer;
-}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(–bg4);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(–sp);cursor:pointer}
 
-/* ── Upload zone ── */
-.upload-zone{
-border:2px dashed var(–border);border-radius:var(–r);
-padding:28px;text-align:center;cursor:pointer;
-background:var(–bg3);
-display:flex;flex-direction:column;align-items:center;gap:8px;
-transition:all .2s;
-}
+.upload-zone{border:2px dashed var(–border);border-radius:var(–r);padding:28px;text-align:center;cursor:pointer;background:var(–bg3);display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .2s}
 .upload-zone.has-file{border-color:var(–sp);background:rgba(29,185,84,.08)}
 .upload-zone:active{border-color:var(–sp);background:rgba(29,185,84,.12)}
-.uz-icon{font-size:36px}
-.uz-label{font-size:14px;font-weight:700;color:var(–sp)}
-.uz-hint{font-size:12px;color:var(–text3)}
+.uz-icon{font-size:36px}.uz-label{font-size:14px;font-weight:700;color:var(–sp)}.uz-hint{font-size:12px;color:var(–text3)}
 
-/* ── Buttons ── */
-.btn{
-width:100%;padding:14px;border:none;border-radius:50px;
-font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
-transition:transform .1s,opacity .1s,background .15s;
-display:flex;align-items:center;justify-content:center;gap:8px;
-letter-spacing:0.5px;
-}
+.btn{width:100%;padding:14px;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s,opacity .1s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-sp{background:var(–sp);color:#000}
-.btn-sp:hover{background:var(–sp2)}
-.btn-outline{background:transparent;border:1px solid var(–text2);color:var(–text)}
-.btn-ghost{background:var(–bg3);color:var(–text)}
-.btn-red{background:var(–red);color:#fff}
-.btn-sm{padding:10px 14px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-sp{background:var(–sp);color:#000}.btn-outline{background:transparent;border:1px solid var(–text2);color:var(–text)}.btn-ghost{background:var(–bg3);color:var(–text)}.btn-sm{padding:10px 14px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
 
-/* ── Duration grid ── */
+/* ★ トリマーUI */
+.trimmer-wrap{display:flex;flex-direction:column;gap:10px}
+.trimmer-bar{position:relative;height:40px;background:var(–bg3);border-radius:4px;overflow:hidden;cursor:pointer}
+.trimmer-track{position:absolute;top:0;bottom:0;background:rgba(29,185,84,.3);border:2px solid var(–sp);border-radius:4px}
+.trimmer-handle{position:absolute;top:0;bottom:0;width:14px;background:var(–sp);border-radius:3px;cursor:ew-resize;display:flex;align-items:center;justify-content:center}
+.trimmer-handle::after{content:’||’;font-size:8px;color:#000;font-weight:900}
+.trimmer-time-row{display:flex;justify-content:space-between;align-items:center}
+.trimmer-time{font-size:12px;font-weight:700;color:var(–sp)}
+.trimmer-dur{font-size:11px;color:var(–text2)}
+.time-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.time-input-wrap{display:flex;flex-direction:column;gap:4px}
+.time-label{font-size:10px;color:var(–text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.time-input{background:var(–bg3);border:1px solid var(–border);border-radius:var(–rs);color:var(–text);font-size:16px;font-weight:700;padding:10px 12px;width:100%;font-family:inherit;outline:none;text-align:center}
+.time-input:focus{border-color:var(–sp)}
+
+/* BGMスキップ */
+.bgm-zone{background:var(–bg3);border-radius:var(–rs);padding:12px;border:1px solid rgba(233,20,41,.3);display:flex;align-items:center;gap:10px}
+.bgm-zone-times{display:flex;align-items:center;gap:6px;flex:1}
+.bgm-time-in{background:var(–bg4);border:1px solid var(–border);border-radius:4px;color:var(–text);font-size:13px;padding:6px 8px;width:70px;font-family:inherit;outline:none;text-align:center}
+.bgm-time-in:focus{border-color:var(–sp)}
+.bgm-del{width:28px;height:28px;border-radius:50%;background:rgba(233,20,41,.2);border:none;color:var(–red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
 .dur-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.dur-btn{
-padding:10px 4px;border-radius:var(–rs);
-background:var(–bg3);border:2px solid var(–border);
-text-align:center;cursor:pointer;transition:all .15s;
-}
+.dur-btn{padding:10px 4px;border-radius:var(–rs);background:var(–bg3);border:2px solid var(–border);text-align:center;cursor:pointer;transition:all .15s}
 .dur-btn.active{background:rgba(29,185,84,.15);border-color:var(–sp)}
-.dur-label{font-size:13px;font-weight:700}
-.dur-desc{font-size:9px;color:var(–text3);margin-top:2px}
+.dur-label{font-size:13px;font-weight:700}.dur-desc{font-size:9px;color:var(–text3);margin-top:2px}
 
-/* ── Platform grid ── */
 .pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pf-item{
-padding:10px;border-radius:var(–rs);
-background:var(–bg3);border:2px solid var(–border);
-display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .15s;
-}
+.pf-item{padding:10px;border-radius:var(–rs);background:var(–bg3);border:2px solid var(–border);display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .15s}
 .pf-item.active{background:rgba(29,185,84,.12);border-color:var(–sp)}
 .pf-item.active .pf-ck{opacity:1}
-.pf-em{font-size:18px;flex-shrink:0}
-.pf-info{flex:1;min-width:0}
-.pf-name{font-size:11px;font-weight:700}
-.pf-spec{font-size:10px;color:var(–text3)}
+.pf-em{font-size:18px;flex-shrink:0}.pf-info{flex:1;min-width:0}.pf-name{font-size:11px;font-weight:700}.pf-spec{font-size:10px;color:var(–text3)}
 .pf-ck{width:16px;height:16px;border-radius:50%;background:var(–sp);color:#000;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;flex-shrink:0}
 
-/* ── Toggle items ── */
 .tg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tg-item{
-padding:12px;border-radius:var(–rs);
-background:var(–bg3);border:1px solid var(–border);
-display:flex;flex-direction:column;gap:4px;
-cursor:pointer;transition:all .15s;position:relative;overflow:hidden;
-}
+.tg-item{padding:11px;border-radius:var(–rs);background:var(–bg3);border:1px solid var(–border);display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
 .tg-item.active{background:rgba(29,185,84,.12);border-color:var(–sp)}
 .tg-item.active::after{content:‘✓’;position:absolute;top:8px;right:8px;width:17px;height:17px;border-radius:50%;background:var(–sp);color:#000;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center}
 .tg-icon{font-size:20px}.tg-name{font-size:12px;font-weight:700}.tg-desc{font-size:10px;color:var(–text3)}
 
-/* ── SFX grid ── */
 .sfx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.sfx-btn{
-padding:12px 4px;border-radius:var(–rs);
-background:var(–bg3);border:2px solid var(–border);
-text-align:center;cursor:pointer;transition:all .15s;
-}
+.sfx-btn{padding:11px 4px;border-radius:var(–rs);background:var(–bg3);border:2px solid var(–border);text-align:center;cursor:pointer;transition:all .15s}
 .sfx-btn.active{background:rgba(29,185,84,.12);border-color:var(–sp)}
 .sfx-icon{font-size:22px}.sfx-name{font-size:10px;font-weight:700;margin-top:4px}
 
-/* ── Caption mode ── */
 .cap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.cap-opt{
-padding:12px 4px;border-radius:var(–rs);
-background:var(–bg3);border:2px solid var(–border);
-text-align:center;cursor:pointer;transition:all .15s;
-}
+.cap-opt{padding:11px 4px;border-radius:var(–rs);background:var(–bg3);border:2px solid var(–border);text-align:center;cursor:pointer;transition:all .15s}
 .cap-opt.active{background:rgba(29,185,84,.12);border-color:var(–sp)}
 .cap-icon{font-size:22px}.cap-name{font-size:10px;font-weight:700;margin-top:4px}.cap-desc{font-size:9px;color:var(–text3);margin-top:2px}
 
-/* ── Color presets ── */
 .cp-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
 .cp-item{flex-shrink:0;width:56px;border-radius:var(–rs);cursor:pointer;overflow:hidden;border:2px solid transparent;transition:border-color .15s}
 .cp-item.active{border-color:var(–sp)}
-.cp-swatch{height:36px}
-.cp-name{font-size:9px;text-align:center;padding:3px 0;color:var(–text2);background:var(–bg3)}
-
-/* ── Sliders ── */
+.cp-swatch{height:36px}.cp-name{font-size:9px;text-align:center;padding:3px 0;color:var(–text2);background:var(–bg3)}
 .sl-group{display:flex;flex-direction:column;gap:6px}
 .sl-row{display:flex;justify-content:space-between;align-items:center}
 .sl-label{font-size:12px;color:var(–text2);font-weight:400}
 .sl-val{font-size:12px;font-weight:700;color:var(–sp)}
 
-/* ── Progress ── */
 .prog-block{background:var(–bg3);border-radius:var(–rs);padding:16px;display:flex;flex-direction:column;gap:10px}
 .prog-bg{width:100%;height:4px;background:var(–bg4);border-radius:2px;overflow:hidden}
 .prog-bar{height:100%;background:var(–sp);border-radius:2px;transition:width .4s ease;width:0%}
 .prog-label{font-size:13px;color:var(–text2);text-align:center;line-height:1.5}
 
-/* ── Output items ── */
 .out-item{background:var(–bg3);border-radius:var(–rs);padding:14px;border:1px solid rgba(29,185,84,.3)}
 .out-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .out-name{font-size:13px;font-weight:700}
 .out-spec{font-size:10px;color:var(–text3);margin-left:auto;background:var(–bg4);padding:3px 8px;border-radius:20px}
 
-/* ── Result card ── */
 .result-card{margin:0 16px 16px;border-radius:var(–r);background:var(–bg2);border:1px solid rgba(29,185,84,.4);overflow:hidden;display:none}
 .result-card.show{display:block;animation:slideUp .3s ease}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -245,26 +135,23 @@ text-align:center;cursor:pointer;transition:all .15s;
 .score-row{display:flex;gap:8px}
 .score-pill{flex:1;padding:12px 8px;border-radius:var(–rs);background:var(–bg3);text-align:center}
 .score-num{font-size:18px;font-weight:900;color:var(–sp)}
-.score-lbl{font-size:10px;color:var(–text3);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.score-lbl{font-size:10px;color:var(–text3);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .plan-list{display:flex;flex-direction:column;gap:8px}
 .plan-item{display:flex;align-items:flex-start;gap:10px;background:var(–bg3);border-radius:var(–rs);padding:12px}
 .plan-ico{width:34px;height:34px;border-radius:var(–rs);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
 .plan-text h4{font-size:12px;font-weight:700;margin-bottom:2px}
 .plan-text p{font-size:11px;color:var(–text2);line-height:1.4}
-
-/* ── Clip list ── */
-.clip-item{background:var(–bg3);border-radius:var(–rs);padding:12px;border:1px solid var(–border);display:flex;align-items:center;gap:10px}
+.clip-item{background:var(–bg3);border-radius:var(–rs);padding:12px;border:1px solid var(–border);display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s}
+.clip-item:active{background:rgba(29,185,84,.12)}
 .clip-idx{width:28px;height:28px;border-radius:50%;background:var(–sp);color:#000;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.clip-info{flex:1;min-width:0}
-.clip-title{font-size:12px;font-weight:700}
-.clip-reason{font-size:10px;color:var(–text2);margin-top:2px}
+.clip-info{flex:1;min-width:0}.clip-title{font-size:12px;font-weight:700}.clip-reason{font-size:10px;color:var(–text2);margin-top:2px}
 .clip-time{font-size:11px;font-weight:700;color:var(–sp);flex-shrink:0}
+.use-clip-btn{font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid var(–sp);background:transparent;color:var(–sp);cursor:pointer;flex-shrink:0}
 
-/* ── Edit panel ── */
 .edit-panel{background:var(–bg3);border-radius:var(–rs);padding:16px;border:1px solid rgba(29,185,84,.4);display:flex;flex-direction:column;gap:12px}
 .edit-title{font-size:13px;font-weight:700;color:var(–sp)}
 .cap-edit-item{background:var(–bg2);border-radius:var(–rs);padding:10px;display:flex;flex-direction:column;gap:6px}
-.cap-edit-time{font-size:10px;color:var(–text3);font-weight:600;letter-spacing:0.5px}
+.cap-edit-time{font-size:10px;color:var(–text3);font-weight:600}
 .cap-edit-input{background:var(–bg3);border:1px solid var(–border);border-radius:4px;color:var(–text);font-size:13px;padding:8px 10px;width:100%;font-family:inherit;outline:none}
 .cap-edit-input:focus{border-color:var(–sp)}
 .sfx-edit-item{background:var(–bg2);border-radius:var(–rs);padding:10px;display:flex;align-items:center;gap:10px}
@@ -275,29 +162,20 @@ text-align:center;cursor:pointer;transition:all .15s;
 .sp-toggle::after{content:’’;width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s}
 .sp-toggle.on::after{transform:translateX(20px)}
 
-/* ── Tips ── */
 .tip{background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.2);border-radius:var(–rs);padding:10px 12px;font-size:11px;color:var(–text2);line-height:1.6;display:flex;gap:8px}
 .tip-warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(–rs);padding:10px 12px;font-size:11px;color:#fcd34d;line-height:1.6;display:flex;gap:8px}
-.divider{height:1px;background:var(–border);margin:2px 0}
 .row{display:flex;gap:8px}
+.divider{height:1px;background:var(–border);margin:2px 0}
 
-/* ── Loading ── */
-.loading-overlay{
-display:none;position:fixed;inset:0;z-index:200;
-background:rgba(18,18,18,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:32px;
-}
+.loading-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(18,18,18,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:32px}
 .loading-overlay.show{display:flex}
-.sp-spinner{
-width:52px;height:52px;border-radius:50%;
-border:3px solid var(–bg4);border-top-color:var(–sp);
-animation:spin .8s linear infinite;
-}
+.sp-spinner{width:52px;height:52px;border-radius:50%;border:3px solid var(–bg4);border-top-color:var(–sp);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-title{font-size:15px;font-weight:700;color:var(–text);text-align:center}
 .load-sub{font-size:12px;color:var(–text2);text-align:center;line-height:1.6;max-width:280px}
+.load-prog-bg{width:80%;max-width:280px;height:4px;background:var(–bg4);border-radius:2px;overflow:hidden}
+.load-prog-bar{height:100%;background:var(–sp);border-radius:2px;transition:width .4s;width:0%}
 
-/* ── Modal ── */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center}
 .modal-overlay.show{display:flex}
 .modal{width:100%;max-width:600px;background:var(–bg2);border-radius:16px 16px 0 0;padding:20px 20px 40px;animation:slideModal .3s ease;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -306,44 +184,27 @@ animation:spin .8s linear infinite;
 .modal-title{font-size:17px;font-weight:900;margin-bottom:16px}
 .code-block{background:var(–bg3);border-radius:var(–rs);padding:12px;margin-bottom:10px;font-family:‘Menlo’,monospace;font-size:11px;color:var(–sp);line-height:1.6;max-height:260px;overflow-y:auto;border:1px solid var(–border);white-space:pre-wrap;word-break:break-all}
 
-/* ── Bottom nav ── */
-.bottom-bar{
-position:fixed;bottom:0;left:0;right:0;
-background:var(–bg2);
-border-top:1px solid var(–border);
-display:flex;
-padding:8px 0 calc(8px + env(safe-area-inset-bottom));
-}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:var(–bg2);border-top:1px solid var(–border);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;cursor:pointer;opacity:.4;transition:opacity .15s}
 .tab.active{opacity:1}
-.tab-icon{font-size:22px}
-.tab-label{font-size:10px;font-weight:700;letter-spacing:0.5px}
-.section-tabs{display:none}
-.section-tabs.show{display:block}
-
-/* ── Ref style badge ── */
-.ref-block{background:var(–bg3);border-radius:var(–rs);padding:14px;border-left:3px solid var(–sp)}
-.ref-title{font-size:11px;font-weight:700;color:var(–sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.ref-text{font-size:12px;color:var(–text2);line-height:1.6}
+.tab-icon{font-size:22px}.tab-label{font-size:10px;font-weight:700;letter-spacing:.5px}
+.section-tabs{display:none}.section-tabs.show{display:block}
 </style>
 
 </head>
 <body>
 
-<!-- 処理用要素（opacity:0.01で実際にレンダリング → iOS対応） -->
+<!-- ★ 処理用要素：opacity:0.01かつ画面内に配置（iOSでの描画必須） -->
 
 <video id="srcVideo" playsinline webkit-playsinline muted></video>
 <canvas id="procCanvas"></canvas>
-
-<!-- Loading -->
 
 <div class="loading-overlay" id="loadingOverlay">
 <div class="sp-spinner"></div>
 <div class="load-title" id="loadingText">処理中...</div>
 <div class="load-sub" id="loadingSub"></div>
+<div class="load-prog-bg"><div class="load-prog-bar" id="loadProgBar"></div></div>
 </div>
-
-<!-- Modal -->
 
 <div class="modal-overlay" id="exportModal" onclick="if(event.target===this)this.classList.remove('show')">
 <div class="modal">
@@ -357,23 +218,19 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 </div>
 
-<!-- Header -->
-
 <div class="header">
 <div class="logo"><div class="logo-icon">⚡</div>VIRALCUT</div>
 <div class="badge">AI PRO</div>
 </div>
 
-<!-- Main -->
-
 <div class="main" id="mainScroll">
 <div id="tab-create" class="section-tabs show">
 
-<!-- 1. 動画ファイル -->
+<!-- 1. 動画 -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">1</div><div class="card-title">動画ファイル</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">1</div><div class="ctitle">動画ファイル</div></div>
+<div class="cbody">
 <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
 <div class="uz-icon" id="uploadIcon">🎬</div>
 <div class="uz-label" id="uploadLabel">タップして動画を選択</div>
@@ -386,64 +243,74 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 </div>
 
-<!-- 2. 参考動画 -->
+<!-- 2. ★ トリマー（開始・終了・BGMスキップ） -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">2</div><div class="card-title">参考動画URL</div><div class="card-sub">スタイル完全コピー</div></div>
-<div class="card-body">
-<div class="tip"><span>🎯</span><span>バズっている動画のURLを貼ると、その構成・テロップ・テンポ・フックを完全に真似します。</span></div>
-<input type="text" id="refUrl1" placeholder="https://youtube.com/watch?v=... （参考動画1）">
-<input type="text" id="refUrl2" placeholder="https://youtube.com/watch?v=... （参考動画2 任意）">
-<label style="margin-top:4px">真似する要素</label>
+<div class="card-header"><div class="snum">2</div><div class="ctitle">切り抜き範囲</div><div class="csub">手動設定 or AI</div></div>
+<div class="cbody">
+<div class="tip"><span>✂️</span><span>動画のどの部分を使うか指定します。AIが自動提案します（トランスクリプト入力で精度UP）。</span></div>
+
+<!-- 開始・終了時間入力 -->
+
+<div class="time-inputs">
+<div class="time-input-wrap">
+<div class="time-label">開始時間</div>
+<input type="text" class="time-input" id="trimStart" value="0:00" placeholder="0:00" oninput="onTrimInput()">
+</div>
+<div class="time-input-wrap">
+<div class="time-label">終了時間</div>
+<input type="text" class="time-input" id="trimEnd" value="1:00" placeholder="1:00" oninput="onTrimInput()">
+</div>
+</div>
+<div id="trimInfo" style="text-align:center;font-size:12px;color:var(--sp);font-weight:700">切り抜き長さ: 1分00秒</div>
+
+<!-- BGMスキップゾーン -->
+
+<div style="display:flex;flex-direction:column;gap:6px">
+<label>BGMスキップ区間（BGMが入っている部分を除外）</label>
+<div id="bgmZoneList" style="display:flex;flex-direction:column;gap:6px"></div>
+<button class="btn-sm btn-ghost" style="width:auto;align-self:flex-start;padding:8px 14px" onclick="addBgmZone()">＋ BGMスキップ区間を追加</button>
+</div>
+</div>
+</div>
+
+<!-- 3. 参考動画 -->
+
+<div class="card">
+<div class="card-header"><div class="snum">3</div><div class="ctitle">参考動画URL</div><div class="csub">スタイル完全コピー</div></div>
+<div class="cbody">
+<div class="tip"><span>🎯</span><span>バズっている動画のURLを貼ると、その構成・テロップ・テンポ・フック手法を完全に真似します。</span></div>
+<input type="text" id="refUrl1" placeholder="https://youtube.com/shorts/... （参考動画1）">
+<input type="text" id="refUrl2" placeholder="https://youtube.com/shorts/... （参考動画2 任意）">
 <div class="tg-grid">
 <div class="tg-item active" onclick="tog(this,'ref_structure')"><div class="tg-icon">📐</div><div class="tg-name">構成・流れ</div><div class="tg-desc">フック→展開→CTA</div></div>
 <div class="tg-item active" onclick="tog(this,'ref_caption')"><div class="tg-icon">💬</div><div class="tg-name">テロップスタイル</div><div class="tg-desc">フォント・色・位置</div></div>
-<div class="tg-item active" onclick="tog(this,'ref_pacing')"><div class="tg-icon">⚡</div><div class="tg-name">テンポ・カット</div><div class="tg-desc">カット間隔・リズム</div></div>
+<div class="tg-item active" onclick="tog(this,'ref_pacing')"><div class="tg-icon">⚡</div><div class="tg-name">テンポ・カット</div><div class="tg-desc">リズム・間隔</div></div>
 <div class="tg-item active" onclick="tog(this,'ref_hook')"><div class="tg-icon">🪝</div><div class="tg-name">フック手法</div><div class="tg-desc">冒頭の掴み方</div></div>
 </div>
 </div>
 </div>
 
-<!-- 3. AI指示 -->
+<!-- 4. AI指示 -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">3</div><div class="card-title">AIへの構成指示</div></div>
-<div class="card-body">
-<div class="tip"><span>💡</span><span>具体的に書くほど指示が正確に反映されます。カット箇所・テロップ内容・フック文なども指定できます。</span></div>
-<textarea id="aiInstruction" placeholder="例：冒頭3秒に「これ知らないと損します」というテロップを大きく表示。0〜30秒は感情的なシーンを使い、1分以降はテンポよくジャンプカット。最後の10秒でCTAを入れて。"></textarea>
-<div class="tip"><span>📝</span><span>字幕を入力するとテロップ精度が大幅に向上します。</span></div>
+<div class="card-header"><div class="snum">4</div><div class="ctitle">AIへの指示</div></div>
+<div class="cbody">
+<textarea id="aiInstruction" placeholder="例：冒頭3秒に「これ見て損なし」というテロップを大きく。感情的な場面を優先してカット。最後にCTAを入れて。参考動画のテロップスタイルを真似して。"></textarea>
+<div class="tip"><span>📝</span><span>字幕入力でテロップ精度UP（任意）。</span></div>
 <textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...&#10;[5.0-15.0] ..." style="min-height:70px"></textarea>
 <div class="row">
-<button class="btn-sm btn-ghost" style="flex:1" onclick="loadDemo()">📋 サンプル入力</button>
-<button class="btn-sm btn-ghost" style="flex:.4;padding:10px" onclick="document.getElementById('aiInstruction').value='';document.getElementById('transcript').value=''">🗑️</button>
+<button class="btn-sm btn-ghost" style="flex:1" onclick="loadDemo()">📋 サンプル</button>
+<button class="btn-sm btn-ghost" style="flex:.4;padding:10px" onclick="clearInputs()">🗑️</button>
 </div>
-</div>
-</div>
-
-<!-- 4. 尺 -->
-
-<div class="card">
-<div class="card-header"><div class="step-num">4</div><div class="card-title">動画の尺</div><div class="card-sub">30秒〜60分</div></div>
-<div class="card-body">
-<div class="dur-grid">
-<div class="dur-btn" onclick="setDur(this,'30s',30)"><div class="dur-label">30秒</div><div class="dur-desc">ショート</div></div>
-<div class="dur-btn" onclick="setDur(this,'1m',60)"><div class="dur-label">1分</div><div class="dur-desc">ショート</div></div>
-<div class="dur-btn active" onclick="setDur(this,'3m',180)"><div class="dur-label">3分</div><div class="dur-desc">標準</div></div>
-<div class="dur-btn" onclick="setDur(this,'5m',300)"><div class="dur-label">5分</div><div class="dur-desc">標準</div></div>
-<div class="dur-btn" onclick="setDur(this,'10m',600)"><div class="dur-label">10分</div><div class="dur-desc">長尺</div></div>
-<div class="dur-btn" onclick="setDur(this,'15m',900)"><div class="dur-label">15分</div><div class="dur-desc">長尺</div></div>
-<div class="dur-btn" onclick="setDur(this,'30m',1800)"><div class="dur-label">30分</div><div class="dur-desc">長尺</div></div>
-<div class="dur-btn" onclick="setDur(this,'60m',3600)"><div class="dur-label">60分</div><div class="dur-desc">フル</div></div>
-</div>
-<div class="tip"><span>💡</span><span id="durTip">3分：YouTube・TikTok等で高エンゲージメントの標準尺です。</span></div>
 </div>
 </div>
 
 <!-- 5. プラットフォーム -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">5</div><div class="card-title">プラットフォーム</div><div class="card-sub">複数同時出力</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">5</div><div class="ctitle">プラットフォーム</div><div class="csub">複数同時出力</div></div>
+<div class="cbody">
 <div class="pf-grid">
 <div class="pf-item active" onclick="togglePf(this,'youtube_shorts')"><div class="pf-em">▶️</div><div class="pf-info"><div class="pf-name">YouTube Shorts</div><div class="pf-spec">9:16 縦型</div></div><div class="pf-ck">✓</div></div>
 <div class="pf-item active" onclick="togglePf(this,'youtube')"><div class="pf-em">🎥</div><div class="pf-info"><div class="pf-name">YouTube</div><div class="pf-spec">16:9 横型</div></div><div class="pf-ck">✓</div></div>
@@ -460,9 +327,8 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <!-- 6. テロップ -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">6</div><div class="card-title">テロップ設定</div></div>
-<div class="card-body">
-<label>テロップモード</label>
+<div class="card-header"><div class="snum">6</div><div class="ctitle">テロップ設定</div></div>
+<div class="cbody">
 <div class="cap-grid">
 <div class="cap-opt active" id="capOpt_none" onclick="setCapMode('none')"><div class="cap-icon">🚫</div><div class="cap-name">なし</div><div class="cap-desc">テロップ不要</div></div>
 <div class="cap-opt" id="capOpt_transcript" onclick="setCapMode('transcript')"><div class="cap-icon">📝</div><div class="cap-name">字幕から</div><div class="cap-desc">入力字幕使用</div></div>
@@ -489,8 +355,8 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <!-- 7. 効果音 -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">7</div><div class="card-title">効果音（SFX）</div><div class="card-sub">動画に実際に追加</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">7</div><div class="ctitle">効果音（SFX）</div></div>
+<div class="cbody">
 <div class="sfx-grid">
 <div class="sfx-btn active" id="sfx_whoosh" onclick="toggleSfx(this,'whoosh')"><div class="sfx-icon">💨</div><div class="sfx-name">ウーッシュ</div></div>
 <div class="sfx-btn active" id="sfx_boom" onclick="toggleSfx(this,'boom')"><div class="sfx-icon">💥</div><div class="sfx-name">ドーン</div></div>
@@ -499,7 +365,7 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <div class="sfx-btn" id="sfx_riser" onclick="toggleSfx(this,'riser')"><div class="sfx-icon">📈</div><div class="sfx-name">ライザー</div></div>
 <div class="sfx-btn" id="sfx_impact" onclick="toggleSfx(this,'impact')"><div class="sfx-icon">🥊</div><div class="sfx-name">インパクト</div></div>
 </div>
-<button class="btn btn-ghost" style="border-radius:50px;padding:10px;font-size:13px" onclick="testSfx()">🔊 効果音をテスト再生</button>
+<button class="btn btn-ghost" style="border-radius:50px;padding:10px;font-size:13px" onclick="testSfx()">🔊 効果音テスト再生</button>
 <div class="sl-group">
 <div class="sl-row"><span class="sl-label">SFX音量</span><span class="sl-val" id="sfxVolVal">70%</span></div>
 <input type="range" min="0" max="100" value="70" oninput="document.getElementById('sfxVolVal').textContent=this.value+'%';S.sfxVol=parseInt(this.value)">
@@ -510,14 +376,14 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <!-- 8. 画質 -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">8</div><div class="card-title">画質・フィルター</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">8</div><div class="ctitle">画質・フィルター</div></div>
+<div class="cbody">
 <div style="display:flex;flex-direction:column;gap:6px">
-<label>画質プリセット</label>
+<label>画質</label>
 <select id="qualityPreset" onchange="S.quality=this.value">
-<option value="max">最高画質 1080p（10Mbps）</option>
-<option value="high" selected>高画質 720p（6Mbps）推奨</option>
-<option value="standard">標準 540p（3Mbps）軽量</option>
+<option value="max">最高画質 1080p（処理時間長め）</option>
+<option value="high" selected>高画質 720p（推奨）</option>
+<option value="standard">標準 540p（高速）</option>
 </select>
 </div>
 <label>カラーグレーディング</label>
@@ -547,10 +413,10 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <!-- 9. APIキー -->
 
 <div class="card">
-<div class="card-header"><div class="step-num">9</div><div class="card-title">Claude APIキー</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">9</div><div class="ctitle">Claude APIキー</div></div>
+<div class="cbody">
 <input type="text" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
-<div class="tip"><span>🔒</span><span>この端末内のみで使用。外部には一切送信されません。</span></div>
+<div class="tip"><span>🔒</span><span>この端末内のみで使用。外部送信なし。</span></div>
 </div>
 </div>
 
@@ -560,13 +426,11 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 </div><!-- /tab-create -->
 
-<!-- Settings tab -->
-
 <div id="tab-settings" class="section-tabs">
 <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
 <div class="card" style="margin:0">
-<div class="card-header"><div class="step-num">⚙</div><div class="card-title">出力設定</div></div>
-<div class="card-body">
+<div class="card-header"><div class="snum">⚙</div><div class="ctitle">出力設定</div></div>
+<div class="cbody">
 <div style="display:flex;flex-direction:column;gap:6px"><label>FPS</label>
 <select id="outputFps"><option value="60">60fps</option><option value="30" selected>30fps</option><option value="24">24fps</option></select></div>
 <div style="display:flex;flex-direction:column;gap:6px"><label>ターゲット視聴者</label>
@@ -576,11 +440,11 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 </div>
 <div class="card" style="margin:0">
-<div class="card-header"><div class="step-num">ℹ</div><div class="card-title">動作について</div></div>
-<div class="card-body">
-<div class="tip"><span>🎬</span><span>Canvas+MediaRecorderによりブラウザ内で動画処理。外部送信なし。</span></div>
-<div class="tip"><span>📱</span><span>iOS 14.3以上・Chrome・Safariで動作します。</span></div>
-<div class="tip-warn"><span>⚠️</span><span>長時間動画は処理に時間がかかります。Wi-Fi・充電環境を推奨します。</span></div>
+<div class="card-header"><div class="snum">ℹ</div><div class="ctitle">動作について</div></div>
+<div class="cbody">
+<div class="tip"><span>🎬</span><span>Canvas+MediaRecorderでブラウザ内処理。動画データは外部送信されません。</span></div>
+<div class="tip"><span>🔊</span><span>音声は動画の音声ストリームを直接キャプチャします（映像と完全同期）。</span></div>
+<div class="tip-warn"><span>⚠️</span><span>長い動画・高解像度は処理に時間がかかります。Wi-Fi・充電環境を推奨します。</span></div>
 </div>
 </div>
 </div>
@@ -592,14 +456,15 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 <div class="result-card" id="resultCard">
 <div class="result-header">✅ AI解析完了</div>
 <div class="result-body">
-<div id="refBlock" style="display:none" class="ref-block">
-<div class="ref-title">🔗 参考動画スタイル分析</div>
-<div id="refText" class="ref-text"></div>
+<div id="refBlock" style="display:none;background:var(--bg3);border-radius:var(--rs);padding:14px;border-left:3px solid var(--sp)">
+<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">参考動画スタイル分析</div>
+<div id="refText" style="font-size:12px;color:var(--text2);line-height:1.6"></div>
 </div>
 <div class="seg-card">
-<div style="font-size:10px;color:var(--text3);font-weight:700;letter-spacing:1px;margin-bottom:6px">使用セグメント</div>
+<div style="font-size:10px;color:var(--text3);font-weight:700;letter-spacing:1px;margin-bottom:6px">AI推奨セグメント</div>
 <div class="seg-time" id="viralTime">--</div>
 <div class="seg-reason" id="viralReason"></div>
+<button class="btn btn-sp" style="margin-top:12px;border-radius:50px;padding:10px;font-size:12px" id="applySegBtn" onclick="applyAiSegment()" style="display:none">このセグメントを切り抜き範囲に適用</button>
 </div>
 <div class="score-row">
 <div class="score-pill"><div class="score-num" id="scoreViral">--</div><div class="score-lbl">バイラル度</div></div>
@@ -608,7 +473,7 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 <div class="plan-list" id="planGrid"></div>
 <div id="viralClipsBlock" style="display:none">
-<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">✂️ バイラルクリップ候補</div>
+<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">✂️ バイラルクリップ候補（タップで適用）</div>
 <div id="viralClipsList" style="display:flex;flex-direction:column;gap:6px"></div>
 </div>
 <div id="progressBlock" style="display:none" class="prog-block">
@@ -617,7 +482,7 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 <div id="outputList" style="display:flex;flex-direction:column;gap:10px"></div>
 <div id="editPanel" style="display:none" class="edit-panel">
-<div class="edit-title">✏️ 生成後編集（テロップ・効果音の修正）</div>
+<div class="edit-title">✏️ 生成後編集</div>
 <div id="capEditList" style="display:flex;flex-direction:column;gap:8px"></div>
 <div class="divider"></div>
 <div id="sfxEditList" style="display:flex;flex-direction:column;gap:8px"></div>
@@ -630,66 +495,114 @@ padding:8px 0 calc(8px + env(safe-area-inset-bottom));
 </div>
 </div>
 
-<!-- Bottom nav -->
-
 <div class="bottom-bar">
 <div class="tab active" id="t-create" onclick="switchTab('create')"><div class="tab-icon">✂️</div><div class="tab-label">作成</div></div>
 <div class="tab" id="t-settings" onclick="switchTab('settings')"><div class="tab-icon">⚙️</div><div class="tab-label">設定</div></div>
 </div>
 
 <script>
-// ======================================================
+// ====================================================
 // プラットフォーム定義
-// ======================================================
+// ====================================================
 const PF={
-  youtube_shorts:{name:'YouTube Shorts',emoji:'▶️',ratio:'9:16',
-    max:{w:1080,h:1920,br:10000000},high:{w:720,h:1280,br:6000000},standard:{w:540,h:960,br:3000000}},
-  youtube:{name:'YouTube',emoji:'🎥',ratio:'16:9',
-    max:{w:1920,h:1080,br:10000000},high:{w:1280,h:720,br:6000000},standard:{w:854,h:480,br:3000000}},
-  tiktok:{name:'TikTok',emoji:'🎵',ratio:'9:16',
-    max:{w:1080,h:1920,br:10000000},high:{w:720,h:1280,br:6000000},standard:{w:540,h:960,br:3000000}},
-  instagram_reels:{name:'Instagram Reels',emoji:'📸',ratio:'9:16',
-    max:{w:1080,h:1920,br:8000000},high:{w:720,h:1280,br:5000000},standard:{w:540,h:960,br:3000000}},
-  instagram_feed:{name:'Instagram Feed',emoji:'🖼️',ratio:'1:1',
-    max:{w:1080,h:1080,br:8000000},high:{w:720,h:720,br:5000000},standard:{w:540,h:540,br:3000000}},
-  twitter:{name:'X (Twitter)',emoji:'🐦',ratio:'16:9',
-    max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}},
-  facebook:{name:'Facebook',emoji:'👥',ratio:'16:9',
-    max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}},
-  linkedin:{name:'LinkedIn',emoji:'💼',ratio:'16:9',
-    max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}}
-};
-const DUR_TIPS={
-  '30s':'30秒：Shorts・TikTok・Reelsに最適。',
-  '1m':'1分：ショート系全般で使える万能尺。',
-  '3m':'3分：YouTube・TikTok等で高エンゲージメントの標準尺。',
-  '5m':'5分：解説・Vlogに最適。',
-  '10m':'10分：YouTube収益化の基本ライン。',
-  '15m':'15分：チュートリアル・レビュー向け。',
-  '30m':'30分：講座・ドキュメンタリー向け。',
-  '60m':'60分：フルセミナー・長編コンテンツ。'
+  youtube_shorts:{name:'YouTube Shorts',emoji:'▶️',ratio:'9:16',max:{w:1080,h:1920,br:10000000},high:{w:720,h:1280,br:6000000},standard:{w:540,h:960,br:3000000}},
+  youtube:       {name:'YouTube',       emoji:'🎥',ratio:'16:9',max:{w:1920,h:1080,br:10000000},high:{w:1280,h:720,br:6000000},standard:{w:854,h:480,br:3000000}},
+  tiktok:        {name:'TikTok',        emoji:'🎵',ratio:'9:16',max:{w:1080,h:1920,br:10000000},high:{w:720,h:1280,br:6000000},standard:{w:540,h:960,br:3000000}},
+  instagram_reels:{name:'Instagram Reels',emoji:'📸',ratio:'9:16',max:{w:1080,h:1920,br:8000000},high:{w:720,h:1280,br:5000000},standard:{w:540,h:960,br:3000000}},
+  instagram_feed:{name:'Instagram Feed',emoji:'🖼️',ratio:'1:1', max:{w:1080,h:1080,br:8000000},high:{w:720,h:720,br:5000000},standard:{w:540,h:540,br:3000000}},
+  twitter:       {name:'X (Twitter)',  emoji:'🐦',ratio:'16:9',max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}},
+  facebook:      {name:'Facebook',     emoji:'👥',ratio:'16:9',max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}},
+  linkedin:      {name:'LinkedIn',     emoji:'💼',ratio:'16:9',max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}}
 };
 
-// ======================================================
+// ====================================================
 // 状態管理
-// ======================================================
+// ====================================================
 const S={
   toggles:{ref_structure:true,ref_caption:true,ref_pacing:true,ref_hook:true},
   sfxEnabled:{whoosh:true,boom:true,ding:true,zap:false,riser:false,impact:false},
-  sfxVol:70,
-  colorPreset:'none',brightness:0,contrast:10,saturation:15,
-  durKey:'3m',durSec:180,
+  sfxVol:70,colorPreset:'none',brightness:0,contrast:10,saturation:15,
   platforms:['youtube_shorts','youtube','tiktok'],
   captionMode:'none',quality:'high',
-  lastResult:null,videoFile:null,videoUrl:null,
+  lastResult:null,videoFile:null,videoUrl:null,videoDuration:0,
+  trimStartSec:0,trimEndSec:60,
+  bgmZones:[],
   captionSegs:[],editedCaptions:[],editedSfx:[],
-  // AudioContext
   audioCtx:null
 };
 
-// ======================================================
+// ====================================================
+// 時間文字列 ↔ 秒 変換
+// ====================================================
+function timeToSec(str){
+  str=String(str).trim();
+  const parts=str.split(':').map(Number);
+  if(parts.length===3)return parts[0]*3600+parts[1]*60+(parts[2]||0);
+  if(parts.length===2)return parts[0]*60+(parts[1]||0);
+  return parseFloat(str)||0;
+}
+function secToTime(sec){
+  sec=Math.max(0,Math.round(sec));
+  const m=Math.floor(sec/60),s=sec%60;
+  return m+':'+(s<10?'0':'')+s;
+}
+function fmtDur(sec){
+  sec=Math.max(0,Math.round(sec));
+  if(sec>=3600)return Math.floor(sec/3600)+'時間'+Math.floor((sec%3600)/60)+'分';
+  if(sec>=60)return Math.floor(sec/60)+'分'+(sec%60?sec%60+'秒':'');
+  return sec+'秒';
+}
+
+function onTrimInput(){
+  const s=timeToSec(document.getElementById('trimStart').value);
+  const e=timeToSec(document.getElementById('trimEnd').value);
+  S.trimStartSec=s;S.trimEndSec=e;
+  const dur=Math.max(0,e-s);
+  document.getElementById('trimInfo').textContent='切り抜き長さ: '+fmtDur(dur);
+}
+
+function applyAiSegment(){
+  if(!S.lastResult)return;
+  const vs=S.lastResult.viral_segment||{};
+  if(vs.start_time!=null){
+    S.trimStartSec=vs.start_time;S.trimEndSec=vs.end_time;
+    document.getElementById('trimStart').value=secToTime(vs.start_time);
+    document.getElementById('trimEnd').value=secToTime(vs.end_time);
+    onTrimInput();
+    document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});
+    alert('切り抜き範囲を適用しました！\n「動画を作成してダウンロード」ボタンから生成できます。');
+  }
+}
+
+// BGMゾーン管理
+function addBgmZone(){
+  const id=Date.now();
+  S.bgmZones.push({id,start:0,end:30});
+  renderBgmZones();
+}
+function removeBgmZone(id){
+  S.bgmZones=S.bgmZones.filter(z=>z.id!==id);
+  renderBgmZones();
+}
+function renderBgmZones(){
+  const list=document.getElementById('bgmZoneList');
+  list.innerHTML='';
+  S.bgmZones.forEach((z,i)=>{
+    const div=document.createElement('div');div.className='bgm-zone';
+    div.innerHTML=`<span style="font-size:12px;font-weight:700;color:#fcd34d">BGM区間${i+1}</span>
+<div class="bgm-zone-times">
+<input class="bgm-time-in" value="${secToTime(z.start)}" placeholder="0:00" oninput="S.bgmZones[${i}].start=timeToSec(this.value)">
+<span style="font-size:11px;color:var(--text3)">〜</span>
+<input class="bgm-time-in" value="${secToTime(z.end)}" placeholder="0:30" oninput="S.bgmZones[${i}].end=timeToSec(this.value)">
+</div>
+<button class="bgm-del" onclick="removeBgmZone(${z.id})">✕</button>`;
+    list.appendChild(div);
+  });
+}
+
+// ====================================================
 // SFX シンセサイザー
-// ======================================================
+// ====================================================
 function getAC(){
   if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   if(S.audioCtx.state==='suspended')S.audioCtx.resume();
@@ -700,45 +613,34 @@ function synthSfx(type,ctx,dest,t,vol){
   try{
     if(type==='whoosh'){
       const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.6),ctx.sampleRate);
-      const d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);
+      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);
       const src=ctx.createBufferSource();src.buffer=buf;
-      const f=ctx.createBiquadFilter();f.type='bandpass';
-      f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(4000,t+.4);
+      const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(4000,t+.4);
       const gn=ctx.createGain();gn.gain.setValueAtTime(g*.8,t);gn.gain.linearRampToValueAtTime(0,t+.6);
       src.connect(f);f.connect(gn);gn.connect(dest);src.start(t);
     }else if(type==='boom'){
-      const o=ctx.createOscillator();o.type='sine';
-      o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(30,t+.4);
+      const o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(30,t+.4);
       const gn=ctx.createGain();gn.gain.setValueAtTime(g,t);gn.gain.exponentialRampToValueAtTime(.001,t+.6);
       o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.7);
     }else if(type==='ding'){
-      [880,1760].forEach((f,i)=>{
-        const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;
-        const gn=ctx.createGain();gn.gain.setValueAtTime(g*(.8-i*.3),t);gn.gain.exponentialRampToValueAtTime(.001,t+1.2);
-        o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+1.3);
-      });
+      [880,1760].forEach((f,i)=>{const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const gn=ctx.createGain();gn.gain.setValueAtTime(g*(.8-i*.3),t);gn.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+1.3);});
     }else if(type==='zap'){
-      const o=ctx.createOscillator();o.type='sawtooth';
-      o.frequency.setValueAtTime(800,t);o.frequency.exponentialRampToValueAtTime(100,t+.15);
+      const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(800,t);o.frequency.exponentialRampToValueAtTime(100,t+.15);
       const gn=ctx.createGain();gn.gain.setValueAtTime(g*.6,t);gn.gain.linearRampToValueAtTime(0,t+.2);
       o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.25);
     }else if(type==='riser'){
-      const o=ctx.createOscillator();o.type='sawtooth';
-      o.frequency.setValueAtTime(80,t);o.frequency.exponentialRampToValueAtTime(2000,t+1.5);
+      const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(80,t);o.frequency.exponentialRampToValueAtTime(2000,t+1.5);
       const gn=ctx.createGain();gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g*.4,t+.3);gn.gain.linearRampToValueAtTime(0,t+1.8);
       const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(8000,t+1.5);
       o.connect(f);f.connect(gn);gn.connect(dest);o.start(t);o.stop(t+2);
     }else if(type==='impact'){
       const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.3),ctx.sampleRate);
-      const d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
       const src=ctx.createBufferSource();src.buffer=buf;
       const o=ctx.createOscillator();o.frequency.value=60;
       const gn1=ctx.createGain();gn1.gain.setValueAtTime(g*.9,t);gn1.gain.exponentialRampToValueAtTime(.001,t+.3);
       const gn2=ctx.createGain();gn2.gain.setValueAtTime(g*.8,t);gn2.gain.exponentialRampToValueAtTime(.001,t+.25);
-      src.connect(gn1);gn1.connect(dest);o.connect(gn2);gn2.connect(dest);
-      src.start(t);o.start(t);o.stop(t+.35);
+      src.connect(gn1);gn1.connect(dest);o.connect(gn2);gn2.connect(dest);src.start(t);o.start(t);o.stop(t+.35);
     }
   }catch(e){console.warn('SFX:',type,e);}
 }
@@ -748,29 +650,26 @@ function testSfx(){
   Object.entries(S.sfxEnabled).forEach(([type,on])=>{if(on){synthSfx(type,ctx,dest,t,S.sfxVol);t+=.8;}});
 }
 
-// ======================================================
+// ====================================================
 // UI ヘルパー
-// ======================================================
+// ====================================================
 function switchTab(t){
   document.querySelectorAll('.section-tabs').forEach(e=>e.classList.remove('show'));
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('show');
   document.getElementById('t-'+t).classList.add('active');
-  // スクロールをトップに戻す
-  document.getElementById('mainScroll').scrollTop=0;
-  window.scrollTo(0,0);
+  window.scrollTo(0,0);document.getElementById('mainScroll').scrollTop=0;
 }
 function tog(el,k){S.toggles[k]=!S.toggles[k];el.classList.toggle('active')}
 function toggleSfx(el,k){S.sfxEnabled[k]=!S.sfxEnabled[k];el.classList.toggle('active')}
 function sv(k,v,sfx){S[k]=parseFloat(v);const el=document.getElementById(k+'Val');if(el)el.textContent=(parseFloat(v)>0?'+':'')+v+sfx}
 function sp(el,n){document.querySelectorAll('.cp-item').forEach(p=>p.classList.remove('active'));el.classList.add('active');S.colorPreset=n}
-function setDur(el,key,sec){document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.durKey=key;S.durSec=sec;document.getElementById('durTip').textContent=DUR_TIPS[key]||''}
 function togglePf(el,pid){el.classList.toggle('active');const i=S.platforms.indexOf(pid);if(i>-1)S.platforms.splice(i,1);else S.platforms.push(pid)}
 function setCapMode(m){S.captionMode=m;['none','transcript','ai'].forEach(x=>document.getElementById('capOpt_'+x).classList.toggle('active',x===m));document.getElementById('capStyleWrap').style.display=m==='none'?'none':'block'}
-function showLoading(t,s){document.getElementById('loadingText').textContent=t;document.getElementById('loadingSub').textContent=s||'';document.getElementById('loadingOverlay').classList.add('show')}
+function showLoading(t,s,pct){document.getElementById('loadingText').textContent=t;document.getElementById('loadingSub').textContent=s||'';document.getElementById('loadProgBar').style.width=(pct||0)+'%';document.getElementById('loadingOverlay').classList.add('show')}
+function setLoadProg(pct,sub){document.getElementById('loadProgBar').style.width=pct+'%';if(sub)document.getElementById('loadingSub').textContent=sub}
 function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
 function setProgress(pct,label){document.getElementById('progressBar').style.width=pct+'%';if(label)document.getElementById('progressLabel').textContent=label}
-function fmtTime(s){if(s>=3600)return Math.floor(s/3600)+'h'+Math.floor((s%3600)/60)+'m';if(s>=60)return Math.floor(s/60)+'分'+(s%60?s%60+'秒':'');return Math.round(s)+'秒'}
 
 function handleFile(inp){
   if(!inp.files[0])return;
@@ -782,18 +681,30 @@ function handleFile(inp){
   document.getElementById('uploadIcon').textContent='✅';
   document.getElementById('uploadLabel').textContent=S.videoFile.name+' ('+mb+'MB)';
   document.getElementById('uploadZone').classList.add('has-file');
-  document.getElementById('previewVideo').src=S.videoUrl;
+  // プレビュー
+  const pv=document.getElementById('previewVideo');
+  pv.src=S.videoUrl;pv.load();
   document.getElementById('previewWrap').style.display='block';
+  // 動画の長さを取得してトリマーに反映
+  pv.onloadedmetadata=()=>{
+    S.videoDuration=pv.duration||0;
+    if(S.videoDuration>0&&S.videoDuration<S.trimEndSec){
+      S.trimEndSec=S.videoDuration;
+      document.getElementById('trimEnd').value=secToTime(S.videoDuration);
+      onTrimInput();
+    }
+  };
 }
 
 function loadDemo(){
-  document.getElementById('aiInstruction').value='冒頭3秒に「これ知らないと損します」というテロップを大きく表示。0〜30秒は感情的なシーンをメインに、1分以降はテンポよくジャンプカット。最後の10秒でCTAを入れて。';
-  document.getElementById('transcript').value='[0.0-5.0] 今日は絶対に知っておくべき重要な話をします。\n[5.0-15.0] これを知らないと大きな損をするかもしれません。\n[15.0-30.0] 実際に私も知らなかった時期があって、その時は本当に苦労しました。\n[30.0-45.0] でも今日お伝えする方法を使ったら、すべてが変わりました。\n[45.0-60.0] ぜひ最後まで見てください。チャンネル登録もお願いします。';
+  document.getElementById('aiInstruction').value='冒頭3秒に「絶対見て」というテロップを大きく表示。感情的な場面を優先してカット。参考動画のテロップスタイルを真似して。最後にチャンネル登録のCTAを入れて。';
+  document.getElementById('transcript').value='[0.0-5.0] 今日は絶対に知っておくべき話をします。\n[5.0-15.0] これを知らないと大きな損をします。\n[15.0-30.0] 実際に私も経験したことがあって本当に苦労しました。\n[30.0-45.0] この方法を使ったら全てが変わりました。\n[45.0-60.0] 最後まで見てください。チャンネル登録もお願いします。';
 }
+function clearInputs(){document.getElementById('aiInstruction').value='';document.getElementById('transcript').value='';}
 
-// ======================================================
+// ====================================================
 // 字幕パース
-// ======================================================
+// ====================================================
 function parseTranscript(text){
   return text.trim().split('\n').map(line=>{
     const m=line.match(/\[(\d+\.?\d*)[^\d](\d+\.?\d*)\]\s*(.*)/);
@@ -802,9 +713,9 @@ function parseTranscript(text){
 }
 function getCaptionAt(segs,t){const s=segs.find(s=>t>=s.start&&t<=s.end);return s?s.text:'';}
 
-// ======================================================
-// Canvasフィルター
-// ======================================================
+// ====================================================
+// Canvas フィルター
+// ====================================================
 function buildFilter(){
   const br=Math.max(.1,1+(S.brightness/100));
   const ct=Math.max(.1,1+(S.contrast/100));
@@ -818,9 +729,9 @@ function buildFilter(){
   return f;
 }
 
-// ======================================================
+// ====================================================
 // テロップ描画
-// ======================================================
+// ====================================================
 function drawCaption(ctx,text,cw,ch,refStyle){
   if(!text||!text.trim())return;
   const sizeRatio=parseInt(document.getElementById('capSizeRange')?.value||6)/100;
@@ -835,74 +746,83 @@ function drawCaption(ctx,text,cw,ch,refStyle){
   lines.forEach((line,i)=>{
     const y=posY+(i-lines.length+1)*(fontSize*1.2);
     ctx.font=`900 ${fontSize}px -apple-system,"Helvetica Neue",Arial,sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='bottom';
-    const x=cw/2;
+    ctx.textAlign='center';ctx.textBaseline='bottom';const x=cw/2;
     if(eff==='bold_yellow_outline'){
-      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';
-      ctx.strokeText(line,x,y);ctx.fillStyle='#FFE600';ctx.fillText(line,x,y);
+      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#FFE600';ctx.fillText(line,x,y);
     }else if(eff==='bg_black'){
-      const m=ctx.measureText(line);
-      const pw=m.width+fontSize*.5,ph=fontSize*1.3;
-      ctx.fillStyle='rgba(0,0,0,.78)';ctx.beginPath();
-      if(ctx.roundRect)ctx.roundRect(x-pw/2,y-ph,pw,ph,6);else ctx.rect(x-pw/2,y-ph,pw,ph);
-      ctx.fill();ctx.fillStyle='#ffffff';ctx.fillText(line,x,y-fontSize*.12);
+      const m=ctx.measureText(line);const pw=m.width+fontSize*.5,ph=fontSize*1.3;
+      ctx.fillStyle='rgba(0,0,0,.78)';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-pw/2,y-ph,pw,ph,6);else ctx.rect(x-pw/2,y-ph,pw,ph);ctx.fill();
+      ctx.fillStyle='#ffffff';ctx.fillText(line,x,y-fontSize*.12);
     }else{
-      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';
-      ctx.strokeText(line,x,y);ctx.fillStyle='#ffffff';ctx.fillText(line,x,y);
+      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#ffffff';ctx.fillText(line,x,y);
     }
   });
   ctx.restore();
 }
 
-// ======================================================
-// AI解析
-// ======================================================
+// ====================================================
+// AI 解析
+// ====================================================
 async function doAnalyze(key){
-  showLoading('AIが解析中...','構成・スタイル・テロップ・効果音を生成しています');
+  showLoading('AIが解析中...','構成・セグメント・テロップを生成しています',10);
   const instr=document.getElementById('aiInstruction').value.trim();
   const tr=document.getElementById('transcript').value.trim();
   const refs=[1,2].map(i=>document.getElementById('refUrl'+i).value.trim()).filter(Boolean);
   const pfNames=S.platforms.map(p=>PF[p]?.name||p).join('、');
   const activeSfx=Object.entries(S.sfxEnabled).filter(([,v])=>v).map(([k])=>k).join('、');
+  const trimDur=S.trimEndSec-S.trimStartSec;
   const mimeItems=Object.entries(S.toggles).filter(([k,v])=>k.startsWith('ref_')&&v).map(([k])=>k.replace('ref_','')).join('、');
 
-  const prompt=`You are a viral video producer. Apply the user's instructions EXACTLY as written.
+  const prompt=`You are a viral video editor specialized in short-form content like YouTube Shorts and TikTok clips.
 
-## User's instructions (apply PRECISELY):
+## User's EXACT instructions (apply precisely):
 "${instr||'動画をバズりやすく最適化してください'}"
 
-## Settings:
-- Duration: ${S.durKey} (${S.durSec} seconds)
+## Video settings:
+- Currently set trim range: ${secToTime(S.trimStartSec)} to ${secToTime(S.trimEndSec)} (${fmtDur(trimDur)})
 - Platforms: ${pfNames}
 - Caption mode: ${S.captionMode}
 - Available SFX: ${activeSfx||'none'}
 
-${refs.length?`## Reference videos (ANALYZE and MIMIC - ${mimeItems}):
+${refs.length?`## Reference videos to MIMIC (${mimeItems}):
 ${refs.map((u,i)=>`${i+1}. ${u}`).join('\n')}
-Analyze their: caption style, font color/size, caption position, cut timing, hook method, pacing, structure.
+Analyze and copy: caption style (font size/color/position/weight), cut timing, hook method, pacing, text overlay style.
 `:''}
 
-${tr?`## Transcript:
+${tr?`## Transcript (use for timing captions and identifying key moments):
 ${tr}
 `:''}
 
-Return ONLY valid JSON (no markdown, no explanation):
+${S.bgmZones.length?`## BGM zones to SKIP (these sections have background music):
+${S.bgmZones.map(z=>`${secToTime(z.start)} to ${secToTime(z.end)}`).join('\n')}
+Do NOT recommend clips from these time ranges.
+`:''}
+
+Return ONLY valid JSON:
 {
-  "viral_segment":{"start_time":0,"end_time":${S.durSec},"reason":"ユーザー指示に基づく日本語説明"},
-  "ai_instruction_applied":"ユーザーの指示をどう反映したか日本語で詳しく説明",
-  "ref_style_analysis":"${refs.length?'参考動画のテロップスタイル・構成・フック手法の詳細分析（日本語）':''}",
+  "viral_segment":{"start_time":${S.trimStartSec},"end_time":${S.trimEndSec},"reason":"ユーザー指示に基づく日本語説明"},
+  "ai_instruction_applied":"ユーザーの指示をどう反映したか日本語で詳しく",
+  "ref_style_analysis":"${refs.length?'参考動画のテロップスタイル・構成・フック手法の詳細分析（日本語200字以上）':''}",
   "ref_caption_style":{"style":"bold_white_outline","color":"#FFFFFF","position":"bottom","size_ratio":0.06},
   "scores":{"viral":"A+","retention":"82%","impact":"94/100"},
-  "production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"ユーザー指示に基づく説明"}],
-  "viral_clips":[{"start":0,"end":30,"title":"クリップ名","reason":"バイラル理由"}],
-  "ai_captions":[{"start":0,"end":5,"text":"テロップ"}],
-  "sfx_cues":[{"time":0.5,"type":"whoosh","reason":"シーン転換"},{"time":3.0,"type":"boom","reason":"インパクト"}],
+  "production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"具体的な説明"}],
+  "viral_clips":[
+    {"start":${S.trimStartSec},"end":${Math.min(S.trimStartSec+30,S.trimEndSec)},"title":"クリップ名","reason":"バイラル理由"}
+  ],
+  "ai_captions":[
+    {"start":${S.trimStartSec},"end":${S.trimStartSec+5},"text":"テロップテキスト"}
+  ],
+  "sfx_cues":[
+    {"time":0.5,"type":"whoosh","reason":"シーン転換"},
+    {"time":3.0,"type":"boom","reason":"インパクト"}
+  ],
   "title_suggestion":"動画タイトル案",
   "hook_text":"冒頭フック文章",
-  "hashtags":["#タグ1","#タグ2"]
+  "hashtags":["#タグ1","#タグ2","#タグ3"]
 }`;
 
   const body=JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:prompt}]});
+  setLoadProg(30,'APIにリクエスト中...');
   const d=await new Promise((resolve,reject)=>{
     const xhr=new XMLHttpRequest();
     xhr.open('POST','https://dark-frog-e19c.h52hiro.workers.dev',true);
@@ -914,9 +834,10 @@ Return ONLY valid JSON (no markdown, no explanation):
       else{try{const e=JSON.parse(xhr.responseText);reject(new Error(e.error?.message||'HTTP '+xhr.status));}catch(e){reject(new Error('HTTP '+xhr.status));}}
     };
     xhr.onerror=()=>reject(new Error('ネットワークエラー'));
-    xhr.ontimeout=()=>reject(new Error('タイムアウト'));
+    xhr.ontimeout=()=>reject(new Error('タイムアウト（90秒）'));
     xhr.send(body);
   });
+  setLoadProg(80,'解析データを処理中...');
   if(d.error)throw new Error(d.error.message);
   const txt=d.content[0].text;
   const m=txt.match(/\{[\s\S]*\}/);
@@ -940,17 +861,18 @@ async function runAll(){
   catch(e){hideLoading();alert('AI解析エラー: '+e.message);}
 }
 
-// ======================================================
+// ====================================================
 // 結果表示
-// ======================================================
+// ====================================================
 function renderResult(showCreate){
   const rc=document.getElementById('resultCard');
   rc.classList.add('show');
   setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
   const r=S.lastResult;
-  const vs=r.viral_segment||{start_time:0,end_time:S.durSec};
-  document.getElementById('viralTime').textContent=fmtTime(vs.start_time)+' 〜 '+fmtTime(vs.end_time)+'（'+fmtTime(vs.end_time-vs.start_time)+'）';
+  const vs=r.viral_segment||{start_time:S.trimStartSec,end_time:S.trimEndSec};
+  document.getElementById('viralTime').textContent=secToTime(vs.start_time)+' 〜 '+secToTime(vs.end_time)+'（'+fmtDur(vs.end_time-vs.start_time)+'）';
   document.getElementById('viralReason').textContent=r.ai_instruction_applied||vs.reason||'';
+  document.getElementById('applySegBtn').style.display='flex';
   const refb=document.getElementById('refBlock');
   if(r.ref_style_analysis&&r.ref_style_analysis.length>5){refb.style.display='block';document.getElementById('refText').textContent=r.ref_style_analysis;}
   else{refb.style.display='none';}
@@ -967,11 +889,12 @@ function renderResult(showCreate){
   if(clips.length){
     vcb.style.display='block';
     document.getElementById('viralClipsList').innerHTML=clips.map((c,i)=>`
-      <div class="clip-item">
-        <div class="clip-idx">${i+1}</div>
-        <div class="clip-info"><div class="clip-title">${c.title||'クリップ'}</div><div class="clip-reason">${c.reason||''}</div></div>
-        <div class="clip-time">${fmtTime(c.start)}〜${fmtTime(c.end)}</div>
-      </div>`).join('');
+<div class="clip-item" onclick="applyClip(${c.start},${c.end})">
+<div class="clip-idx">${i+1}</div>
+<div class="clip-info"><div class="clip-title">${c.title||'クリップ'}</div><div class="clip-reason">${c.reason||''}</div></div>
+<div class="clip-time">${secToTime(c.start)}〜${secToTime(c.end)}</div>
+<button class="use-clip-btn">使う</button>
+</div>`).join('');
   }else{vcb.style.display='none';}
   const tr=document.getElementById('transcript').value.trim();
   S.captionSegs=tr?parseTranscript(tr):[];
@@ -983,16 +906,25 @@ function renderResult(showCreate){
   document.getElementById('createBtn').style.display=(showCreate&&S.videoFile)?'flex':'none';
 }
 
-// ======================================================
-// 動画作成
-// ★ 修正: video は muted で再生 + AudioContext で音声を別途キャプチャ
-// ======================================================
+function applyClip(start,end){
+  S.trimStartSec=start;S.trimEndSec=end;
+  document.getElementById('trimStart').value=secToTime(start);
+  document.getElementById('trimEnd').value=secToTime(end);
+  onTrimInput();
+  document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});
+}
+
+// ====================================================
+// ★ 動画作成（音声/映像完全同期修正版）
+// ====================================================
 async function createVideos(){
   if(!S.lastResult||!S.videoFile)return;
   if(typeof MediaRecorder==='undefined'){alert('MediaRecorder非対応のブラウザです。Chrome/Safari(iOS14.3+)をお試しください。');return;}
 
-  const vs=S.lastResult.viral_segment||{start_time:0,end_time:S.durSec};
-  const startSec=Math.max(0,vs.start_time);
+  const startSec=S.trimStartSec;
+  const endSec=S.trimEndSec;
+  const duration=Math.max(1,endSec-startSec);
+
   document.getElementById('progressBlock').style.display='flex';
   document.getElementById('outputList').innerHTML='';
   document.getElementById('createBtn').style.display='none';
@@ -1001,38 +933,32 @@ async function createVideos(){
   const srcVideo=document.getElementById('srcVideo');
   const canvas=document.getElementById('procCanvas');
 
-  // ★ video は必ず muted で読み込む（iOS autoplay 制限対策）
+  // ★ muted=true で読み込み（iOSオートプレイ制限を回避）
   srcVideo.muted=true;
   srcVideo.src=S.videoUrl;
   srcVideo.load();
 
+  setProgress(5,'動画ファイルを読み込み中...');
   await new Promise((res,rej)=>{
     srcVideo.onloadedmetadata=()=>{srcVideo.onloadedmetadata=null;res();};
     srcVideo.onerror=()=>rej(new Error('動画の読み込みに失敗しました'));
-    setTimeout(res,6000);
+    setTimeout(res,8000);
   });
 
   const srcW=srcVideo.videoWidth||1280;
   const srcH=srcVideo.videoHeight||720;
-  const vidDur=isFinite(srcVideo.duration)?srcVideo.duration:S.durSec;
-  const actualDur=Math.min(S.durSec,vidDur-startSec);
+  const vidDur=isFinite(srcVideo.duration)?srcVideo.duration:duration;
+  const actualDuration=Math.min(duration,vidDur-startSec);
 
-  // ★ AudioContext で音声をキャプチャ（muted解除せずに音声データ取得）
-  let audioDest=null;
+  setProgress(10,'音声の準備中...');
+
+  // ★ AudioContext で SFX 専用 dest を作成
+  let sfxDest=null;
   try{
     if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     if(S.audioCtx.state==='suspended')await S.audioCtx.resume();
-    const srcNode=S.audioCtx.createMediaElementSource(srcVideo);
-    audioDest=S.audioCtx.createMediaStreamDestination();
-    const silentGain=S.audioCtx.createGain();
-    silentGain.gain.value=0;
-    srcNode.connect(silentGain);
-    silentGain.connect(S.audioCtx.destination); // スピーカーには無音
-    srcNode.connect(audioDest);                  // 録音用には接続
-  }catch(e){
-    console.warn('AudioContext setup failed:',e);
-    audioDest=null;
-  }
+    sfxDest=S.audioCtx.createMediaStreamDestination();
+  }catch(e){console.warn('AudioContext:',e);}
 
   const sfxCues=(S.lastResult.sfx_cues||[]).filter(c=>c&&S.sfxEnabled[c.type]);
   const total=S.platforms.length;
@@ -1042,9 +968,9 @@ async function createVideos(){
     const pid=S.platforms[i];
     const p=PF[pid];if(!p)continue;
     const dim=p[S.quality]||p.high;
-    setProgress(Math.round((i/total)*85),`${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
+    setProgress(10+Math.round((i/total)*80),`${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
     try{
-      const blob=await recordPlatform(srcVideo,canvas,p,dim,srcW,srcH,startSec,actualDur,audioDest,sfxCues);
+      const blob=await recordPlatform(srcVideo,canvas,p,dim,srcW,srcH,startSec,actualDuration,sfxDest,sfxCues);
       results.push({pid,p,dim,blob,error:null});
     }catch(e){
       console.error(pid,e);
@@ -1057,17 +983,17 @@ async function createVideos(){
   outList.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">ダウンロード</div>';
   results.forEach(({pid,p,dim,blob,error})=>{
     const div=document.createElement('div');div.className='out-item';
-    if(blob&&blob.size>0){
+    if(blob&&blob.size>100){
       const url=URL.createObjectURL(blob);
       const ext=blob.type.includes('mp4')?'mp4':'webm';
       const sz=(blob.size/1024/1024).toFixed(1);
       div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec">${p.ratio}·${dim.w}×${dim.h}</span></div>
-<div style="font-size:11px;color:var(--text2);margin-bottom:10px">${sz}MB · ${fmtTime(Math.round(actualDur))}</div>
+<div style="font-size:11px;color:var(--text2);margin-bottom:10px">${sz}MB · ${fmtDur(Math.round(actualDuration))}</div>
 <a href="${url}" download="viralcut_${pid}.${ext}" style="text-decoration:none">
 <button class="btn btn-sp" style="padding:12px;border-radius:50px">⬇️ ${p.name}用をダウンロード</button></a>`;
     }else{
       div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec" style="background:rgba(233,20,41,.2);color:#ff6b6b">エラー</span></div>
-<div style="font-size:11px;color:var(--text3);margin-top:4px">${error||'処理に失敗しました'}</div>`;
+<div style="font-size:11px;color:var(--text3);margin-top:4px">${error||'処理に失敗しました。別の動画形式を試してください。'}</div>`;
     }
     outList.appendChild(div);
   });
@@ -1075,10 +1001,12 @@ async function createVideos(){
   outList.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ======================================================
-// 録画コア
-// ======================================================
-function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDest,sfxCues){
+// ====================================================
+// ★ 録画コア（音声/映像同期の根本修正）
+// 方式: video.captureStream()で音声を取得（Chrome/Android）
+//       iOS fallback: AudioContext + muted video
+// ====================================================
+function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,sfxDest,sfxCues){
   return new Promise(async(resolve,reject)=>{
     canvas.width=dim.w;canvas.height=dim.h;
     const ctx=canvas.getContext('2d');
@@ -1095,24 +1023,54 @@ function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDe
     const mime=mimes.find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(e){return false}})||'';
     const fps=parseInt(document.getElementById('outputFps').value)||30;
 
-    // ★ captureStream – canvas は opacity:0.01 で画面上にある
+    // ★ Canvas captureStream（映像のみ）
     let stream;
     try{stream=canvas.captureStream(fps);}
     catch(e){return reject(new Error('captureStream失敗: '+e.message));}
 
-    // 音声トラックを追加
-    if(audioDest){
-      audioDest.stream.getAudioTracks().forEach(t=>{
-        try{stream.addTrack(t.clone());}catch(e){}
-      });
+    // ★ 音声: video.captureStream() が使えれば使う（Chrome/Android = 完全同期）
+    // iOS Safariでは video.captureStream() 非対応のため AudioContext fallback
+    let audioAdded=false;
+    try{
+      if(videoEl.captureStream||videoEl.mozCaptureStream){
+        // muted を解除して captureStream で音声を取得
+        videoEl.muted=false;
+        videoEl.volume=0; // スピーカーには出さない
+        const vidStream=(videoEl.captureStream||videoEl.mozCaptureStream).call(videoEl);
+        const aTracks=vidStream.getAudioTracks();
+        if(aTracks.length>0){
+          aTracks.forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
+          audioAdded=true;
+        }
+      }
+    }catch(e){console.warn('video.captureStream audio failed:',e);}
+
+    // iOS fallback: AudioContext で音声キャプチャ
+    if(!audioAdded&&sfxDest){
+      try{
+        const ac=S.audioCtx;
+        // muted=true のまま AudioContext で音声を取り出す
+        const srcNode=ac.createMediaElementSource(videoEl);
+        const silentGain=ac.createGain();silentGain.gain.value=0;
+        srcNode.connect(silentGain);silentGain.connect(ac.destination);
+        const audioDest2=ac.createMediaStreamDestination();
+        srcNode.connect(audioDest2);
+        audioDest2.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
+        audioAdded=true;
+      }catch(e){console.warn('AudioContext audio failed:',e);}
     }
 
+    // SFX用オーディオストリーム
+    if(sfxDest){
+      sfxDest.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
+    }
+
+    // MediaRecorder
     let recorder;
     try{
       recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:dim.br||5000000}:{videoBitsPerSecond:dim.br||5000000});
     }catch(e){
-      try{recorder=new MediaRecorder(stream);}
-      catch(e2){return reject(new Error('MediaRecorder失敗'));}
+      try{recorder=new MediaRecorder(stream);}catch(e2){return reject(new Error('MediaRecorder失敗: '+e2.message));}
     }
 
     const chunks=[];
@@ -1120,7 +1078,7 @@ function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDe
     recorder.onstop=()=>resolve(new Blob(chunks,{type:recorder.mimeType||'video/webm'}));
     recorder.onerror=()=>reject(new Error('録画エラー'));
 
-    // シーク
+    // ★ シーク（正確な開始位置に移動）
     videoEl.currentTime=startSec;
     await new Promise(r=>{
       const fn=()=>{videoEl.removeEventListener('seeked',fn);r();};
@@ -1128,22 +1086,42 @@ function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDe
       setTimeout(r,5000);
     });
 
-    recorder.start(500);
+    // ★ 録画開始の直前にフレームを1枚描いてからstartする（映像/音声同期）
+    try{
+      ctx.filter=buildFilter();
+      ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);
+      ctx.filter='none';
+    }catch(e){}
 
-    const filter=buildFilter();
-    let drawing=true;
+    // ★ 再生 → 録画開始（同一フレーム内で開始）
+    recorder.start(500);
+    try{
+      await videoEl.play();
+    }catch(e){console.warn('play:',e);}
+
+    // SFX スケジューリング
+    if(S.audioCtx&&sfxCues&&sfxCues.length&&sfxDest){
+      const baseTime=S.audioCtx.currentTime+.1;
+      sfxCues.forEach(cue=>{
+        if(cue.time>=0&&cue.time<duration&&S.sfxEnabled[cue.type])
+          synthSfx(cue.type,S.audioCtx,sfxDest,baseTime+cue.time,S.sfxVol);
+      });
+    }
+
+    // テロップデータ
     const capMode=S.captionMode;
     const capSegs=capMode==='transcript'?S.captionSegs:capMode==='ai'?(S.editedCaptions||[]):[];
     const refStyle=S.lastResult?.ref_caption_style||null;
 
+    let drawing=true;
+
+    // ★ フレーム描画ループ（requestAnimationFrame）
     function drawFrame(){
       if(!drawing)return;
       try{
-        // ★ フィルター適用して描画
-        ctx.filter=filter;
+        ctx.filter=buildFilter();
         ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);
         ctx.filter='none';
-        // テロップ描画
         if(capMode!=='none'&&capSegs.length){
           const capText=getCaptionAt(capSegs,videoEl.currentTime);
           if(capText)drawCaption(ctx,capText,dim.w,dim.h,refStyle);
@@ -1151,38 +1129,30 @@ function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,audioDe
       }catch(e){}
       if(drawing)requestAnimationFrame(drawFrame);
     }
-
-    // SFX スケジューリング
-    if(S.audioCtx&&sfxCues&&sfxCues.length&&audioDest){
-      const baseTime=S.audioCtx.currentTime+.3;
-      sfxCues.forEach(cue=>{
-        if(cue.time>=0&&cue.time<duration&&S.sfxEnabled[cue.type])
-          synthSfx(cue.type,S.audioCtx,audioDest,baseTime+cue.time,S.sfxVol);
-      });
-    }
-
-    // ★ 再生 (muted=true なので autoplay 制限なし)
-    try{await videoEl.play();}catch(e){console.warn('play failed:',e);}
     requestAnimationFrame(drawFrame);
 
-    // ★ 時間ベースの終了判定
+    // ★ 終了判定（時間ベース。pausedに依存しない）
     const endTarget=startSec+duration;
     const chk=setInterval(()=>{
-      if(videoEl.currentTime>=endTarget-.1||videoEl.ended){
+      const cur=videoEl.currentTime;
+      if(cur>=endTarget-.05||videoEl.ended){
         clearInterval(chk);clearTimeout(safety);
         drawing=false;videoEl.pause();
-        setTimeout(()=>{try{recorder.stop();}catch(e){reject(e);}},800);
+        setTimeout(()=>{try{recorder.stop();}catch(e){reject(e);}},1000);
       }
-    },500);
+    },300);
     const safety=setTimeout(()=>{
-      if(drawing){clearInterval(chk);drawing=false;videoEl.pause();try{recorder.stop();}catch(e){reject(new Error('タイムアウト'));}}
-    },(duration+60)*1000);
+      if(drawing){
+        clearInterval(chk);drawing=false;videoEl.pause();
+        try{recorder.stop();}catch(e){reject(new Error('タイムアウト'));}
+      }
+    },(duration+90)*1000);
   });
 }
 
-// ======================================================
+// ====================================================
 // 編集パネル
-// ======================================================
+// ====================================================
 function buildEditPanel(){
   const panel=document.getElementById('editPanel');
   const cl=document.getElementById('capEditList');
@@ -1193,7 +1163,7 @@ function buildEditPanel(){
     cl.innerHTML='<div class="edit-title">💬 テロップを修正</div>';
     caps.forEach((cap,i)=>{
       const d=document.createElement('div');d.className='cap-edit-item';
-      d.innerHTML=`<div class="cap-edit-time">${fmtTime(cap.start)} 〜 ${fmtTime(cap.end)}</div>
+      d.innerHTML=`<div class="cap-edit-time">${secToTime(cap.start)} 〜 ${secToTime(cap.end)}</div>
 <input class="cap-edit-input" value="${(cap.text||'').replace(/"/g,'&quot;')}" oninput="S.editedCaptions[${i}].text=this.value" placeholder="テロップテキスト">`;
       cl.appendChild(d);
     });
@@ -1207,7 +1177,7 @@ function buildEditPanel(){
       const d=document.createElement('div');d.className='sfx-edit-item';
       d.innerHTML=`<span style="font-size:18px">${icons[cue.type]||'🎵'}</span>
 <div class="sfx-edit-name">${cue.type}<span style="font-size:10px;color:var(--text3);margin-left:6px">${cue.reason||''}</span></div>
-<span class="sfx-edit-time">${fmtTime(cue.time)}</span>
+<span class="sfx-edit-time">${secToTime(cue.time)}</span>
 <button class="sp-toggle ${on?'on':''}" onclick="S.editedSfx[${i}].enabled=!S.editedSfx[${i}].enabled;this.classList.toggle('on')"></button>`;
       sl.appendChild(d);
     });
@@ -1223,6 +1193,9 @@ async function reprocessWithEdits(){
   await createVideos();
   S.lastResult.sfx_cues=orig;
 }
+
+// 初期化
+onTrimInput();
 </script>
 
 </body>
