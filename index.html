@@ -12,38 +12,54 @@
   --sp:#1DB954;--sp2:#1ed760;
   --gold:#f59e0b;--red:#e91429;
   --text:#fff;--text2:#b3b3b3;--text3:#535353;
-  --border:rgba(255,255,255,.1);
-  --r:8px;--rs:6px;
+  --border:rgba(255,255,255,.1);--r:8px;--rs:6px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100%;overscroll-behavior:none}
-
-/* ★ canvas/video: opacity>0 & visible rect → iOSでもCanvasに描画される */
 #procCanvas{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:0}
 #srcVideo{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:.01;pointer-events:none;z-index:0}
-
-.header{position:sticky;top:0;z-index:100;background:rgba(18,18,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;border-bottom:1px solid var(–border);display:flex;align-items:center;justify-content:space-between}
+.header{position:sticky;top:0;z-index:100;background:rgba(18,18,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900}
-.logo-icon{width:34px;height:34px;border-radius:50%;background:var(–sp);display:flex;align-items:center;justify-content:center;font-size:16px}
-.badge{font-size:10px;font-weight:700;padding:4px 10px;background:var(–sp);color:#000;border-radius:20px}
-
+.logo-icon{width:34px;height:34px;border-radius:50%;background:var(--sp);display:flex;align-items:center;justify-content:center;font-size:16px}
+.badge{font-size:10px;font-weight:700;padding:4px 10px;background:var(--sp);color:#000;border-radius:20px}
 .main{padding:0 0 100px;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.card{margin:12px 16px;border-radius:var(–r);background:var(–bg2);border:1px solid var(–border);overflow:hidden}
-.card-header{padding:13px 16px;display:flex;align-items:center;gap:10px;background:var(–bg3);border-bottom:1px solid var(–border)}
-.snum{width:24px;height:24px;border-radius:50%;background:var(–sp);color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
-.ctitle{font-size:14px;font-weight:700}
-.csub{font-size:11px;color:var(–text2);margin-left:auto}
+.card{margin:12px 16px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.card-header{padding:13px 16px;display:flex;align-items:center;gap:10px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.snum{width:24px;height:24px;border-radius:50%;background:var(--sp);color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.ctitle{font-size:14px;font-weight:700}.csub{font-size:11px;color:var(--text2);margin-left:auto}
 .cbody{padding:16px;display:flex;flex-direction:column;gap:12px}
-
-label{font-size:11px;color:var(–text2);font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
-input[type=text],textarea,select{width:100%;background:var(–bg3);border:1px solid var(–border);border-radius:var(–rs);color:var(–text);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+label{font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
+input[type=text],textarea,select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
 input[type=text]{padding:11px 14px}
 textarea{padding:11px 14px;resize:none;min-height:80px;line-height:1.5}
-input[type=text]:focus,textarea:focus,select:focus{border-color:var(–sp)}
-select{padding:11px 12px;-webkit-appearance:none;cursor:pointer;background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23b3b3b3’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;background-color:var(–bg3)}
-::placeholder{color:var(–text3)}
-input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(–bg4);border-radius:2px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(–sp);cursor:pointer}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--sp)}
+select{padding:11px 12px;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23b3b3b3' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;background-color:var(--bg3)}
+::placeholder{color:var(--text3)}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:var(--bg4);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--sp);cursor:pointer}
+
+/* ソースタブ切替 */
+.src-tabs{display:flex;background:var(–bg3);border-radius:var(–rs);padding:4px;gap:4px}
+.src-tab{flex:1;padding:10px;border-radius:4px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;color:var(–text2)}
+.src-tab.active{background:var(–sp);color:#000}
+
+/* YouTube取得UI */
+.yt-input-row{display:flex;gap:8px}
+.yt-input-row input{flex:1}
+.yt-fetch-btn{flex-shrink:0;padding:11px 16px;border-radius:var(–rs);background:var(–red);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.yt-fetch-btn:active{opacity:.8}
+.yt-video-card{background:var(–bg3);border-radius:var(–rs);overflow:hidden;border:1px solid var(–border)}
+.yt-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.yt-info{padding:12px}
+.yt-title{font-size:13px;font-weight:700;line-height:1.4;margin-bottom:4px}
+.yt-author{font-size:11px;color:var(–text2)}
+.yt-dl-progress{display:none;flex-direction:column;gap:8px;padding:12px 0}
+.yt-prog-bg{width:100%;height:6px;background:var(–bg4);border-radius:3px;overflow:hidden}
+.yt-prog-bar{height:100%;background:var(–sp);border-radius:3px;transition:width .3s;width:0%}
+.yt-prog-label{font-size:12px;color:var(–text2);text-align:center}
+.yt-quality-row{display:flex;gap:8px;margin-top:4px}
+.yt-quality-btn{flex:1;padding:10px;border-radius:var(–rs);background:var(–bg4);border:2px solid var(–border);color:var(–text2);font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .15s}
+.yt-quality-btn.active{background:rgba(29,185,84,.15);border-color:var(–sp);color:var(–sp)}
 
 .upload-zone{border:2px dashed var(–border);border-radius:var(–r);padding:28px;text-align:center;cursor:pointer;background:var(–bg3);display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .2s}
 .upload-zone.has-file{border-color:var(–sp);background:rgba(29,185,84,.08)}
@@ -53,24 +69,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .btn{width:100%;padding:14px;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s,opacity .1s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-sp{background:var(–sp);color:#000}.btn-outline{background:transparent;border:1px solid var(–text2);color:var(–text)}.btn-ghost{background:var(–bg3);color:var(–text)}.btn-sm{padding:10px 14px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-sp{background:var(–sp);color:#000}.btn-outline{background:transparent;border:1px solid var(–text2);color:var(–text)}.btn-ghost{background:var(–bg3);color:var(–text)}.btn-red{background:var(–red);color:#fff}
+.btn-sm{padding:10px 14px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
 
-/* ★ トリマーUI */
-.trimmer-wrap{display:flex;flex-direction:column;gap:10px}
-.trimmer-bar{position:relative;height:40px;background:var(–bg3);border-radius:4px;overflow:hidden;cursor:pointer}
-.trimmer-track{position:absolute;top:0;bottom:0;background:rgba(29,185,84,.3);border:2px solid var(–sp);border-radius:4px}
-.trimmer-handle{position:absolute;top:0;bottom:0;width:14px;background:var(–sp);border-radius:3px;cursor:ew-resize;display:flex;align-items:center;justify-content:center}
-.trimmer-handle::after{content:’||’;font-size:8px;color:#000;font-weight:900}
-.trimmer-time-row{display:flex;justify-content:space-between;align-items:center}
-.trimmer-time{font-size:12px;font-weight:700;color:var(–sp)}
-.trimmer-dur{font-size:11px;color:var(–text2)}
 .time-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .time-input-wrap{display:flex;flex-direction:column;gap:4px}
 .time-label{font-size:10px;color:var(–text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .time-input{background:var(–bg3);border:1px solid var(–border);border-radius:var(–rs);color:var(–text);font-size:16px;font-weight:700;padding:10px 12px;width:100%;font-family:inherit;outline:none;text-align:center}
 .time-input:focus{border-color:var(–sp)}
 
-/* BGMスキップ */
 .bgm-zone{background:var(–bg3);border-radius:var(–rs);padding:12px;border:1px solid rgba(233,20,41,.3);display:flex;align-items:center;gap:10px}
 .bgm-zone-times{display:flex;align-items:center;gap:6px;flex:1}
 .bgm-time-in{background:var(–bg4);border:1px solid var(–border);border-radius:4px;color:var(–text);font-size:13px;padding:6px 8px;width:70px;font-family:inherit;outline:none;text-align:center}
@@ -164,8 +171,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 
 .tip{background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.2);border-radius:var(–rs);padding:10px 12px;font-size:11px;color:var(–text2);line-height:1.6;display:flex;gap:8px}
 .tip-warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(–rs);padding:10px 12px;font-size:11px;color:#fcd34d;line-height:1.6;display:flex;gap:8px}
-.row{display:flex;gap:8px}
-.divider{height:1px;background:var(–border);margin:2px 0}
+.tip-red{background:rgba(233,20,41,.08);border:1px solid rgba(233,20,41,.2);border-radius:var(–rs);padding:10px 12px;font-size:11px;color:#ff6b6b;line-height:1.6;display:flex;gap:8px}
+.row{display:flex;gap:8px}.divider{height:1px;background:var(–border);margin:2px 0}
 
 .loading-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(18,18,18,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:32px}
 .loading-overlay.show{display:flex}
@@ -193,9 +200,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 
 </head>
 <body>
-
-<!-- ★ 処理用要素：opacity:0.01かつ画面内に配置（iOSでの描画必須） -->
-
 <video id="srcVideo" playsinline webkit-playsinline muted></video>
 <canvas id="procCanvas"></canvas>
 
@@ -226,32 +230,79 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div class="main" id="mainScroll">
 <div id="tab-create" class="section-tabs show">
 
-<!-- 1. 動画 -->
+<!-- STEP 1: 動画ソース -->
 
 <div class="card">
-<div class="card-header"><div class="snum">1</div><div class="ctitle">動画ファイル</div></div>
+<div class="card-header"><div class="snum">1</div><div class="ctitle">動画ソース</div><div class="csub">YouTube or ファイル</div></div>
 <div class="cbody">
+
+<!-- ソース切替タブ -->
+
+<div class="src-tabs">
+<div class="src-tab active" id="srcTab_yt" onclick="setSrcTab('yt')">▶️ YouTube URL</div>
+<div class="src-tab" id="srcTab_file" onclick="setSrcTab('file')">📁 ファイルを選択</div>
+</div>
+
+<!-- YouTube URLパネル -->
+
+<div id="srcPanel_yt">
+<div class="yt-input-row">
+<input type="text" id="ytUrl" placeholder="https://youtube.com/watch?v=... or Shorts URL">
+<button class="yt-fetch-btn" onclick="fetchYouTubeInfo()">取得</button>
+</div>
+<!-- 画質選択 -->
+<div>
+<label>ダウンロード画質</label>
+<div class="yt-quality-row">
+<div class="yt-quality-btn active" id="ytq_720" onclick="setYtQuality('720')">720p</div>
+<div class="yt-quality-btn" id="ytq_480" onclick="setYtQuality('480')">480p</div>
+<div class="yt-quality-btn" id="ytq_360" onclick="setYtQuality('360')">360p</div>
+</div>
+</div>
+<!-- 動画情報 -->
+<div id="ytVideoCard" style="display:none" class="yt-video-card">
+<img id="ytThumb" class="yt-thumb" src="" alt="" onerror="this.style.display='none'">
+<div class="yt-info">
+<div class="yt-title" id="ytTitle"></div>
+<div class="yt-author" id="ytAuthor"></div>
+</div>
+<div class="yt-dl-progress" id="ytDlProgress">
+<div class="yt-prog-label" id="ytDlLabel">ダウンロード中...</div>
+<div class="yt-prog-bg"><div class="yt-prog-bar" id="ytDlBar"></div></div>
+</div>
+<div style="padding:0 12px 12px">
+<button class="btn btn-sp" id="ytDlBtn" onclick="downloadYouTubeVideo()" style="border-radius:50px;padding:12px">⬇️ この動画をダウンロードして使用</button>
+</div>
+</div>
+<div class="tip-warn"><span>⚠️</span><span>権利者の許可を得た動画のみ使用してください。自分のチャンネルの動画や、切り抜き許可済みのコンテンツに限ります。</span></div>
+</div>
+
+<!-- ファイルアップロードパネル -->
+
+<div id="srcPanel_file" style="display:none">
 <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-<div class="uz-icon" id="uploadIcon">🎬</div>
+<div class="uz-icon" id="uploadIcon">📁</div>
 <div class="uz-label" id="uploadLabel">タップして動画を選択</div>
 <div class="uz-hint">MP4 / MOV · カメラロールから選択可</div>
 <input type="file" id="fileInput" accept="video/*" style="display:none" onchange="handleFile(this)">
 </div>
+</div>
+
+<!-- プレビュー（共通） -->
+
 <div id="previewWrap" style="display:none;border-radius:var(--rs);overflow:hidden;background:#000">
 <video id="previewVideo" controls playsinline webkit-playsinline style="width:100%;max-height:200px;display:block"></video>
 </div>
+
 </div>
 </div>
 
-<!-- 2. ★ トリマー（開始・終了・BGMスキップ） -->
+<!-- STEP 2: 切り抜き範囲 -->
 
 <div class="card">
-<div class="card-header"><div class="snum">2</div><div class="ctitle">切り抜き範囲</div><div class="csub">手動設定 or AI</div></div>
+<div class="card-header"><div class="snum">2</div><div class="ctitle">切り抜き範囲</div><div class="csub">手動設定</div></div>
 <div class="cbody">
-<div class="tip"><span>✂️</span><span>動画のどの部分を使うか指定します。AIが自動提案します（トランスクリプト入力で精度UP）。</span></div>
-
-<!-- 開始・終了時間入力 -->
-
+<div class="tip"><span>✂️</span><span>動画のどの部分を切り抜くか指定します。AIが自動提案します（AIボタン押下後に反映）。</span></div>
 <div class="time-inputs">
 <div class="time-input-wrap">
 <div class="time-label">開始時間</div>
@@ -262,10 +313,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <input type="text" class="time-input" id="trimEnd" value="1:00" placeholder="1:00" oninput="onTrimInput()">
 </div>
 </div>
-<div id="trimInfo" style="text-align:center;font-size:12px;color:var(--sp);font-weight:700">切り抜き長さ: 1分00秒</div>
-
-<!-- BGMスキップゾーン -->
-
+<div id="trimInfo" style="text-align:center;font-size:13px;color:var(--sp);font-weight:700">切り抜き長さ: 1分00秒</div>
 <div style="display:flex;flex-direction:column;gap:6px">
 <label>BGMスキップ区間（BGMが入っている部分を除外）</label>
 <div id="bgmZoneList" style="display:flex;flex-direction:column;gap:6px"></div>
@@ -274,12 +322,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 3. 参考動画 -->
+<!-- STEP 3: 参考動画 -->
 
 <div class="card">
 <div class="card-header"><div class="snum">3</div><div class="ctitle">参考動画URL</div><div class="csub">スタイル完全コピー</div></div>
 <div class="cbody">
-<div class="tip"><span>🎯</span><span>バズっている動画のURLを貼ると、その構成・テロップ・テンポ・フック手法を完全に真似します。</span></div>
+<div class="tip"><span>🎯</span><span>バズっている動画のURLを貼ると、その構成・テロップ・テンポ・フックを完全に真似します。</span></div>
 <input type="text" id="refUrl1" placeholder="https://youtube.com/shorts/... （参考動画1）">
 <input type="text" id="refUrl2" placeholder="https://youtube.com/shorts/... （参考動画2 任意）">
 <div class="tg-grid">
@@ -291,14 +339,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 4. AI指示 -->
+<!-- STEP 4: AI指示 -->
 
 <div class="card">
 <div class="card-header"><div class="snum">4</div><div class="ctitle">AIへの指示</div></div>
 <div class="cbody">
-<textarea id="aiInstruction" placeholder="例：冒頭3秒に「これ見て損なし」というテロップを大きく。感情的な場面を優先してカット。最後にCTAを入れて。参考動画のテロップスタイルを真似して。"></textarea>
+<textarea id="aiInstruction" placeholder="例：冒頭3秒に「これ見て損なし」というテロップを大きく表示。感情的な場面を優先。参考動画のスタイルを真似して。最後にCTAを入れて。"></textarea>
 <div class="tip"><span>📝</span><span>字幕入力でテロップ精度UP（任意）。</span></div>
-<textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...&#10;[5.0-15.0] ..." style="min-height:70px"></textarea>
+<textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...&#10;[5.0-15.0] ..." style="min-height:60px"></textarea>
 <div class="row">
 <button class="btn-sm btn-ghost" style="flex:1" onclick="loadDemo()">📋 サンプル</button>
 <button class="btn-sm btn-ghost" style="flex:.4;padding:10px" onclick="clearInputs()">🗑️</button>
@@ -306,7 +354,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 5. プラットフォーム -->
+<!-- STEP 5: プラットフォーム -->
 
 <div class="card">
 <div class="card-header"><div class="snum">5</div><div class="ctitle">プラットフォーム</div><div class="csub">複数同時出力</div></div>
@@ -324,7 +372,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 6. テロップ -->
+<!-- STEP 6: テロップ -->
 
 <div class="card">
 <div class="card-header"><div class="snum">6</div><div class="ctitle">テロップ設定</div></div>
@@ -352,7 +400,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 7. 効果音 -->
+<!-- STEP 7: 効果音 -->
 
 <div class="card">
 <div class="card-header"><div class="snum">7</div><div class="ctitle">効果音（SFX）</div></div>
@@ -373,7 +421,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 8. 画質 -->
+<!-- STEP 8: 画質 -->
 
 <div class="card">
 <div class="card-header"><div class="snum">8</div><div class="ctitle">画質・フィルター</div></div>
@@ -410,7 +458,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 
-<!-- 9. APIキー -->
+<!-- STEP 9: APIキー -->
 
 <div class="card">
 <div class="card-header"><div class="snum">9</div><div class="ctitle">Claude APIキー</div></div>
@@ -439,14 +487,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <select id="targetViews"><option value="10k">1万回</option><option value="100k">10万回</option><option value="1m" selected>100万回</option><option value="10m">1000万回</option></select></div>
 </div>
 </div>
-<div class="card" style="margin:0">
-<div class="card-header"><div class="snum">ℹ</div><div class="ctitle">動作について</div></div>
-<div class="cbody">
-<div class="tip"><span>🎬</span><span>Canvas+MediaRecorderでブラウザ内処理。動画データは外部送信されません。</span></div>
-<div class="tip"><span>🔊</span><span>音声は動画の音声ストリームを直接キャプチャします（映像と完全同期）。</span></div>
-<div class="tip-warn"><span>⚠️</span><span>長い動画・高解像度は処理に時間がかかります。Wi-Fi・充電環境を推奨します。</span></div>
-</div>
-</div>
 </div>
 </div>
 </div><!-- /main -->
@@ -464,7 +504,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div style="font-size:10px;color:var(--text3);font-weight:700;letter-spacing:1px;margin-bottom:6px">AI推奨セグメント</div>
 <div class="seg-time" id="viralTime">--</div>
 <div class="seg-reason" id="viralReason"></div>
-<button class="btn btn-sp" style="margin-top:12px;border-radius:50px;padding:10px;font-size:12px" id="applySegBtn" onclick="applyAiSegment()" style="display:none">このセグメントを切り抜き範囲に適用</button>
+<button class="btn btn-sp" style="margin-top:12px;border-radius:50px;padding:10px;font-size:12px" id="applySegBtn" onclick="applyAiSegment()">このセグメントを切り抜き範囲に適用</button>
 </div>
 <div class="score-row">
 <div class="score-pill"><div class="score-num" id="scoreViral">--</div><div class="score-lbl">バイラル度</div></div>
@@ -501,9 +541,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 
 <script>
-// ====================================================
-// プラットフォーム定義
-// ====================================================
+const WORKER='https://dark-frog-e19c.h52hiro.workers.dev';
 const PF={
   youtube_shorts:{name:'YouTube Shorts',emoji:'▶️',ratio:'9:16',max:{w:1080,h:1920,br:10000000},high:{w:720,h:1280,br:6000000},standard:{w:540,h:960,br:3000000}},
   youtube:       {name:'YouTube',       emoji:'🎥',ratio:'16:9',max:{w:1920,h:1080,br:10000000},high:{w:1280,h:720,br:6000000},standard:{w:854,h:480,br:3000000}},
@@ -514,10 +552,6 @@ const PF={
   facebook:      {name:'Facebook',     emoji:'👥',ratio:'16:9',max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}},
   linkedin:      {name:'LinkedIn',     emoji:'💼',ratio:'16:9',max:{w:1920,h:1080,br:8000000},high:{w:1280,h:720,br:5000000},standard:{w:854,h:480,br:3000000}}
 };
-
-// ====================================================
-// 状態管理
-// ====================================================
 const S={
   toggles:{ref_structure:true,ref_caption:true,ref_pacing:true,ref_hook:true},
   sfxEnabled:{whoosh:true,boom:true,ding:true,zap:false,riser:false,impact:false},
@@ -528,149 +562,123 @@ const S={
   trimStartSec:0,trimEndSec:60,
   bgmZones:[],
   captionSegs:[],editedCaptions:[],editedSfx:[],
-  audioCtx:null
+  audioCtx:null,
+  ytInfo:null,ytQuality:'720'
 };
 
-// ====================================================
-// 時間文字列 ↔ 秒 変換
-// ====================================================
-function timeToSec(str){
-  str=String(str).trim();
-  const parts=str.split(':').map(Number);
-  if(parts.length===3)return parts[0]*3600+parts[1]*60+(parts[2]||0);
-  if(parts.length===2)return parts[0]*60+(parts[1]||0);
-  return parseFloat(str)||0;
-}
-function secToTime(sec){
-  sec=Math.max(0,Math.round(sec));
-  const m=Math.floor(sec/60),s=sec%60;
-  return m+':'+(s<10?'0':'')+s;
-}
-function fmtDur(sec){
-  sec=Math.max(0,Math.round(sec));
-  if(sec>=3600)return Math.floor(sec/3600)+'時間'+Math.floor((sec%3600)/60)+'分';
-  if(sec>=60)return Math.floor(sec/60)+'分'+(sec%60?sec%60+'秒':'');
-  return sec+'秒';
-}
+// ─ 時間ユーティリティ ─
+function timeToSec(str){str=String(str).trim();const p=str.split(':').map(Number);if(p.length===3)return p[0]*3600+p[1]*60+(p[2]||0);if(p.length===2)return p[0]*60+(p[1]||0);return parseFloat(str)||0;}
+function secToTime(sec){sec=Math.max(0,Math.round(sec));const m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0':'')+s;}
+function fmtDur(sec){sec=Math.max(0,Math.round(sec));if(sec>=3600)return Math.floor(sec/3600)+'時間'+Math.floor((sec%3600)/60)+'分';if(sec>=60)return Math.floor(sec/60)+'分'+(sec%60?sec%60+'秒':'');return sec+'秒';}
+function onTrimInput(){S.trimStartSec=timeToSec(document.getElementById('trimStart').value);S.trimEndSec=timeToSec(document.getElementById('trimEnd').value);const dur=Math.max(0,S.trimEndSec-S.trimStartSec);document.getElementById('trimInfo').textContent='切り抜き長さ: '+fmtDur(dur);}
 
-function onTrimInput(){
-  const s=timeToSec(document.getElementById('trimStart').value);
-  const e=timeToSec(document.getElementById('trimEnd').value);
-  S.trimStartSec=s;S.trimEndSec=e;
-  const dur=Math.max(0,e-s);
-  document.getElementById('trimInfo').textContent='切り抜き長さ: '+fmtDur(dur);
-}
-
-function applyAiSegment(){
-  if(!S.lastResult)return;
-  const vs=S.lastResult.viral_segment||{};
-  if(vs.start_time!=null){
-    S.trimStartSec=vs.start_time;S.trimEndSec=vs.end_time;
-    document.getElementById('trimStart').value=secToTime(vs.start_time);
-    document.getElementById('trimEnd').value=secToTime(vs.end_time);
-    onTrimInput();
-    document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});
-    alert('切り抜き範囲を適用しました！\n「動画を作成してダウンロード」ボタンから生成できます。');
-  }
-}
-
-// BGMゾーン管理
-function addBgmZone(){
-  const id=Date.now();
-  S.bgmZones.push({id,start:0,end:30});
-  renderBgmZones();
-}
-function removeBgmZone(id){
-  S.bgmZones=S.bgmZones.filter(z=>z.id!==id);
-  renderBgmZones();
-}
-function renderBgmZones(){
-  const list=document.getElementById('bgmZoneList');
-  list.innerHTML='';
-  S.bgmZones.forEach((z,i)=>{
-    const div=document.createElement('div');div.className='bgm-zone';
-    div.innerHTML=`<span style="font-size:12px;font-weight:700;color:#fcd34d">BGM区間${i+1}</span>
-<div class="bgm-zone-times">
-<input class="bgm-time-in" value="${secToTime(z.start)}" placeholder="0:00" oninput="S.bgmZones[${i}].start=timeToSec(this.value)">
-<span style="font-size:11px;color:var(--text3)">〜</span>
-<input class="bgm-time-in" value="${secToTime(z.end)}" placeholder="0:30" oninput="S.bgmZones[${i}].end=timeToSec(this.value)">
-</div>
-<button class="bgm-del" onclick="removeBgmZone(${z.id})">✕</button>`;
-    list.appendChild(div);
+// ─ ソースタブ ─
+function setSrcTab(tab){
+  ['yt','file'].forEach(t=>{
+    document.getElementById('srcTab_'+t).classList.toggle('active',t===tab);
+    document.getElementById('srcPanel_'+t).style.display=t===tab?'block':'none';
   });
 }
 
-// ====================================================
-// SFX シンセサイザー
-// ====================================================
-function getAC(){
-  if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  if(S.audioCtx.state==='suspended')S.audioCtx.resume();
-  return S.audioCtx;
+// ─ YouTube画質 ─
+function setYtQuality(q){
+  S.ytQuality=q;
+  ['720','480','360'].forEach(x=>document.getElementById('ytq_'+x).classList.toggle('active',x===q));
 }
-function synthSfx(type,ctx,dest,t,vol){
-  const g=vol/100;
+
+// ─ YouTube情報取得 ─
+async function fetchYouTubeInfo(){
+  const url=document.getElementById('ytUrl').value.trim();
+  if(!url){alert('YouTubeのURLを入力してください');return}
+  showLoading('YouTube動画を取得中...','動画情報を読み込んでいます',20);
   try{
-    if(type==='whoosh'){
-      const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.6),ctx.sampleRate);
-      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);
-      const src=ctx.createBufferSource();src.buffer=buf;
-      const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(4000,t+.4);
-      const gn=ctx.createGain();gn.gain.setValueAtTime(g*.8,t);gn.gain.linearRampToValueAtTime(0,t+.6);
-      src.connect(f);f.connect(gn);gn.connect(dest);src.start(t);
-    }else if(type==='boom'){
-      const o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(30,t+.4);
-      const gn=ctx.createGain();gn.gain.setValueAtTime(g,t);gn.gain.exponentialRampToValueAtTime(.001,t+.6);
-      o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.7);
-    }else if(type==='ding'){
-      [880,1760].forEach((f,i)=>{const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const gn=ctx.createGain();gn.gain.setValueAtTime(g*(.8-i*.3),t);gn.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+1.3);});
-    }else if(type==='zap'){
-      const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(800,t);o.frequency.exponentialRampToValueAtTime(100,t+.15);
-      const gn=ctx.createGain();gn.gain.setValueAtTime(g*.6,t);gn.gain.linearRampToValueAtTime(0,t+.2);
-      o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.25);
-    }else if(type==='riser'){
-      const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(80,t);o.frequency.exponentialRampToValueAtTime(2000,t+1.5);
-      const gn=ctx.createGain();gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g*.4,t+.3);gn.gain.linearRampToValueAtTime(0,t+1.8);
-      const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(8000,t+1.5);
-      o.connect(f);f.connect(gn);gn.connect(dest);o.start(t);o.stop(t+2);
-    }else if(type==='impact'){
-      const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.3),ctx.sampleRate);
-      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
-      const src=ctx.createBufferSource();src.buffer=buf;
-      const o=ctx.createOscillator();o.frequency.value=60;
-      const gn1=ctx.createGain();gn1.gain.setValueAtTime(g*.9,t);gn1.gain.exponentialRampToValueAtTime(.001,t+.3);
-      const gn2=ctx.createGain();gn2.gain.setValueAtTime(g*.8,t);gn2.gain.exponentialRampToValueAtTime(.001,t+.25);
-      src.connect(gn1);gn1.connect(dest);o.connect(gn2);gn2.connect(dest);src.start(t);o.start(t);o.stop(t+.35);
+    const res=await fetch(`${WORKER}/ytinfo?url=${encodeURIComponent(url)}`);
+    const data=await res.json();
+    hideLoading();
+    if(data.error){alert('動画情報の取得に失敗しました: '+data.error);return}
+    S.ytInfo=data;
+    document.getElementById('ytTitle').textContent=data.title||'YouTube動画';
+    document.getElementById('ytAuthor').textContent=data.author||'';
+    const thumb=document.getElementById('ytThumb');
+    thumb.src=data.thumbnail;
+    thumb.onerror=()=>{thumb.src=data.thumbnail_hq;thumb.onerror=()=>{thumb.style.display='none';}};
+    document.getElementById('ytVideoCard').style.display='block';
+  }catch(e){hideLoading();alert('エラー: '+e.message);}
+}
+
+// ─ YouTube動画ダウンロード ─
+async function downloadYouTubeVideo(){
+  if(!S.ytInfo){alert('先に動画情報を取得してください');return}
+  const url=document.getElementById('ytUrl').value.trim();
+  const dlProgress=document.getElementById('ytDlProgress');
+  const dlBtn=document.getElementById('ytDlBtn');
+  dlProgress.style.display='flex';
+  dlBtn.disabled=true;
+  dlBtn.textContent='ダウンロード中...';
+  setYtDlProgress(10,'ダウンロードURLを取得中...');
+  try{
+    // Step1: WorkerからダウンロードURLを取得
+    const res=await fetch(`${WORKER}/youtube`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({url,quality:S.ytQuality})
+    });
+    const data=await res.json();
+    if(!data.success){
+      dlProgress.style.display='none';dlBtn.disabled=false;dlBtn.textContent='⬇️ この動画をダウンロードして使用';
+      alert(data.error||'ダウンロードに失敗しました。\nファイルをダウンロードしてアップロードしてください。');
+      return;
     }
-  }catch(e){console.warn('SFX:',type,e);}
+    setYtDlProgress(30,'動画をダウンロード中...');
+    // Step2: 動画をfetch（ストリーミング）
+    const videoRes=await fetch(data.downloadUrl);
+    if(!videoRes.ok)throw new Error('動画の取得に失敗しました (HTTP '+videoRes.status+')');
+    const contentLength=videoRes.headers.get('Content-Length');
+    const total=contentLength?parseInt(contentLength):0;
+    const reader=videoRes.body.getReader();
+    const chunks=[];
+    let loaded=0;
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      chunks.push(value);loaded+=value.length;
+      if(total>0)setYtDlProgress(30+Math.round((loaded/total)*65),'ダウンロード中... '+(loaded/1024/1024).toFixed(1)+'MB');
+    }
+    setYtDlProgress(98,'処理中...');
+    const blob=new Blob(chunks,{type:'video/mp4'});
+    const title=(S.ytInfo.title||'youtube_video').replace(/[^a-zA-Z0-9ぁ-ん一-龥ー]/g,'_').slice(0,50);
+    S.videoFile=new File([blob],title+'.mp4',{type:'video/mp4'});
+    if(S.videoUrl)URL.revokeObjectURL(S.videoUrl);
+    S.videoUrl=URL.createObjectURL(S.videoFile);
+    S.audioCtx=null;
+    // プレビューに反映
+    document.getElementById('previewVideo').src=S.videoUrl;
+    const pv=document.getElementById('previewVideo');
+    pv.src=S.videoUrl;pv.load();
+    document.getElementById('previewWrap').style.display='block';
+    pv.onloadedmetadata=()=>{
+      S.videoDuration=pv.duration||0;
+      if(S.videoDuration>0){
+        S.trimEndSec=Math.min(S.videoDuration,60);
+        document.getElementById('trimEnd').value=secToTime(S.trimEndSec);
+        onTrimInput();
+      }
+    };
+    setYtDlProgress(100,'✅ ダウンロード完了！');
+    const sz=(blob.size/1024/1024).toFixed(1);
+    dlBtn.textContent='✅ ダウンロード済み ('+sz+'MB)';
+    setTimeout(()=>{dlProgress.style.display='none';},2000);
+  }catch(e){
+    dlProgress.style.display='none';dlBtn.disabled=false;dlBtn.textContent='⬇️ この動画をダウンロードして使用';
+    alert('ダウンロードエラー: '+e.message+'\n\nこの動画は直接取得できません。別のツールでダウンロード後にアップロードしてください。');
+  }
 }
-function testSfx(){
-  const ctx=getAC(),dest=ctx.destination,now=ctx.currentTime;
-  let t=now+.1;
-  Object.entries(S.sfxEnabled).forEach(([type,on])=>{if(on){synthSfx(type,ctx,dest,t,S.sfxVol);t+=.8;}});
+function setYtDlProgress(pct,label){
+  document.getElementById('ytDlBar').style.width=pct+'%';
+  document.getElementById('ytDlLabel').textContent=label;
 }
 
-// ====================================================
-// UI ヘルパー
-// ====================================================
-function switchTab(t){
-  document.querySelectorAll('.section-tabs').forEach(e=>e.classList.remove('show'));
-  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('show');
-  document.getElementById('t-'+t).classList.add('active');
-  window.scrollTo(0,0);document.getElementById('mainScroll').scrollTop=0;
-}
-function tog(el,k){S.toggles[k]=!S.toggles[k];el.classList.toggle('active')}
-function toggleSfx(el,k){S.sfxEnabled[k]=!S.sfxEnabled[k];el.classList.toggle('active')}
-function sv(k,v,sfx){S[k]=parseFloat(v);const el=document.getElementById(k+'Val');if(el)el.textContent=(parseFloat(v)>0?'+':'')+v+sfx}
-function sp(el,n){document.querySelectorAll('.cp-item').forEach(p=>p.classList.remove('active'));el.classList.add('active');S.colorPreset=n}
-function togglePf(el,pid){el.classList.toggle('active');const i=S.platforms.indexOf(pid);if(i>-1)S.platforms.splice(i,1);else S.platforms.push(pid)}
-function setCapMode(m){S.captionMode=m;['none','transcript','ai'].forEach(x=>document.getElementById('capOpt_'+x).classList.toggle('active',x===m));document.getElementById('capStyleWrap').style.display=m==='none'?'none':'block'}
-function showLoading(t,s,pct){document.getElementById('loadingText').textContent=t;document.getElementById('loadingSub').textContent=s||'';document.getElementById('loadProgBar').style.width=(pct||0)+'%';document.getElementById('loadingOverlay').classList.add('show')}
-function setLoadProg(pct,sub){document.getElementById('loadProgBar').style.width=pct+'%';if(sub)document.getElementById('loadingSub').textContent=sub}
-function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
-function setProgress(pct,label){document.getElementById('progressBar').style.width=pct+'%';if(label)document.getElementById('progressLabel').textContent=label}
-
+// ─ ファイルアップロード ─
 function handleFile(inp){
   if(!inp.files[0])return;
   S.videoFile=inp.files[0];
@@ -681,11 +689,9 @@ function handleFile(inp){
   document.getElementById('uploadIcon').textContent='✅';
   document.getElementById('uploadLabel').textContent=S.videoFile.name+' ('+mb+'MB)';
   document.getElementById('uploadZone').classList.add('has-file');
-  // プレビュー
   const pv=document.getElementById('previewVideo');
   pv.src=S.videoUrl;pv.load();
   document.getElementById('previewWrap').style.display='block';
-  // 動画の長さを取得してトリマーに反映
   pv.onloadedmetadata=()=>{
     S.videoDuration=pv.duration||0;
     if(S.videoDuration>0&&S.videoDuration<S.trimEndSec){
@@ -696,42 +702,55 @@ function handleFile(inp){
   };
 }
 
-function loadDemo(){
-  document.getElementById('aiInstruction').value='冒頭3秒に「絶対見て」というテロップを大きく表示。感情的な場面を優先してカット。参考動画のテロップスタイルを真似して。最後にチャンネル登録のCTAを入れて。';
-  document.getElementById('transcript').value='[0.0-5.0] 今日は絶対に知っておくべき話をします。\n[5.0-15.0] これを知らないと大きな損をします。\n[15.0-30.0] 実際に私も経験したことがあって本当に苦労しました。\n[30.0-45.0] この方法を使ったら全てが変わりました。\n[45.0-60.0] 最後まで見てください。チャンネル登録もお願いします。';
+// ─ BGMゾーン ─
+function addBgmZone(){S.bgmZones.push({id:Date.now(),start:0,end:30});renderBgmZones();}
+function removeBgmZone(id){S.bgmZones=S.bgmZones.filter(z=>z.id!==id);renderBgmZones();}
+function renderBgmZones(){
+  const list=document.getElementById('bgmZoneList');list.innerHTML='';
+  S.bgmZones.forEach((z,i)=>{
+    const div=document.createElement('div');div.className='bgm-zone';
+    div.innerHTML=`<span style="font-size:12px;font-weight:700;color:#fcd34d">BGM${i+1}</span>
+<div class="bgm-zone-times"><input class="bgm-time-in" value="${secToTime(z.start)}" oninput="S.bgmZones[${i}].start=timeToSec(this.value)"><span style="font-size:11px;color:var(--text3)">〜</span><input class="bgm-time-in" value="${secToTime(z.end)}" oninput="S.bgmZones[${i}].end=timeToSec(this.value)"></div>
+<button class="bgm-del" onclick="removeBgmZone(${z.id})">✕</button>`;
+    list.appendChild(div);
+  });
 }
+
+// ─ UI ─
+function switchTab(t){document.querySelectorAll('.section-tabs').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('tab-'+t).classList.add('show');document.getElementById('t-'+t).classList.add('active');window.scrollTo(0,0);document.getElementById('mainScroll').scrollTop=0;}
+function tog(el,k){S.toggles[k]=!S.toggles[k];el.classList.toggle('active')}
+function toggleSfx(el,k){S.sfxEnabled[k]=!S.sfxEnabled[k];el.classList.toggle('active')}
+function sv(k,v,sfx){S[k]=parseFloat(v);const el=document.getElementById(k+'Val');if(el)el.textContent=(parseFloat(v)>0?'+':'')+v+sfx}
+function sp(el,n){document.querySelectorAll('.cp-item').forEach(p=>p.classList.remove('active'));el.classList.add('active');S.colorPreset=n}
+function togglePf(el,pid){el.classList.toggle('active');const i=S.platforms.indexOf(pid);if(i>-1)S.platforms.splice(i,1);else S.platforms.push(pid)}
+function setCapMode(m){S.captionMode=m;['none','transcript','ai'].forEach(x=>document.getElementById('capOpt_'+x).classList.toggle('active',x===m));document.getElementById('capStyleWrap').style.display=m==='none'?'none':'block'}
+function showLoading(t,s,pct){document.getElementById('loadingText').textContent=t;document.getElementById('loadingSub').textContent=s||'';document.getElementById('loadProgBar').style.width=(pct||0)+'%';document.getElementById('loadingOverlay').classList.add('show')}
+function setLoadProg(pct,sub){document.getElementById('loadProgBar').style.width=pct+'%';if(sub)document.getElementById('loadingSub').textContent=sub}
+function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
+function setProgress(pct,label){document.getElementById('progressBar').style.width=pct+'%';if(label)document.getElementById('progressLabel').textContent=label}
+function applyAiSegment(){if(!S.lastResult)return;const vs=S.lastResult.viral_segment||{};if(vs.start_time!=null){S.trimStartSec=vs.start_time;S.trimEndSec=vs.end_time;document.getElementById('trimStart').value=secToTime(vs.start_time);document.getElementById('trimEnd').value=secToTime(vs.end_time);onTrimInput();document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});}}
+function applyClip(start,end){S.trimStartSec=start;S.trimEndSec=end;document.getElementById('trimStart').value=secToTime(start);document.getElementById('trimEnd').value=secToTime(end);onTrimInput();document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});}
+function loadDemo(){document.getElementById('aiInstruction').value='冒頭3秒に「絶対見て」というテロップを大きく表示。感情的な場面を優先してカット。参考動画のテロップスタイルを真似して。最後にチャンネル登録CTAを入れて。';document.getElementById('transcript').value='[0.0-5.0] 今日は絶対に知っておくべき話をします。\n[5.0-15.0] これを知らないと大きな損をします。\n[15.0-30.0] 実際に経験があって本当に苦労しました。\n[30.0-45.0] この方法を使ったら全てが変わりました。\n[45.0-60.0] 最後まで見てください。チャンネル登録もお願いします。';}
 function clearInputs(){document.getElementById('aiInstruction').value='';document.getElementById('transcript').value='';}
 
-// ====================================================
-// 字幕パース
-// ====================================================
-function parseTranscript(text){
-  return text.trim().split('\n').map(line=>{
-    const m=line.match(/\[(\d+\.?\d*)[^\d](\d+\.?\d*)\]\s*(.*)/);
-    if(m)return{start:parseFloat(m[1]),end:parseFloat(m[2]),text:m[3].trim()};return null;
-  }).filter(Boolean);
-}
+// ─ SFX ─
+function getAC(){if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(S.audioCtx.state==='suspended')S.audioCtx.resume();return S.audioCtx;}
+function synthSfx(type,ctx,dest,t,vol){const g=vol/100;try{
+if(type==='whoosh'){const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.6),ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);const src=ctx.createBufferSource();src.buffer=buf;const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(4000,t+.4);const gn=ctx.createGain();gn.gain.setValueAtTime(g*.8,t);gn.gain.linearRampToValueAtTime(0,t+.6);src.connect(f);f.connect(gn);gn.connect(dest);src.start(t);}
+else if(type==='boom'){const o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(30,t+.4);const gn=ctx.createGain();gn.gain.setValueAtTime(g,t);gn.gain.exponentialRampToValueAtTime(.001,t+.6);o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.7);}
+else if(type==='ding'){[880,1760].forEach((f,i)=>{const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const gn=ctx.createGain();gn.gain.setValueAtTime(g*(.8-i*.3),t);gn.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+1.3);});}
+else if(type==='zap'){const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(800,t);o.frequency.exponentialRampToValueAtTime(100,t+.15);const gn=ctx.createGain();gn.gain.setValueAtTime(g*.6,t);gn.gain.linearRampToValueAtTime(0,t+.2);o.connect(gn);gn.connect(dest);o.start(t);o.stop(t+.25);}
+else if(type==='riser'){const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(80,t);o.frequency.exponentialRampToValueAtTime(2000,t+1.5);const gn=ctx.createGain();gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g*.4,t+.3);gn.gain.linearRampToValueAtTime(0,t+1.8);const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(8000,t+1.5);o.connect(f);f.connect(gn);gn.connect(dest);o.start(t);o.stop(t+2);}
+else if(type==='impact'){const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.3),ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);const src=ctx.createBufferSource();src.buffer=buf;const o=ctx.createOscillator();o.frequency.value=60;const gn1=ctx.createGain();gn1.gain.setValueAtTime(g*.9,t);gn1.gain.exponentialRampToValueAtTime(.001,t+.3);const gn2=ctx.createGain();gn2.gain.setValueAtTime(g*.8,t);gn2.gain.exponentialRampToValueAtTime(.001,t+.25);src.connect(gn1);gn1.connect(dest);o.connect(gn2);gn2.connect(dest);src.start(t);o.start(t);o.stop(t+.35);}
+}catch(e){console.warn('SFX:',type,e);}}
+function testSfx(){const ctx=getAC(),dest=ctx.destination,now=ctx.currentTime;let t=now+.1;Object.entries(S.sfxEnabled).forEach(([type,on])=>{if(on){synthSfx(type,ctx,dest,t,S.sfxVol);t+=.8;}});}
+
+// ─ Canvas フィルター ─
+function buildFilter(){const br=Math.max(.1,1+(S.brightness/100)),ct=Math.max(.1,1+(S.contrast/100)),sat=Math.max(0,1+(S.saturation/100));let f=`brightness(${br.toFixed(2)}) contrast(${ct.toFixed(2)}) saturate(${sat.toFixed(2)})`;if(S.colorPreset==='warm')f+=' sepia(.25)';else if(S.colorPreset==='cool')f+=' hue-rotate(15deg) saturate(1.1)';else if(S.colorPreset==='cinema')f+=' contrast(1.15) brightness(.88)';else if(S.colorPreset==='viral')f+=' saturate(1.4) contrast(1.1)';else if(S.colorPreset==='bw')f+=' grayscale(1)';return f;}
+
+// ─ テロップ描画 ─
+function parseTranscript(text){return text.trim().split('\n').map(line=>{const m=line.match(/\[(\d+\.?\d*)[^\d](\d+\.?\d*)\]\s*(.*)/);if(m)return{start:parseFloat(m[1]),end:parseFloat(m[2]),text:m[3].trim()};return null;}).filter(Boolean);}
 function getCaptionAt(segs,t){const s=segs.find(s=>t>=s.start&&t<=s.end);return s?s.text:'';}
-
-// ====================================================
-// Canvas フィルター
-// ====================================================
-function buildFilter(){
-  const br=Math.max(.1,1+(S.brightness/100));
-  const ct=Math.max(.1,1+(S.contrast/100));
-  const sat=Math.max(0,1+(S.saturation/100));
-  let f=`brightness(${br.toFixed(2)}) contrast(${ct.toFixed(2)}) saturate(${sat.toFixed(2)})`;
-  if(S.colorPreset==='warm')f+=' sepia(.25)';
-  else if(S.colorPreset==='cool')f+=' hue-rotate(15deg) saturate(1.1)';
-  else if(S.colorPreset==='cinema')f+=' contrast(1.15) brightness(.88)';
-  else if(S.colorPreset==='viral')f+=' saturate(1.4) contrast(1.1)';
-  else if(S.colorPreset==='bw')f+=' grayscale(1)';
-  return f;
-}
-
-// ====================================================
-// テロップ描画
-// ====================================================
 function drawCaption(ctx,text,cw,ch,refStyle){
   if(!text||!text.trim())return;
   const sizeRatio=parseInt(document.getElementById('capSizeRange')?.value||6)/100;
@@ -739,32 +758,23 @@ function drawCaption(ctx,text,cw,ch,refStyle){
   const style=document.getElementById('captionStyle')?.value||'bold_white_outline';
   const eff=(style==='ref_match'&&refStyle)?refStyle.style:style;
   const maxCh=Math.max(1,Math.floor(cw/(fontSize*.6)));
-  const lines=[];let rem=text;
-  while(rem.length>0){lines.push(rem.slice(0,maxCh));rem=rem.slice(maxCh);}
+  const lines=[];let rem=text;while(rem.length>0){lines.push(rem.slice(0,maxCh));rem=rem.slice(maxCh);}
   ctx.save();
   const posY=refStyle?.position==='top'?ch*.15:ch*.82;
   lines.forEach((line,i)=>{
     const y=posY+(i-lines.length+1)*(fontSize*1.2);
     ctx.font=`900 ${fontSize}px -apple-system,"Helvetica Neue",Arial,sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='bottom';const x=cw/2;
-    if(eff==='bold_yellow_outline'){
-      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#FFE600';ctx.fillText(line,x,y);
-    }else if(eff==='bg_black'){
-      const m=ctx.measureText(line);const pw=m.width+fontSize*.5,ph=fontSize*1.3;
-      ctx.fillStyle='rgba(0,0,0,.78)';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-pw/2,y-ph,pw,ph,6);else ctx.rect(x-pw/2,y-ph,pw,ph);ctx.fill();
-      ctx.fillStyle='#ffffff';ctx.fillText(line,x,y-fontSize*.12);
-    }else{
-      ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#ffffff';ctx.fillText(line,x,y);
-    }
+    if(eff==='bold_yellow_outline'){ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#FFE600';ctx.fillText(line,x,y);}
+    else if(eff==='bg_black'){const m=ctx.measureText(line);const pw=m.width+fontSize*.5,ph=fontSize*1.3;ctx.fillStyle='rgba(0,0,0,.78)';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-pw/2,y-ph,pw,ph,6);else ctx.rect(x-pw/2,y-ph,pw,ph);ctx.fill();ctx.fillStyle='#ffffff';ctx.fillText(line,x,y-fontSize*.12);}
+    else{ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=fontSize*.14;ctx.lineJoin='round';ctx.strokeText(line,x,y);ctx.fillStyle='#ffffff';ctx.fillText(line,x,y);}
   });
   ctx.restore();
 }
 
-// ====================================================
-// AI 解析
-// ====================================================
+// ─ AI 解析 ─
 async function doAnalyze(key){
-  showLoading('AIが解析中...','構成・セグメント・テロップを生成しています',10);
+  showLoading('AIが解析中...','構成・テロップ・効果音を生成しています',10);
   const instr=document.getElementById('aiInstruction').value.trim();
   const tr=document.getElementById('transcript').value.trim();
   const refs=[1,2].map(i=>document.getElementById('refUrl'+i).value.trim()).filter(Boolean);
@@ -772,427 +782,127 @@ async function doAnalyze(key){
   const activeSfx=Object.entries(S.sfxEnabled).filter(([,v])=>v).map(([k])=>k).join('、');
   const trimDur=S.trimEndSec-S.trimStartSec;
   const mimeItems=Object.entries(S.toggles).filter(([k,v])=>k.startsWith('ref_')&&v).map(([k])=>k.replace('ref_','')).join('、');
-
-  const prompt=`You are a viral video editor specialized in short-form content like YouTube Shorts and TikTok clips.
-
-## User's EXACT instructions (apply precisely):
-"${instr||'動画をバズりやすく最適化してください'}"
-
-## Video settings:
-- Currently set trim range: ${secToTime(S.trimStartSec)} to ${secToTime(S.trimEndSec)} (${fmtDur(trimDur)})
-- Platforms: ${pfNames}
-- Caption mode: ${S.captionMode}
-- Available SFX: ${activeSfx||'none'}
-
-${refs.length?`## Reference videos to MIMIC (${mimeItems}):
-${refs.map((u,i)=>`${i+1}. ${u}`).join('\n')}
-Analyze and copy: caption style (font size/color/position/weight), cut timing, hook method, pacing, text overlay style.
-`:''}
-
-${tr?`## Transcript (use for timing captions and identifying key moments):
-${tr}
-`:''}
-
-${S.bgmZones.length?`## BGM zones to SKIP (these sections have background music):
-${S.bgmZones.map(z=>`${secToTime(z.start)} to ${secToTime(z.end)}`).join('\n')}
-Do NOT recommend clips from these time ranges.
-`:''}
-
-Return ONLY valid JSON:
-{
-  "viral_segment":{"start_time":${S.trimStartSec},"end_time":${S.trimEndSec},"reason":"ユーザー指示に基づく日本語説明"},
-  "ai_instruction_applied":"ユーザーの指示をどう反映したか日本語で詳しく",
-  "ref_style_analysis":"${refs.length?'参考動画のテロップスタイル・構成・フック手法の詳細分析（日本語200字以上）':''}",
-  "ref_caption_style":{"style":"bold_white_outline","color":"#FFFFFF","position":"bottom","size_ratio":0.06},
-  "scores":{"viral":"A+","retention":"82%","impact":"94/100"},
-  "production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"具体的な説明"}],
-  "viral_clips":[
-    {"start":${S.trimStartSec},"end":${Math.min(S.trimStartSec+30,S.trimEndSec)},"title":"クリップ名","reason":"バイラル理由"}
-  ],
-  "ai_captions":[
-    {"start":${S.trimStartSec},"end":${S.trimStartSec+5},"text":"テロップテキスト"}
-  ],
-  "sfx_cues":[
-    {"time":0.5,"type":"whoosh","reason":"シーン転換"},
-    {"time":3.0,"type":"boom","reason":"インパクト"}
-  ],
-  "title_suggestion":"動画タイトル案",
-  "hook_text":"冒頭フック文章",
-  "hashtags":["#タグ1","#タグ2","#タグ3"]
-}`;
-
+  const prompt=`You are a viral short video editor.
+## User's EXACT instructions: "${instr||'動画をバズりやすく最適化してください'}"
+## Settings: Duration ${fmtDur(trimDur)}, Platforms: ${pfNames}, SFX: ${activeSfx||'none'}
+${refs.length?`## Reference videos (MIMIC ${mimeItems}):\n${refs.map((u,i)=>`${i+1}. ${u}`).join('\n')}`:''}
+${tr?`## Transcript:\n${tr}`:''}
+${S.bgmZones.length?`## BGM skip zones:\n${S.bgmZones.map(z=>`${secToTime(z.start)}-${secToTime(z.end)}`).join(', ')}`:''}
+Return ONLY valid JSON:{"viral_segment":{"start_time":${S.trimStartSec},"end_time":${S.trimEndSec},"reason":"日本語説明"},"ai_instruction_applied":"日本語で反映内容","ref_style_analysis":"${refs.length?'参考動画分析（日本語）':''}","ref_caption_style":{"style":"bold_white_outline","position":"bottom","size_ratio":0.06},"scores":{"viral":"A+","retention":"82%","impact":"94/100"},"production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"説明"}],"viral_clips":[{"start":${S.trimStartSec},"end":${Math.min(S.trimStartSec+30,S.trimEndSec)},"title":"クリップ名","reason":"理由"}],"ai_captions":[{"start":${S.trimStartSec},"end":${S.trimStartSec+5},"text":"テロップ"}],"sfx_cues":[{"time":0.5,"type":"whoosh","reason":"転換"},{"time":3.0,"type":"boom","reason":"インパクト"}],"title_suggestion":"タイトル案","hook_text":"フック文","hashtags":["#タグ1","#タグ2"]}`;
   const body=JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:prompt}]});
   setLoadProg(30,'APIにリクエスト中...');
   const d=await new Promise((resolve,reject)=>{
-    const xhr=new XMLHttpRequest();
-    xhr.open('POST','https://dark-frog-e19c.h52hiro.workers.dev',true);
-    xhr.setRequestHeader('Content-Type','application/json');
-    xhr.setRequestHeader('x-api-key',key);
-    xhr.timeout=90000;
-    xhr.onload=()=>{
-      if(xhr.status>=200&&xhr.status<300){try{resolve(JSON.parse(xhr.responseText));}catch(e){reject(new Error('パース失敗'));}}
-      else{try{const e=JSON.parse(xhr.responseText);reject(new Error(e.error?.message||'HTTP '+xhr.status));}catch(e){reject(new Error('HTTP '+xhr.status));}}
-    };
-    xhr.onerror=()=>reject(new Error('ネットワークエラー'));
-    xhr.ontimeout=()=>reject(new Error('タイムアウト（90秒）'));
-    xhr.send(body);
+    const xhr=new XMLHttpRequest();xhr.open('POST',WORKER,true);xhr.setRequestHeader('Content-Type','application/json');xhr.setRequestHeader('x-api-key',key);xhr.timeout=90000;
+    xhr.onload=()=>{if(xhr.status>=200&&xhr.status<300){try{resolve(JSON.parse(xhr.responseText));}catch(e){reject(new Error('パース失敗'));}}else{try{const e=JSON.parse(xhr.responseText);reject(new Error(e.error?.message||'HTTP '+xhr.status));}catch(e){reject(new Error('HTTP '+xhr.status));}}};
+    xhr.onerror=()=>reject(new Error('ネットワークエラー'));xhr.ontimeout=()=>reject(new Error('タイムアウト'));xhr.send(body);
   });
-  setLoadProg(80,'解析データを処理中...');
+  setLoadProg(80,'処理中...');
   if(d.error)throw new Error(d.error.message);
-  const txt=d.content[0].text;
-  const m=txt.match(/\{[\s\S]*\}/);
-  if(!m)throw new Error('JSONが見つかりません');
+  const txt=d.content[0].text;const m=txt.match(/\{[\s\S]*\}/);if(!m)throw new Error('JSONが見つかりません');
   return JSON.parse(m[0]);
 }
+async function runAnalyzeOnly(){const key=document.getElementById('apiKey').value.trim();if(!key){alert('Claude APIキーを入力してください');return}if(!S.platforms.length){alert('プラットフォームを選択してください');return}try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(false);}catch(e){hideLoading();alert('AI解析エラー: '+e.message);}}
+async function runAll(){const key=document.getElementById('apiKey').value.trim();if(!S.videoFile){alert('動画をアップロードまたはYouTubeからダウンロードしてください');return}if(!key){alert('Claude APIキーを入力してください');return}if(!S.platforms.length){alert('プラットフォームを選択してください');return}try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(true);}catch(e){hideLoading();alert('AI解析エラー: '+e.message);}}
 
-async function runAnalyzeOnly(){
-  const key=document.getElementById('apiKey').value.trim();
-  if(!key){alert('Claude APIキーを入力してください');return}
-  if(!S.platforms.length){alert('プラットフォームを選択してください');return}
-  try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(false);}
-  catch(e){hideLoading();alert('AI解析エラー: '+e.message);}
-}
-async function runAll(){
-  const key=document.getElementById('apiKey').value.trim();
-  if(!S.videoFile){alert('動画ファイルをアップロードしてください');return}
-  if(!key){alert('Claude APIキーを入力してください');return}
-  if(!S.platforms.length){alert('プラットフォームを選択してください');return}
-  try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(true);}
-  catch(e){hideLoading();alert('AI解析エラー: '+e.message);}
-}
-
-// ====================================================
-// 結果表示
-// ====================================================
+// ─ 結果表示 ─
 function renderResult(showCreate){
-  const rc=document.getElementById('resultCard');
-  rc.classList.add('show');
-  setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
-  const r=S.lastResult;
-  const vs=r.viral_segment||{start_time:S.trimStartSec,end_time:S.trimEndSec};
+  const rc=document.getElementById('resultCard');rc.classList.add('show');setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  const r=S.lastResult;const vs=r.viral_segment||{start_time:S.trimStartSec,end_time:S.trimEndSec};
   document.getElementById('viralTime').textContent=secToTime(vs.start_time)+' 〜 '+secToTime(vs.end_time)+'（'+fmtDur(vs.end_time-vs.start_time)+'）';
   document.getElementById('viralReason').textContent=r.ai_instruction_applied||vs.reason||'';
-  document.getElementById('applySegBtn').style.display='flex';
   const refb=document.getElementById('refBlock');
-  if(r.ref_style_analysis&&r.ref_style_analysis.length>5){refb.style.display='block';document.getElementById('refText').textContent=r.ref_style_analysis;}
-  else{refb.style.display='none';}
-  const sc=r.scores||{};
-  document.getElementById('scoreViral').textContent=sc.viral||'--';
-  document.getElementById('scoreRet').textContent=sc.retention||'--';
-  document.getElementById('scoreImp').textContent=sc.impact||'--';
-  const pg=document.getElementById('planGrid');pg.innerHTML='';
-  (r.production_plan||[]).slice(0,5).forEach(item=>{
-    pg.innerHTML+=`<div class="plan-item"><div class="plan-ico" style="background:${item.color||'#1DB954'}22">${item.icon}</div><div class="plan-text"><h4>${item.title}</h4><p>${item.description}</p></div></div>`;
-  });
-  const clips=r.viral_clips||[];
-  const vcb=document.getElementById('viralClipsBlock');
-  if(clips.length){
-    vcb.style.display='block';
-    document.getElementById('viralClipsList').innerHTML=clips.map((c,i)=>`
-<div class="clip-item" onclick="applyClip(${c.start},${c.end})">
-<div class="clip-idx">${i+1}</div>
-<div class="clip-info"><div class="clip-title">${c.title||'クリップ'}</div><div class="clip-reason">${c.reason||''}</div></div>
-<div class="clip-time">${secToTime(c.start)}〜${secToTime(c.end)}</div>
-<button class="use-clip-btn">使う</button>
-</div>`).join('');
-  }else{vcb.style.display='none';}
-  const tr=document.getElementById('transcript').value.trim();
-  S.captionSegs=tr?parseTranscript(tr):[];
-  S.editedCaptions=[...(r.ai_captions||S.captionSegs||[])];
-  S.editedSfx=[...(r.sfx_cues||[])];
-  document.getElementById('progressBlock').style.display='none';
-  document.getElementById('outputList').innerHTML='';
-  document.getElementById('editPanel').style.display='none';
+  if(r.ref_style_analysis&&r.ref_style_analysis.length>5){refb.style.display='block';document.getElementById('refText').textContent=r.ref_style_analysis;}else{refb.style.display='none';}
+  const sc=r.scores||{};document.getElementById('scoreViral').textContent=sc.viral||'--';document.getElementById('scoreRet').textContent=sc.retention||'--';document.getElementById('scoreImp').textContent=sc.impact||'--';
+  const pg=document.getElementById('planGrid');pg.innerHTML='';(r.production_plan||[]).slice(0,5).forEach(item=>{pg.innerHTML+=`<div class="plan-item"><div class="plan-ico" style="background:${item.color||'#1DB954'}22">${item.icon}</div><div class="plan-text"><h4>${item.title}</h4><p>${item.description}</p></div></div>`;});
+  const clips=r.viral_clips||[];const vcb=document.getElementById('viralClipsBlock');
+  if(clips.length){vcb.style.display='block';document.getElementById('viralClipsList').innerHTML=clips.map((c,i)=>`<div class="clip-item" onclick="applyClip(${c.start},${c.end})"><div class="clip-idx">${i+1}</div><div class="clip-info"><div class="clip-title">${c.title||'クリップ'}</div><div class="clip-reason">${c.reason||''}</div></div><div class="clip-time">${secToTime(c.start)}〜${secToTime(c.end)}</div><button class="use-clip-btn">使う</button></div>`).join('');}else{vcb.style.display='none';}
+  const trText=document.getElementById('transcript').value.trim();
+  S.captionSegs=trText?parseTranscript(trText):[];S.editedCaptions=[...(r.ai_captions||S.captionSegs||[])];S.editedSfx=[...(r.sfx_cues||[])];
+  document.getElementById('progressBlock').style.display='none';document.getElementById('outputList').innerHTML='';document.getElementById('editPanel').style.display='none';
   document.getElementById('createBtn').style.display=(showCreate&&S.videoFile)?'flex':'none';
 }
 
-function applyClip(start,end){
-  S.trimStartSec=start;S.trimEndSec=end;
-  document.getElementById('trimStart').value=secToTime(start);
-  document.getElementById('trimEnd').value=secToTime(end);
-  onTrimInput();
-  document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});
-}
-
-// ====================================================
-// ★ 動画作成（音声/映像完全同期修正版）
-// ====================================================
+// ─ 動画作成 ─
 async function createVideos(){
   if(!S.lastResult||!S.videoFile)return;
   if(typeof MediaRecorder==='undefined'){alert('MediaRecorder非対応のブラウザです。Chrome/Safari(iOS14.3+)をお試しください。');return;}
-
-  const startSec=S.trimStartSec;
-  const endSec=S.trimEndSec;
-  const duration=Math.max(1,endSec-startSec);
-
-  document.getElementById('progressBlock').style.display='flex';
-  document.getElementById('outputList').innerHTML='';
-  document.getElementById('createBtn').style.display='none';
-  setProgress(0,'動画処理を開始します...');
-
-  const srcVideo=document.getElementById('srcVideo');
-  const canvas=document.getElementById('procCanvas');
-
-  // ★ muted=true で読み込み（iOSオートプレイ制限を回避）
-  srcVideo.muted=true;
-  srcVideo.src=S.videoUrl;
-  srcVideo.load();
-
+  const startSec=S.trimStartSec,endSec=S.trimEndSec,duration=Math.max(1,endSec-startSec);
+  document.getElementById('progressBlock').style.display='flex';document.getElementById('outputList').innerHTML='';document.getElementById('createBtn').style.display='none';setProgress(0,'動画処理を開始します...');
+  const srcVideo=document.getElementById('srcVideo'),canvas=document.getElementById('procCanvas');
+  srcVideo.muted=true;srcVideo.src=S.videoUrl;srcVideo.load();
   setProgress(5,'動画ファイルを読み込み中...');
-  await new Promise((res,rej)=>{
-    srcVideo.onloadedmetadata=()=>{srcVideo.onloadedmetadata=null;res();};
-    srcVideo.onerror=()=>rej(new Error('動画の読み込みに失敗しました'));
-    setTimeout(res,8000);
-  });
-
-  const srcW=srcVideo.videoWidth||1280;
-  const srcH=srcVideo.videoHeight||720;
+  await new Promise((res,rej)=>{srcVideo.onloadedmetadata=()=>{srcVideo.onloadedmetadata=null;res();};srcVideo.onerror=()=>rej(new Error('動画読み込み失敗'));setTimeout(res,8000);});
+  const srcW=srcVideo.videoWidth||1280,srcH=srcVideo.videoHeight||720;
   const vidDur=isFinite(srcVideo.duration)?srcVideo.duration:duration;
   const actualDuration=Math.min(duration,vidDur-startSec);
-
   setProgress(10,'音声の準備中...');
-
-  // ★ AudioContext で SFX 専用 dest を作成
   let sfxDest=null;
-  try{
-    if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-    if(S.audioCtx.state==='suspended')await S.audioCtx.resume();
-    sfxDest=S.audioCtx.createMediaStreamDestination();
-  }catch(e){console.warn('AudioContext:',e);}
-
+  try{if(!S.audioCtx)S.audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(S.audioCtx.state==='suspended')await S.audioCtx.resume();sfxDest=S.audioCtx.createMediaStreamDestination();}catch(e){console.warn('AudioContext:',e);}
   const sfxCues=(S.lastResult.sfx_cues||[]).filter(c=>c&&S.sfxEnabled[c.type]);
-  const total=S.platforms.length;
-  const results=[];
-
+  const total=S.platforms.length,results=[];
   for(let i=0;i<total;i++){
-    const pid=S.platforms[i];
-    const p=PF[pid];if(!p)continue;
-    const dim=p[S.quality]||p.high;
-    setProgress(10+Math.round((i/total)*80),`${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
-    try{
-      const blob=await recordPlatform(srcVideo,canvas,p,dim,srcW,srcH,startSec,actualDuration,sfxDest,sfxCues);
-      results.push({pid,p,dim,blob,error:null});
-    }catch(e){
-      console.error(pid,e);
-      results.push({pid,p,dim,blob:null,error:e.message});
-    }
+    const pid=S.platforms[i];const p=PF[pid];if(!p)continue;
+    const dim=p[S.quality]||p.high;setProgress(10+Math.round((i/total)*80),`${p.emoji} ${p.name} を処理中... (${i+1}/${total})`);
+    try{const blob=await recordPlatform(srcVideo,canvas,p,dim,srcW,srcH,startSec,actualDuration,sfxDest,sfxCues);results.push({pid,p,dim,blob,error:null});}
+    catch(e){console.error(pid,e);results.push({pid,p,dim,blob:null,error:e.message});}
   }
-
   setProgress(100,'✅ 完了！ダウンロードしてください');
-  const outList=document.getElementById('outputList');
-  outList.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">ダウンロード</div>';
+  const outList=document.getElementById('outputList');outList.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">ダウンロード</div>';
   results.forEach(({pid,p,dim,blob,error})=>{
     const div=document.createElement('div');div.className='out-item';
-    if(blob&&blob.size>100){
-      const url=URL.createObjectURL(blob);
-      const ext=blob.type.includes('mp4')?'mp4':'webm';
-      const sz=(blob.size/1024/1024).toFixed(1);
-      div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec">${p.ratio}·${dim.w}×${dim.h}</span></div>
-<div style="font-size:11px;color:var(--text2);margin-bottom:10px">${sz}MB · ${fmtDur(Math.round(actualDuration))}</div>
-<a href="${url}" download="viralcut_${pid}.${ext}" style="text-decoration:none">
-<button class="btn btn-sp" style="padding:12px;border-radius:50px">⬇️ ${p.name}用をダウンロード</button></a>`;
-    }else{
-      div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec" style="background:rgba(233,20,41,.2);color:#ff6b6b">エラー</span></div>
-<div style="font-size:11px;color:var(--text3);margin-top:4px">${error||'処理に失敗しました。別の動画形式を試してください。'}</div>`;
-    }
+    if(blob&&blob.size>100){const url=URL.createObjectURL(blob);const ext=blob.type.includes('mp4')?'mp4':'webm';const sz=(blob.size/1024/1024).toFixed(1);div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec">${p.ratio}·${dim.w}×${dim.h}</span></div><div style="font-size:11px;color:var(--text2);margin-bottom:10px">${sz}MB · ${fmtDur(Math.round(actualDuration))}</div><a href="${url}" download="viralcut_${pid}.${ext}" style="text-decoration:none"><button class="btn btn-sp" style="padding:12px;border-radius:50px">⬇️ ${p.name}用をダウンロード</button></a>`;}
+    else{div.innerHTML=`<div class="out-header"><span style="font-size:20px">${p.emoji}</span><span class="out-name">${p.name}</span><span class="out-spec" style="background:rgba(233,20,41,.2);color:#ff6b6b">エラー</span></div><div style="font-size:11px;color:var(--text3);margin-top:4px">${error||'処理に失敗しました'}</div>`;}
     outList.appendChild(div);
   });
-  buildEditPanel();
-  outList.scrollIntoView({behavior:'smooth',block:'start'});
+  buildEditPanel();outList.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ====================================================
-// ★ 録画コア（音声/映像同期の根本修正）
-// 方式: video.captureStream()で音声を取得（Chrome/Android）
-//       iOS fallback: AudioContext + muted video
-// ====================================================
+// ─ 録画コア ─
 function recordPlatform(videoEl,canvas,p,dim,srcW,srcH,startSec,duration,sfxDest,sfxCues){
   return new Promise(async(resolve,reject)=>{
-    canvas.width=dim.w;canvas.height=dim.h;
-    const ctx=canvas.getContext('2d');
-
-    // クロップ計算
-    const tr=dim.w/dim.h,sr=srcW/srcH;
-    let sx,sy,sw,sh;
-    if(Math.abs(sr-tr)<.02){sx=0;sy=0;sw=srcW;sh=srcH;}
-    else if(sr>tr){sh=srcH;sw=Math.round(srcH*tr);sx=Math.round((srcW-sw)/2);sy=0;}
-    else{sw=srcW;sh=Math.round(srcW/tr);sx=0;sy=Math.round((srcH-sh)/2);}
-
-    // MIME
+    canvas.width=dim.w;canvas.height=dim.h;const ctx=canvas.getContext('2d');
+    const tr=dim.w/dim.h,sr=srcW/srcH;let sx,sy,sw,sh;
+    if(Math.abs(sr-tr)<.02){sx=0;sy=0;sw=srcW;sh=srcH;}else if(sr>tr){sh=srcH;sw=Math.round(srcH*tr);sx=Math.round((srcW-sw)/2);sy=0;}else{sw=srcW;sh=Math.round(srcW/tr);sx=0;sy=Math.round((srcH-sh)/2);}
     const mimes=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
     const mime=mimes.find(m=>{try{return MediaRecorder.isTypeSupported(m)}catch(e){return false}})||'';
     const fps=parseInt(document.getElementById('outputFps').value)||30;
-
-    // ★ Canvas captureStream（映像のみ）
-    let stream;
-    try{stream=canvas.captureStream(fps);}
-    catch(e){return reject(new Error('captureStream失敗: '+e.message));}
-
-    // ★ 音声: video.captureStream() が使えれば使う（Chrome/Android = 完全同期）
-    // iOS Safariでは video.captureStream() 非対応のため AudioContext fallback
+    let stream;try{stream=canvas.captureStream(fps);}catch(e){return reject(new Error('captureStream失敗'));}
     let audioAdded=false;
-    try{
-      if(videoEl.captureStream||videoEl.mozCaptureStream){
-        // muted を解除して captureStream で音声を取得
-        videoEl.muted=false;
-        videoEl.volume=0; // スピーカーには出さない
-        const vidStream=(videoEl.captureStream||videoEl.mozCaptureStream).call(videoEl);
-        const aTracks=vidStream.getAudioTracks();
-        if(aTracks.length>0){
-          aTracks.forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
-          audioAdded=true;
-        }
-      }
-    }catch(e){console.warn('video.captureStream audio failed:',e);}
-
-    // iOS fallback: AudioContext で音声キャプチャ
-    if(!audioAdded&&sfxDest){
-      try{
-        const ac=S.audioCtx;
-        // muted=true のまま AudioContext で音声を取り出す
-        const srcNode=ac.createMediaElementSource(videoEl);
-        const silentGain=ac.createGain();silentGain.gain.value=0;
-        srcNode.connect(silentGain);silentGain.connect(ac.destination);
-        const audioDest2=ac.createMediaStreamDestination();
-        srcNode.connect(audioDest2);
-        audioDest2.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
-        audioAdded=true;
-      }catch(e){console.warn('AudioContext audio failed:',e);}
-    }
-
-    // SFX用オーディオストリーム
-    if(sfxDest){
-      sfxDest.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
-    }
-
-    // MediaRecorder
+    try{if(videoEl.captureStream||videoEl.mozCaptureStream){videoEl.muted=false;videoEl.volume=0;const vs=(videoEl.captureStream||videoEl.mozCaptureStream).call(videoEl);const at=vs.getAudioTracks();if(at.length>0){at.forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});audioAdded=true;}}}catch(e){console.warn('video.captureStream:',e);}
+    if(!audioAdded&&sfxDest){try{const ac=S.audioCtx;const sn=ac.createMediaElementSource(videoEl);const sg=ac.createGain();sg.gain.value=0;sn.connect(sg);sg.connect(ac.destination);const ad=ac.createMediaStreamDestination();sn.connect(ad);ad.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});audioAdded=true;}catch(e){console.warn('AudioContext:',e);}}
+    if(sfxDest)sfxDest.stream.getAudioTracks().forEach(t=>{try{stream.addTrack(t.clone());}catch(e){}});
     let recorder;
-    try{
-      recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:dim.br||5000000}:{videoBitsPerSecond:dim.br||5000000});
-    }catch(e){
-      try{recorder=new MediaRecorder(stream);}catch(e2){return reject(new Error('MediaRecorder失敗: '+e2.message));}
-    }
-
-    const chunks=[];
-    recorder.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
+    try{recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:dim.br||5000000}:{videoBitsPerSecond:dim.br||5000000});}
+    catch(e){try{recorder=new MediaRecorder(stream);}catch(e2){return reject(new Error('MediaRecorder失敗'));}}
+    const chunks=[];recorder.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
     recorder.onstop=()=>resolve(new Blob(chunks,{type:recorder.mimeType||'video/webm'}));
     recorder.onerror=()=>reject(new Error('録画エラー'));
-
-    // ★ シーク（正確な開始位置に移動）
     videoEl.currentTime=startSec;
-    await new Promise(r=>{
-      const fn=()=>{videoEl.removeEventListener('seeked',fn);r();};
-      videoEl.addEventListener('seeked',fn);
-      setTimeout(r,5000);
-    });
-
-    // ★ 録画開始の直前にフレームを1枚描いてからstartする（映像/音声同期）
-    try{
-      ctx.filter=buildFilter();
-      ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);
-      ctx.filter='none';
-    }catch(e){}
-
-    // ★ 再生 → 録画開始（同一フレーム内で開始）
+    await new Promise(r=>{const fn=()=>{videoEl.removeEventListener('seeked',fn);r();};videoEl.addEventListener('seeked',fn);setTimeout(r,5000);});
+    try{ctx.filter=buildFilter();ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);ctx.filter='none';}catch(e){}
     recorder.start(500);
-    try{
-      await videoEl.play();
-    }catch(e){console.warn('play:',e);}
-
-    // SFX スケジューリング
-    if(S.audioCtx&&sfxCues&&sfxCues.length&&sfxDest){
-      const baseTime=S.audioCtx.currentTime+.1;
-      sfxCues.forEach(cue=>{
-        if(cue.time>=0&&cue.time<duration&&S.sfxEnabled[cue.type])
-          synthSfx(cue.type,S.audioCtx,sfxDest,baseTime+cue.time,S.sfxVol);
-      });
-    }
-
-    // テロップデータ
-    const capMode=S.captionMode;
-    const capSegs=capMode==='transcript'?S.captionSegs:capMode==='ai'?(S.editedCaptions||[]):[];
-    const refStyle=S.lastResult?.ref_caption_style||null;
-
+    try{await videoEl.play();}catch(e){console.warn('play:',e);}
+    if(S.audioCtx&&sfxCues&&sfxCues.length&&sfxDest){const bt=S.audioCtx.currentTime+.1;sfxCues.forEach(cue=>{if(cue.time>=0&&cue.time<duration&&S.sfxEnabled[cue.type])synthSfx(cue.type,S.audioCtx,sfxDest,bt+cue.time,S.sfxVol);});}
+    const capMode=S.captionMode;const capSegs=capMode==='transcript'?S.captionSegs:capMode==='ai'?(S.editedCaptions||[]):[];const refStyle=S.lastResult?.ref_caption_style||null;
     let drawing=true;
-
-    // ★ フレーム描画ループ（requestAnimationFrame）
-    function drawFrame(){
-      if(!drawing)return;
-      try{
-        ctx.filter=buildFilter();
-        ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);
-        ctx.filter='none';
-        if(capMode!=='none'&&capSegs.length){
-          const capText=getCaptionAt(capSegs,videoEl.currentTime);
-          if(capText)drawCaption(ctx,capText,dim.w,dim.h,refStyle);
-        }
-      }catch(e){}
-      if(drawing)requestAnimationFrame(drawFrame);
-    }
+    function drawFrame(){if(!drawing)return;try{ctx.filter=buildFilter();ctx.drawImage(videoEl,sx,sy,sw,sh,0,0,dim.w,dim.h);ctx.filter='none';if(capMode!=='none'&&capSegs.length){const capText=getCaptionAt(capSegs,videoEl.currentTime);if(capText)drawCaption(ctx,capText,dim.w,dim.h,refStyle);}}catch(e){}if(drawing)requestAnimationFrame(drawFrame);}
     requestAnimationFrame(drawFrame);
-
-    // ★ 終了判定（時間ベース。pausedに依存しない）
     const endTarget=startSec+duration;
-    const chk=setInterval(()=>{
-      const cur=videoEl.currentTime;
-      if(cur>=endTarget-.05||videoEl.ended){
-        clearInterval(chk);clearTimeout(safety);
-        drawing=false;videoEl.pause();
-        setTimeout(()=>{try{recorder.stop();}catch(e){reject(e);}},1000);
-      }
-    },300);
-    const safety=setTimeout(()=>{
-      if(drawing){
-        clearInterval(chk);drawing=false;videoEl.pause();
-        try{recorder.stop();}catch(e){reject(new Error('タイムアウト'));}
-      }
-    },(duration+90)*1000);
+    const chk=setInterval(()=>{if(videoEl.currentTime>=endTarget-.05||videoEl.ended){clearInterval(chk);clearTimeout(safety);drawing=false;videoEl.pause();setTimeout(()=>{try{recorder.stop();}catch(e){reject(e);}},1000);}},300);
+    const safety=setTimeout(()=>{if(drawing){clearInterval(chk);drawing=false;videoEl.pause();try{recorder.stop();}catch(e){reject(new Error('タイムアウト'));}}},( duration+90)*1000);
   });
 }
 
-// ====================================================
-// 編集パネル
-// ====================================================
+// ─ 編集パネル ─
 function buildEditPanel(){
-  const panel=document.getElementById('editPanel');
-  const cl=document.getElementById('capEditList');
-  const sl=document.getElementById('sfxEditList');
-  cl.innerHTML='';sl.innerHTML='';
+  const panel=document.getElementById('editPanel'),cl=document.getElementById('capEditList'),sl=document.getElementById('sfxEditList');cl.innerHTML='';sl.innerHTML='';
   const caps=S.editedCaptions||[];
-  if(caps.length){
-    cl.innerHTML='<div class="edit-title">💬 テロップを修正</div>';
-    caps.forEach((cap,i)=>{
-      const d=document.createElement('div');d.className='cap-edit-item';
-      d.innerHTML=`<div class="cap-edit-time">${secToTime(cap.start)} 〜 ${secToTime(cap.end)}</div>
-<input class="cap-edit-input" value="${(cap.text||'').replace(/"/g,'&quot;')}" oninput="S.editedCaptions[${i}].text=this.value" placeholder="テロップテキスト">`;
-      cl.appendChild(d);
-    });
-  }
-  const sfx=S.editedSfx||[];
-  if(sfx.length){
-    sl.innerHTML='<div class="edit-title">🔊 効果音を修正（ON/OFF）</div>';
-    const icons={whoosh:'💨',boom:'💥',ding:'🔔',zap:'⚡',riser:'📈',impact:'🥊'};
-    sfx.forEach((cue,i)=>{
-      const on=cue.enabled!==false;
-      const d=document.createElement('div');d.className='sfx-edit-item';
-      d.innerHTML=`<span style="font-size:18px">${icons[cue.type]||'🎵'}</span>
-<div class="sfx-edit-name">${cue.type}<span style="font-size:10px;color:var(--text3);margin-left:6px">${cue.reason||''}</span></div>
-<span class="sfx-edit-time">${secToTime(cue.time)}</span>
-<button class="sp-toggle ${on?'on':''}" onclick="S.editedSfx[${i}].enabled=!S.editedSfx[${i}].enabled;this.classList.toggle('on')"></button>`;
-      sl.appendChild(d);
-    });
-  }
+  if(caps.length){cl.innerHTML='<div class="edit-title">💬 テロップを修正</div>';caps.forEach((cap,i)=>{const d=document.createElement('div');d.className='cap-edit-item';d.innerHTML=`<div class="cap-edit-time">${secToTime(cap.start)} 〜 ${secToTime(cap.end)}</div><input class="cap-edit-input" value="${(cap.text||'').replace(/"/g,'&quot;')}" oninput="S.editedCaptions[${i}].text=this.value">`;cl.appendChild(d);});}
+  const sfx=S.editedSfx||[];const icons={whoosh:'💨',boom:'💥',ding:'🔔',zap:'⚡',riser:'📈',impact:'🥊'};
+  if(sfx.length){sl.innerHTML='<div class="edit-title">🔊 効果音を修正</div>';sfx.forEach((cue,i)=>{const on=cue.enabled!==false;const d=document.createElement('div');d.className='sfx-edit-item';d.innerHTML=`<span style="font-size:18px">${icons[cue.type]||'🎵'}</span><div class="sfx-edit-name">${cue.type}<span style="font-size:10px;color:var(--text3);margin-left:6px">${cue.reason||''}</span></div><span class="sfx-edit-time">${secToTime(cue.time)}</span><button class="sp-toggle ${on?'on':''}" onclick="S.editedSfx[${i}].enabled=!S.editedSfx[${i}].enabled;this.classList.toggle('on')"></button>`;sl.appendChild(d);});}
   if(caps.length||sfx.length)panel.style.display='flex';
 }
-
-async function reprocessWithEdits(){
-  if(!S.videoFile||!S.lastResult){alert('先に動画を生成してください');return}
-  const orig=S.lastResult.sfx_cues;
-  S.lastResult.ai_captions=S.editedCaptions;
-  S.lastResult.sfx_cues=S.editedSfx.filter(c=>c.enabled!==false);
-  await createVideos();
-  S.lastResult.sfx_cues=orig;
-}
+async function reprocessWithEdits(){if(!S.videoFile||!S.lastResult){alert('先に動画を生成してください');return}const orig=S.lastResult.sfx_cues;S.lastResult.ai_captions=S.editedCaptions;S.lastResult.sfx_cues=S.editedSfx.filter(c=>c.enabled!==false);await createVideos();S.lastResult.sfx_cues=orig;}
 
 // 初期化
 onTrimInput();
