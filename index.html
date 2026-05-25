@@ -67,10 +67,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .bgm-time-in{background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:13px;padding:6px 8px;width:70px;font-family:inherit;outline:none;text-align:center}
 .bgm-time-in:focus{border-color:var(--sp)}
 .bgm-del{width:28px;height:28px;border-radius:50%;background:rgba(233,20,41,.2);border:none;color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.dur-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.dur-btn{padding:10px 4px;border-radius:var(--rs);background:var(--bg3);border:2px solid var(--border);text-align:center;cursor:pointer;transition:all .15s}
-.dur-btn.active{background:rgba(29,185,84,.15);border-color:var(--sp)}
-.dur-label{font-size:13px;font-weight:700}.dur-desc{font-size:9px;color:var(--text3);margin-top:2px}
 .pf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pf-item{padding:10px;border-radius:var(--rs);background:var(--bg3);border:2px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .15s}
 .pf-item.active{background:rgba(29,185,84,.12);border-color:var(--sp)}
@@ -142,7 +138,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .sp-toggle.on::after{transform:translateX(20px)}
 .tip{background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.2);border-radius:var(--rs);padding:10px 12px;font-size:11px;color:var(--text2);line-height:1.6;display:flex;gap:8px}
 .tip-warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--rs);padding:10px 12px;font-size:11px;color:#fcd34d;line-height:1.6;display:flex;gap:8px}
-.tip-red{background:rgba(233,20,41,.08);border:1px solid rgba(233,20,41,.2);border-radius:var(--rs);padding:10px 12px;font-size:11px;color:#ff6b6b;line-height:1.6;display:flex;gap:8px}
 .row{display:flex;gap:8px}.divider{height:1px;background:var(--border);margin:2px 0}
 .loading-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(18,18,18,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:32px}
 .loading-overlay.show{display:flex}
@@ -170,14 +165,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <body>
 <video id="srcVideo" playsinline webkit-playsinline muted></video>
 <canvas id="procCanvas"></canvas>
-
 <div class="loading-overlay" id="loadingOverlay">
 <div class="sp-spinner"></div>
 <div class="load-title" id="loadingText">処理中...</div>
 <div class="load-sub" id="loadingSub"></div>
 <div class="load-prog-bg"><div class="load-prog-bar" id="loadProgBar"></div></div>
 </div>
-
 <div class="modal-overlay" id="exportModal" onclick="if(event.target===this)this.classList.remove('show')">
 <div class="modal">
 <div class="modal-handle"></div>
@@ -189,7 +182,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="header">
 <div class="logo"><div class="logo-icon">⚡</div>VIRALCUT</div>
 <div style="display:flex;align-items:center;gap:8px">
@@ -197,10 +189,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <span class="badge">AI PRO</span>
 </div>
 </div>
-
 <div class="main" id="mainScroll">
 <div id="tab-create" class="section-tabs show">
-
 <div class="card">
 <div class="card-header"><div class="snum">1</div><div class="ctitle">動画ソース</div><div class="csub">YouTube or ファイル</div></div>
 <div class="cbody">
@@ -250,11 +240,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">2</div><div class="ctitle">切り抜き範囲</div></div>
 <div class="cbody">
-<div class="tip"><span>✂️</span><span>動画のどの部分を切り抜くか設定します。AIが自動提案します。</span></div>
+<div class="tip"><span>✂️</span><span>動画のどの部分を切り抜くか設定します。</span></div>
 <div class="time-inputs">
 <div class="time-input-wrap"><div class="time-label">開始時間</div><input type="text" class="time-input" id="trimStart" value="0:00" oninput="onTrimInput()"></div>
 <div class="time-input-wrap"><div class="time-label">終了時間</div><input type="text" class="time-input" id="trimEnd" value="1:00" oninput="onTrimInput()"></div>
@@ -267,13 +256,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">3</div><div class="ctitle">参考動画URL</div><div class="csub">スタイル完全コピー</div></div>
 <div class="cbody">
 <div class="tip"><span>🎯</span><span>バズっている動画のURLを貼ると、その構成・テロップ・テンポを完全に真似します。</span></div>
-<input type="text" id="refUrl1" placeholder="https://youtube.com/shorts/... (参考動画1)">
-<input type="text" id="refUrl2" placeholder="https://youtube.com/shorts/... (参考動画2 任意)">
+<input type="text" id="refUrl1" placeholder="https://youtube.com/shorts/...（参考動画1）">
+<input type="text" id="refUrl2" placeholder="https://youtube.com/shorts/...（参考動画2 任意）">
 <div class="tg-grid">
 <div class="tg-item active" onclick="tog(this,'ref_structure')"><div class="tg-icon">📐</div><div class="tg-name">構成・流れ</div><div class="tg-desc">フック→展開→CTA</div></div>
 <div class="tg-item active" onclick="tog(this,'ref_caption')"><div class="tg-icon">💬</div><div class="tg-name">テロップスタイル</div><div class="tg-desc">フォント・色・位置</div></div>
@@ -282,12 +270,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">4</div><div class="ctitle">AIへの指示</div></div>
 <div class="cbody">
 <textarea id="aiInstruction" placeholder="例：冒頭3秒に「これ見て損なし」というテロップを大きく表示。感情的な場面を優先。参考動画のスタイルを真似して。最後にCTAを入れて。"></textarea>
-<div class="tip"><span>📝</span><span>字幕入力でテロップ精度UP(任意)。</span></div>
+<div class="tip"><span>📝</span><span>字幕入力でテロップ精度UP（任意）。</span></div>
 <textarea id="transcript" placeholder="[0.0-5.0] 字幕テキスト...&#10;[5.0-15.0] ..." style="min-height:60px"></textarea>
 <div class="row">
 <button class="btn-sm btn-ghost" style="flex:1" onclick="loadDemo()">📋 サンプル</button>
@@ -295,7 +282,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">5</div><div class="ctitle">プラットフォーム</div><div class="csub">複数同時出力</div></div>
 <div class="cbody">
@@ -311,7 +297,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">6</div><div class="ctitle">テロップ設定</div></div>
 <div class="cbody">
@@ -324,7 +309,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div style="display:flex;flex-direction:column;gap:6px">
 <label>スタイル</label>
 <select id="captionStyle">
-<option value="bold_white">極太ゴシック・白・黒縁(バズ型)</option>
+<option value="bold_white">極太ゴシック・白・黒縁（バズ型）</option>
 <option value="bold_yellow">極太ゴシック・黄・黒縁</option>
 <option value="bg_black">黒背景・白文字</option>
 </select>
@@ -336,9 +321,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
-<div class="card-header"><div class="snum">7</div><div class="ctitle">効果音(SFX)</div></div>
+<div class="card-header"><div class="snum">7</div><div class="ctitle">効果音（SFX）</div></div>
 <div class="cbody">
 <div class="sfx-grid">
 <div class="sfx-btn active" id="sfx_whoosh" onclick="toggleSfx(this,'whoosh')"><div class="sfx-icon">💨</div><div class="sfx-name">ウーッシュ</div></div>
@@ -354,16 +338,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">8</div><div class="ctitle">画質・フィルター</div></div>
 <div class="cbody">
 <div style="display:flex;flex-direction:column;gap:6px">
-<label>画質(Railwayバックエンドで処理)</label>
+<label>画質（FFmpegバックエンドで処理）</label>
 <select id="qualityPreset" onchange="S.quality=this.value">
-<option value="max">最高画質 1080p 10Mbps(FFmpeg)</option>
-<option value="high" selected>高画質 720p 6Mbps(FFmpeg)</option>
-<option value="standard">標準 540p 3Mbps(FFmpeg)</option>
+<option value="max">最高画質 1080p 10Mbps</option>
+<option value="high" selected>高画質 720p 6Mbps（推奨）</option>
+<option value="standard">標準 540p 3Mbps（高速）</option>
 </select>
 </div>
 <label>カラーグレーディング</label>
@@ -389,7 +372,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="card">
 <div class="card-header"><div class="snum">9</div><div class="ctitle">Claude APIキー</div></div>
 <div class="cbody">
@@ -397,13 +379,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div class="tip"><span>🔒</span><span>この端末内のみで使用。外部送信なし。</span></div>
 </div>
 </div>
-
 <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:10px">
-<button class="btn btn-sp" onclick="runAll()">🚀 AIで解析して動画を作成(FFmpeg 1080p)</button>
-<button class="btn btn-outline" onclick="runAnalyzeOnly()">🔍 解析のみ(確認)</button>
+<button class="btn btn-sp" onclick="runAll()">🚀 AIで解析して動画を作成</button>
+<button class="btn btn-outline" onclick="runAnalyzeOnly()">🔍 解析のみ（確認）</button>
 </div>
 </div>
-
 <div id="tab-settings" class="section-tabs">
 <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
 <div class="card" style="margin:0">
@@ -417,17 +397,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <select id="targetViews"><option value="10k">1万回</option><option value="100k">10万回</option><option value="1m" selected>100万回</option><option value="10m">1000万回</option></select></div>
 </div>
 </div>
-<div class="card" style="margin:0">
-<div class="card-header"><div class="snum">ℹ</div><div class="ctitle">バックエンド情報</div></div>
-<div class="cbody">
-<div class="tip"><span>🎬</span><span>動画処理はRailway上のFFmpegバックエンドで行われます。真の1080p・高ビットレート出力が可能です。</span></div>
-<div class="tip"><span>🔗</span><span id="backendUrlInfo">バックエンドURL: 確認中...</span></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-
 <div class="result-card" id="resultCard">
 <div class="result-header">✅ AI解析完了</div>
 <div class="result-body">
@@ -443,7 +415,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 <div class="score-row">
 <div class="score-pill"><div class="score-num" id="scoreViral">--</div><div class="score-lbl">バイラル度</div></div>
-<div class="score-pill"><div class="score-num" id="scoreRet">--</div><div class="score-lbl">完走率予測</div></div>
+<div class="score-pill"><div class="score-num" id="scoreRet">--</div><div class="score-lbl">完走率</div></div>
 <div class="score-pill"><div class="score-num" id="scoreImp">--</div><div class="score-lbl">インパクト</div></div>
 </div>
 <div class="plan-list" id="planGrid"></div>
@@ -461,7 +433,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div id="capEditList" style="display:flex;flex-direction:column;gap:8px"></div>
 <div class="divider"></div>
 <div id="sfxEditList" style="display:flex;flex-direction:column;gap:8px"></div>
-<button class="btn btn-sp" style="margin-top:8px" onclick="reprocessWithEdits()">🔄 修正を適用して再生成</button>
+<button class="btn btn-sp" style="margin-top:8px" id="reprocessBtn" onclick="reprocessWithEdits()">🔄 修正を適用して再生成</button>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
 <button class="btn btn-sp" id="createBtn" style="display:none" onclick="createVideos()">🎬 動画を作成してダウンロード</button>
@@ -469,12 +441,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 </div>
 </div>
-
 <div class="bottom-bar">
 <div class="tab active" id="t-create" onclick="switchTab('create')"><div class="tab-icon">✂️</div><div class="tab-label">作成</div></div>
 <div class="tab" id="t-settings" onclick="switchTab('settings')"><div class="tab-icon">⚙️</div><div class="tab-label">設定</div></div>
 </div>
-
 <script>
 const WORKER='https://dark-frog-e19c.h52hiro.workers.dev';
 const BACKEND='https://viralcut-backend-production-c729.up.railway.app';
@@ -497,26 +467,43 @@ const S={
   lastResult:null,videoFile:null,videoUrl:null,videoDuration:0,
   trimStartSec:0,trimEndSec:60,bgmZones:[],
   captionSegs:[],editedCaptions:[],editedSfx:[],
-  ytQuality:'720'
+  ytQuality:'720',backendAwake:false
 };
 
-// バックエンド疎通確認
-async function checkBackend(){
+// ★ バックエンド起動確認（スリープ解除）
+async function wakeupBackend(){
   try{
-    const res=await fetch(BACKEND+'/health');
+    const res=await fetch(BACKEND+'/health',{signal:AbortSignal.timeout(10000)});
     if(res.ok){
+      S.backendAwake=true;
       document.getElementById('backendBadge').textContent='✅ バックエンド接続済';
-      document.getElementById('backendBadge').style.background='rgba(29,185,84,.15)';
-      document.getElementById('backendUrlInfo').textContent='バックエンドURL: '+BACKEND;
-    }else{throw new Error();}
-  }catch(e){
-    document.getElementById('backendBadge').textContent='⚠️ バックエンド未接続';
-    document.getElementById('backendBadge').style.background='rgba(245,158,11,.15)';
-    document.getElementById('backendBadge').style.color='#fcd34d';
-  }
+      document.getElementById('backendBadge').style.color='var(--sp)';
+      return true;
+    }
+  }catch(e){}
+  document.getElementById('backendBadge').textContent='⚠️ バックエンド起動中...';
+  document.getElementById('backendBadge').style.color='#fcd34d';
+  return false;
 }
-checkBackend();
 
+// ★ バックエンドが寝ていたら起こして待つ
+async function ensureBackendAwake(progressCallback){
+  if(S.backendAwake) return true;
+  progressCallback&&progressCallback('⏳ バックエンドを起動中...\n初回は30秒ほどかかります');
+  for(let i=0;i<12;i++){
+    try{
+      const res=await fetch(BACKEND+'/health',{signal:AbortSignal.timeout(8000)});
+      if(res.ok){S.backendAwake=true;return true;}
+    }catch(e){}
+    await new Promise(r=>setTimeout(r,5000));
+    progressCallback&&progressCallback('⏳ バックエンク起動中... ('+(i+1)*5+'秒)');
+  }
+  return false;
+}
+
+wakeupBackend();
+
+// ユーティリティ
 function timeToSec(str){str=String(str).trim();const p=str.split(':').map(Number);if(p.length===3)return p[0]*3600+p[1]*60+(p[2]||0);if(p.length===2)return p[0]*60+(p[1]||0);return parseFloat(str)||0;}
 function secToTime(sec){sec=Math.max(0,Math.round(sec));const m=Math.floor(sec/60),s=sec%60;return m+':'+(s<10?'0':'')+s;}
 function fmtDur(sec){sec=Math.max(0,Math.round(sec));if(sec>=3600)return Math.floor(sec/3600)+'時間'+Math.floor((sec%3600)/60)+'分';if(sec>=60)return Math.floor(sec/60)+'分'+(sec%60?sec%60+'秒':'');return sec+'秒';}
@@ -534,7 +521,7 @@ function showLoading(t,s,pct){document.getElementById('loadingText').textContent
 function setLoadProg(pct,sub){document.getElementById('loadProgBar').style.width=pct+'%';if(sub)document.getElementById('loadingSub').textContent=sub}
 function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
 function setProgress(pct,label){document.getElementById('progressBar').style.width=pct+'%';if(label)document.getElementById('progressLabel').textContent=label}
-function applyAiSegment(){if(!S.lastResult)return;const vs=S.lastResult.viral_segment||{};if(vs.start_time!=null){S.trimStartSec=vs.start_time;S.trimEndSec=vs.end_time;document.getElementById('trimStart').value=secToTime(vs.start_time);document.getElementById('trimEnd').value=secToTime(vs.end_time);onTrimInput();document.getElementById('mainScroll').scrollTo({top:0,behavior:'smooth'});}}
+function applyAiSegment(){if(!S.lastResult)return;const vs=S.lastResult.viral_segment||{};if(vs.start_time!=null){S.trimStartSec=vs.start_time;S.trimEndSec=vs.end_time;document.getElementById('trimStart').value=secToTime(vs.start_time);document.getElementById('trimEnd').value=secToTime(vs.end_time);onTrimInput();window.scrollTo(0,0);}}
 function applyClip(s,e){S.trimStartSec=s;S.trimEndSec=e;document.getElementById('trimStart').value=secToTime(s);document.getElementById('trimEnd').value=secToTime(e);onTrimInput();window.scrollTo(0,0);}
 function loadDemo(){document.getElementById('aiInstruction').value='冒頭3秒に「絶対見て」というテロップを大きく表示。感情的な場面を優先。参考動画のスタイルを真似して。最後にCTAを入れて。';document.getElementById('transcript').value='[0.0-5.0] 今日は絶対に知っておくべき話をします。\n[5.0-15.0] これを知らないと大きな損をします。\n[15.0-30.0] 実際に私も経験があって本当に苦労しました。\n[30.0-45.0] この方法を使ったら全てが変わりました。\n[45.0-60.0] 最後まで見てください。チャンネル登録もお願いします。';}
 function clearInputs(){document.getElementById('aiInstruction').value='';document.getElementById('transcript').value='';}
@@ -578,7 +565,7 @@ async function downloadYT(){
   const btn=document.getElementById('ytDlBtn');
   prog.style.display='flex';btn.disabled=true;btn.textContent='ダウンロード中...';
   function setP(pct,label){document.getElementById('ytDlBar').style.width=pct+'%';document.getElementById('ytDlLabel').textContent=label;}
-  setP(10,'ダウンロードURLを取得中...');
+  setP(10,'URLを取得中...');
   try{
     const res=await fetch(WORKER+'/youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,quality:S.ytQuality})});
     const data=await res.json();
@@ -588,7 +575,7 @@ async function downloadYT(){
     if(!videoRes.ok)throw new Error('HTTP '+videoRes.status);
     const total=parseInt(videoRes.headers.get('Content-Length')||'0');
     const reader=videoRes.body.getReader();const chunks=[];let loaded=0;
-    while(true){const{done,value}=await reader.read();if(done)break;chunks.push(value);loaded+=value.length;if(total>0)setP(30+Math.round((loaded/total)*65),'ダウンロード中... '+(loaded/1024/1024).toFixed(1)+'MB');}
+    while(true){const{done,value}=await reader.read();if(done)break;chunks.push(value);loaded+=value.length;if(total>0)setP(30+Math.round((loaded/total)*65),(loaded/1024/1024).toFixed(1)+'MB ダウンロード中...');}
     setP(98,'処理中...');
     const blob=new Blob(chunks,{type:'video/mp4'});
     S.videoFile=new File([blob],'youtube_video.mp4',{type:'video/mp4'});
@@ -597,9 +584,9 @@ async function downloadYT(){
     document.getElementById('previewVideo').src=S.videoUrl;
     document.getElementById('previewWrap').style.display='block';
     setP(100,'✅ ダウンロード完了！');
-    btn.textContent='✅ ダウンロード済み ('+(blob.size/1024/1024).toFixed(1)+'MB)';
+    btn.textContent='✅ 完了 ('+(blob.size/1024/1024).toFixed(1)+'MB)';
     setTimeout(()=>{prog.style.display='none';},2000);
-  }catch(e){prog.style.display='none';btn.disabled=false;btn.textContent='⬇️ ダウンロードして使用';alert('ダウンロードエラー: '+e.message);}
+  }catch(e){prog.style.display='none';btn.disabled=false;btn.textContent='⬇️ ダウンロードして使用';alert('エラー: '+e.message);}
 }
 
 function addBgmZone(){S.bgmZones.push({id:Date.now(),start:0,end:30});renderBgmZones();}
@@ -614,7 +601,6 @@ function renderBgmZones(){
 }
 
 function parseTranscript(text){return text.trim().split('\n').map(line=>{const m=line.match(/\[(\d+\.?\d*)[^\d](\d+\.?\d*)\]\s*(.*)/);if(m)return{start:parseFloat(m[1]),end:parseFloat(m[2]),text:m[3].trim()};return null;}).filter(Boolean);}
-function getCaptionAt(segs,t){const s=segs.find(s=>t>=s.start&&t<=s.end);return s?s.text:'';}
 
 async function doAnalyze(key){
   showLoading('AIが解析中...','構成・テロップ・効果音を生成しています',10);
@@ -624,7 +610,7 @@ async function doAnalyze(key){
   const pfNames=S.platforms.map(p=>PF[p]?.name||p).join('、');
   const activeSfx=Object.entries(S.sfxEnabled).filter(([,v])=>v).map(([k])=>k).join('、');
   const trimDur=S.trimEndSec-S.trimStartSec;
-  const prompt='You are a viral video editor.\n## User instructions: "'+(instr||'動画をバズりやすく最適化してください')+'"\n## Settings: Duration '+fmtDur(trimDur)+', Platforms: '+pfNames+', SFX: '+(activeSfx||'none')+'\n'+(refs.length?'## Reference videos:\n'+refs.map((u,i)=>(i+1)+'. '+u).join('\n')+'\n':'')+(tr?'## Transcript:\n'+tr+'\n':'')+(S.bgmZones.length?'## BGM skip: '+S.bgmZones.map(z=>secToTime(z.start)+'-'+secToTime(z.end)).join(', ')+'\n':'')+'\nReturn ONLY valid JSON: {"viral_segment":{"start_time":'+S.trimStartSec+',"end_time":'+S.trimEndSec+',"reason":"日本語説明"},"ai_instruction_applied":"日本語で反映内容","ref_style_analysis":"'+(refs.length?'参考動画分析(日本語)':'')+'","ref_caption_style":{"style":"bold_white","position":"bottom","size_ratio":0.065},"scores":{"viral":"A+","retention":"82%","impact":"94/100"},"production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"説明"}],"viral_clips":[{"start":'+S.trimStartSec+',"end":'+Math.min(S.trimStartSec+30,S.trimEndSec)+',"title":"クリップ名","reason":"理由"}],"ai_captions":[{"start":'+S.trimStartSec+',"end":'+(S.trimStartSec+5)+',"text":"テロップ"}],"sfx_cues":[{"time":0.5,"type":"whoosh","reason":"転換"},{"time":3.0,"type":"boom","reason":"インパクト"}],"title_suggestion":"タイトル案","hook_text":"フック文","hashtags":["#タグ1","#タグ2"]}';
+  const prompt='You are a viral video editor.\n## User instructions: "'+(instr||'動画をバズりやすく最適化してください')+'"\n## Settings: Duration '+fmtDur(trimDur)+', Platforms: '+pfNames+', SFX: '+(activeSfx||'none')+'\n'+(refs.length?'## Reference videos:\n'+refs.map((u,i)=>(i+1)+'. '+u).join('\n')+'\n':'')+(tr?'## Transcript:\n'+tr+'\n':'')+(S.bgmZones.length?'## BGM skip: '+S.bgmZones.map(z=>secToTime(z.start)+'-'+secToTime(z.end)).join(', ')+'\n':'')+'\nReturn ONLY valid JSON: {"viral_segment":{"start_time":'+S.trimStartSec+',"end_time":'+S.trimEndSec+',"reason":"日本語説明"},"ai_instruction_applied":"日本語で反映内容","ref_style_analysis":"'+(refs.length?'参考動画分析（日本語）':'')+'","ref_caption_style":{"style":"bold_white","position":"bottom","size_ratio":0.065},"scores":{"viral":"A+","retention":"82%","impact":"94/100"},"production_plan":[{"icon":"🎯","color":"#1DB954","title":"タイトル","description":"説明"}],"viral_clips":[{"start":'+S.trimStartSec+',"end":'+Math.min(S.trimStartSec+30,S.trimEndSec)+',"title":"クリップ名","reason":"理由"}],"ai_captions":[{"start":'+S.trimStartSec+',"end":'+(S.trimStartSec+5)+',"text":"テロップ"}],"sfx_cues":[{"time":0.5,"type":"whoosh","reason":"転換"},{"time":3.0,"type":"boom","reason":"インパクト"}],"title_suggestion":"タイトル案","hook_text":"フック文","hashtags":["#タグ1","#タグ2"]}';
   const body=JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:prompt}]});
   setLoadProg(30,'APIにリクエスト中...');
   const d=await new Promise((resolve,reject)=>{
@@ -638,13 +624,27 @@ async function doAnalyze(key){
   return JSON.parse(m[0]);
 }
 
-async function runAnalyzeOnly(){const key=document.getElementById('apiKey').value.trim();if(!key){alert('Claude APIキーを入力してください');return}if(!S.platforms.length){alert('プラットフォームを選択してください');return}try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(false);}catch(e){hideLoading();alert('AI解析エラー: '+e.message);}}
-async function runAll(){const key=document.getElementById('apiKey').value.trim();if(!S.videoFile){alert('動画をアップロードしてください');return}if(!key){alert('Claude APIキーを入力してください');return}if(!S.platforms.length){alert('プラットフォームを選択してください');return}try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(true);}catch(e){hideLoading();alert('AI解析エラー: '+e.message);}}
+async function runAnalyzeOnly(){
+  const key=document.getElementById('apiKey').value.trim();
+  if(!key){alert('Claude APIキーを入力してください');return}
+  if(!S.platforms.length){alert('プラットフォームを選択してください');return}
+  try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(false);}
+  catch(e){hideLoading();alert('AI解析エラー: '+e.message);}
+}
+
+async function runAll(){
+  const key=document.getElementById('apiKey').value.trim();
+  if(!S.videoFile){alert('動画をアップロードしてください');return}
+  if(!key){alert('Claude APIキーを入力してください');return}
+  if(!S.platforms.length){alert('プラットフォームを選択してください');return}
+  try{S.lastResult=await doAnalyze(key);hideLoading();renderResult(true);}
+  catch(e){hideLoading();alert('AI解析エラー: '+e.message);}
+}
 
 function renderResult(showCreate){
   const rc=document.getElementById('resultCard');rc.classList.add('show');setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'start'}),100);
   const r=S.lastResult;const vs=r.viral_segment||{start_time:S.trimStartSec,end_time:S.trimEndSec};
-  document.getElementById('viralTime').textContent=secToTime(vs.start_time)+' 〜 '+secToTime(vs.end_time)+'('+fmtDur(vs.end_time-vs.start_time)+')';
+  document.getElementById('viralTime').textContent=secToTime(vs.start_time)+' 〜 '+secToTime(vs.end_time)+'（'+fmtDur(vs.end_time-vs.start_time)+'）';
   document.getElementById('viralReason').textContent=r.ai_instruction_applied||vs.reason||'';
   const refb=document.getElementById('refBlock');
   if(r.ref_style_analysis&&r.ref_style_analysis.length>5){refb.style.display='block';document.getElementById('refText').textContent=r.ref_style_analysis;}else{refb.style.display='none';}
@@ -653,24 +653,46 @@ function renderResult(showCreate){
   const clips=r.viral_clips||[];const vcb=document.getElementById('viralClipsBlock');
   if(clips.length){vcb.style.display='block';document.getElementById('viralClipsList').innerHTML=clips.map((c,i)=>'<div class="clip-item" onclick="applyClip('+c.start+','+c.end+')"><div class="clip-idx">'+(i+1)+'</div><div class="clip-info"><div class="clip-title">'+(c.title||'クリップ')+'</div><div class="clip-reason">'+(c.reason||'')+'</div></div><div class="clip-time">'+secToTime(c.start)+'〜'+secToTime(c.end)+'</div></div>').join('');}else{vcb.style.display='none';}
   const trText=document.getElementById('transcript').value.trim();
-  S.captionSegs=trText?parseTranscript(trText):[];S.editedCaptions=[...(r.ai_captions||S.captionSegs||[])];S.editedSfx=[...(r.sfx_cues||[])];
-  document.getElementById('progressBlock').style.display='none';document.getElementById('outputList').innerHTML='';document.getElementById('editPanel').style.display='none';
-  document.getElementById('createBtn').style.display=(showCreate&&S.videoFile)?'flex':'none';
+  S.captionSegs=trText?parseTranscript(trText):[];
+  S.editedCaptions=JSON.parse(JSON.stringify(r.ai_captions||S.captionSegs||[]));
+  S.editedSfx=JSON.parse(JSON.stringify(r.sfx_cues||[]));
+  document.getElementById('progressBlock').style.display='none';
+  document.getElementById('outputList').innerHTML='';
+  document.getElementById('editPanel').style.display='none';
+  const cb=document.getElementById('createBtn');
+  cb.style.display=(showCreate&&S.videoFile)?'flex':'none';
+  if(showCreate&&S.videoFile)buildEditPanel();
 }
 
-// ★ Railwayバックエンドで動画処理
+// ★ 修正: バックエンド起動待ち + リトライ付き動画作成
 async function createVideos(){
-  if(!S.lastResult||!S.videoFile)return;
-  const duration=Math.max(1,S.trimEndSec-S.trimStartSec);
+  if(!S.lastResult){alert('先にAI解析を実行してください');return}
+  if(!S.videoFile){alert('動画ファイルをアップロードしてください');return}
+
   document.getElementById('progressBlock').style.display='flex';
   document.getElementById('outputList').innerHTML='';
   document.getElementById('createBtn').style.display='none';
+  document.getElementById('reprocessBtn').disabled=true;
 
-  const tr=document.getElementById('transcript').value.trim();
-  S.captionSegs=tr?parseTranscript(tr):[];
+  // ★ バックエンド起動確認
+  setProgress(5,'バックエンドに接続中...');
+  const awake=await ensureBackendAwake((msg)=>{
+    document.getElementById('progressLabel').textContent=msg;
+  });
+
+  if(!awake){
+    setProgress(0,'');
+    document.getElementById('progressBlock').style.display='none';
+    document.getElementById('createBtn').style.display='flex';
+    document.getElementById('reprocessBtn').disabled=false;
+    alert('バックエンドへの接続に失敗しました。\n少し待ってから再度お試しください。');
+    return;
+  }
+
+  const duration=Math.max(1,S.trimEndSec-S.trimStartSec);
   const capMode=S.captionMode;
-  const captions=capMode==='transcript'?S.captionSegs:capMode==='ai'?(S.editedCaptions||[]):[];
-  const sfxCues=(S.lastResult.sfx_cues||[]).filter(c=>c&&S.sfxEnabled[c.type]);
+  const captions=capMode==='transcript'?S.captionSegs:capMode==='ai'?S.editedCaptions:[];
+  const sfxCues=S.editedSfx.filter(c=>c&&S.sfxEnabled[c.type]&&c.enabled!==false);
 
   const total=S.platforms.length;
   const results=[];
@@ -678,72 +700,123 @@ async function createVideos(){
   for(let i=0;i<total;i++){
     const pid=S.platforms[i];
     const p=PF[pid];if(!p)continue;
-    setProgress(Math.round((i/total)*90),'🎬 '+p.name+' を処理中... ('+(i+1)+'/'+total+')');
-    document.getElementById('progressLabel').textContent='FFmpegで処理中... '+p.name+' ('+(i+1)+'/'+total+')';
-    try{
-      const formData=new FormData();
-      formData.append('file',S.videoFile,S.videoFile.name);
-      formData.append('start_sec',String(S.trimStartSec));
-      formData.append('end_sec',String(S.trimEndSec));
-      formData.append('platform',pid);
-      formData.append('quality',S.quality);
-      formData.append('caption_json',JSON.stringify(captions));
-      formData.append('sfx_json',JSON.stringify(sfxCues));
-      formData.append('color_preset',S.colorPreset);
-      formData.append('brightness',String(S.brightness));
-      formData.append('contrast',String(S.contrast));
-      formData.append('saturation',String(S.saturation));
-      formData.append('bgm_zones_json',JSON.stringify(S.bgmZones));
+    setProgress(10+Math.round((i/total)*85),'🎬 '+p.name+' を処理中... ('+(i+1)+'/'+total+')');
 
-      const res=await fetch(BACKEND+'/process',{method:'POST',body:formData});
-      if(!res.ok){
-        const errText=await res.text();
-        throw new Error('サーバーエラー: '+res.status+' '+errText.slice(0,100));
+    // ★ リトライ最大2回
+    let blob=null,errMsg='';
+    for(let retry=0;retry<2;retry++){
+      try{
+        const formData=new FormData();
+        formData.append('file',S.videoFile,S.videoFile.name||'video.mp4');
+        formData.append('start_sec',String(S.trimStartSec));
+        formData.append('end_sec',String(S.trimEndSec));
+        formData.append('platform',pid);
+        formData.append('quality',S.quality);
+        formData.append('caption_json',JSON.stringify(captions));
+        formData.append('sfx_json',JSON.stringify(sfxCues));
+        formData.append('color_preset',S.colorPreset);
+        formData.append('brightness',String(S.brightness));
+        formData.append('contrast',String(S.contrast));
+        formData.append('saturation',String(S.saturation));
+        formData.append('bgm_zones_json',JSON.stringify(S.bgmZones));
+
+        // ★ タイムアウト10分に延長
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),600000);
+
+        const res=await fetch(BACKEND+'/process',{
+          method:'POST',
+          body:formData,
+          signal:controller.signal
+        });
+        clearTimeout(timer);
+
+        if(!res.ok){
+          const errText=await res.text().catch(()=>'');
+          errMsg='サーバーエラー '+res.status+': '+errText.slice(0,200);
+          if(retry===0){
+            setProgress(10+Math.round((i/total)*85),'⚠️ 再試行中... '+p.name);
+            S.backendAwake=false;
+            await ensureBackendAwake(null);
+            continue;
+          }
+          break;
+        }
+
+        blob=await res.blob();
+        if(blob.size<100){errMsg='出力ファイルが空です';blob=null;}
+        break;
+      }catch(e){
+        errMsg=e.name==='AbortError'?'タイムアウト（動画が長すぎます）':e.message;
+        if(retry===0){
+          S.backendAwake=false;
+          setProgress(10+Math.round((i/total)*85),'⚠️ 再試行中...');
+          await new Promise(r=>setTimeout(r,3000));
+          await ensureBackendAwake(null);
+        }
       }
-      const blob=await res.blob();
-      results.push({pid,p,blob,error:null});
-    }catch(e){
-      console.error(pid,e);
-      results.push({pid,p,blob:null,error:e.message});
     }
+    results.push({pid,p,blob,error:blob?null:errMsg});
   }
 
   setProgress(100,'✅ 完了！');
+  document.getElementById('reprocessBtn').disabled=false;
+
   const outList=document.getElementById('outputList');
-  outList.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">📥 ダウンロード(FFmpeg 高品質処理済み)</div>';
+  outList.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--sp);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">📥 ダウンロード（FFmpeg処理済み）</div>';
+
   results.forEach(({pid,p,blob,error})=>{
     const div=document.createElement('div');div.className='out-item';
     if(blob&&blob.size>100){
       const url=URL.createObjectURL(blob);
       const sz=(blob.size/1024/1024).toFixed(1);
-      div.innerHTML='<div class="out-header"><span style="font-size:20px">'+p.emoji+'</span><span class="out-name">'+p.name+'</span><span class="out-spec">'+p.ratio+' · FFmpeg処理済み</span></div><div style="font-size:11px;color:var(--text2);margin-bottom:10px">'+sz+'MB · '+fmtDur(Math.round(duration))+'</div><a href="'+url+'" download="viralcut_'+pid+'.mp4" style="text-decoration:none"><button class="btn btn-sp" style="padding:12px;border-radius:50px">⬇️ '+p.name+'用をダウンロード</button></a>';
+      const dur=Math.round(S.trimEndSec-S.trimStartSec);
+      div.innerHTML='<div class="out-header"><span style="font-size:20px">'+p.emoji+'</span><span class="out-name">'+p.name+'</span><span class="out-spec">'+p.ratio+' · FFmpeg</span></div><div style="font-size:11px;color:var(--text2);margin-bottom:10px">'+sz+'MB · '+fmtDur(dur)+'</div><a href="'+url+'" download="viralcut_'+pid+'.mp4" style="text-decoration:none"><button class="btn btn-sp" style="padding:12px;border-radius:50px">⬇️ '+p.name+'用をダウンロード</button></a>';
     }else{
       div.innerHTML='<div class="out-header"><span style="font-size:20px">'+p.emoji+'</span><span class="out-name">'+p.name+'</span><span class="out-spec" style="background:rgba(233,20,41,.2);color:#ff6b6b">エラー</span></div><div style="font-size:11px;color:var(--text3);margin-top:4px">'+(error||'処理に失敗しました')+'</div>';
     }
     outList.appendChild(div);
   });
-  buildEditPanel();
+
   outList.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function buildEditPanel(){
   const panel=document.getElementById('editPanel');
-  const cl=document.getElementById('capEditList');const sl=document.getElementById('sfxEditList');
+  const cl=document.getElementById('capEditList');
+  const sl=document.getElementById('sfxEditList');
   cl.innerHTML='';sl.innerHTML='';
+
   const caps=S.editedCaptions||[];
-  if(caps.length){cl.innerHTML='<div class="edit-title">💬 テロップを修正</div>';caps.forEach((cap,i)=>{const d=document.createElement('div');d.className='cap-edit-item';d.innerHTML='<div class="cap-edit-time">'+secToTime(cap.start)+' 〜 '+secToTime(cap.end)+'</div><input class="cap-edit-input" value="'+(cap.text||'').replace(/"/g,'&quot;')+'" oninput="S.editedCaptions['+i+'].text=this.value">';cl.appendChild(d);});}
-  const sfx=S.editedSfx||[];const icons={whoosh:'💨',boom:'💥',ding:'🔔',zap:'⚡',riser:'📈',impact:'🥊'};
-  if(sfx.length){sl.innerHTML='<div class="edit-title">🔊 効果音を修正</div>';sfx.forEach((cue,i)=>{const on=cue.enabled!==false;const d=document.createElement('div');d.className='sfx-edit-item';d.innerHTML='<span style="font-size:18px">'+(icons[cue.type]||'🎵')+'</span><div class="sfx-edit-name">'+cue.type+'<span style="font-size:10px;color:var(--text3);margin-left:6px">'+(cue.reason||'')+'</span></div><span class="sfx-edit-time">'+secToTime(cue.time)+'</span><button class="sp-toggle '+(on?'on':'')+'" onclick="S.editedSfx['+i+'].enabled=!S.editedSfx['+i+'].enabled;this.classList.toggle(\'on\')"></button>';sl.appendChild(d);});}
+  if(caps.length){
+    cl.innerHTML='<div class="edit-title">💬 テロップを修正</div>';
+    caps.forEach((cap,i)=>{
+      const d=document.createElement('div');d.className='cap-edit-item';
+      d.innerHTML='<div class="cap-edit-time">'+secToTime(cap.start)+' 〜 '+secToTime(cap.end)+'</div><input class="cap-edit-input" value="'+(cap.text||'').replace(/"/g,'&quot;')+'" oninput="S.editedCaptions['+i+'].text=this.value" placeholder="テロップテキスト">';
+      cl.appendChild(d);
+    });
+  }
+
+  const sfx=S.editedSfx||[];
+  const icons={whoosh:'💨',boom:'💥',ding:'🔔',zap:'⚡',riser:'📈',impact:'🥊'};
+  if(sfx.length){
+    sl.innerHTML='<div class="edit-title">🔊 効果音を修正（ON/OFF）</div>';
+    sfx.forEach((cue,i)=>{
+      const on=cue.enabled!==false;
+      const d=document.createElement('div');d.className='sfx-edit-item';
+      d.innerHTML='<span style="font-size:18px">'+(icons[cue.type]||'🎵')+'</span><div class="sfx-edit-name">'+cue.type+'<span style="font-size:10px;color:var(--text3);margin-left:6px">'+(cue.reason||'')+'</span></div><span class="sfx-edit-time">'+secToTime(cue.time)+'</span><button class="sp-toggle '+(on?'on':'')+'" onclick="S.editedSfx['+i+'].enabled=!S.editedSfx['+i+'].enabled;this.classList.toggle(\'on\')"></button>';
+      sl.appendChild(d);
+    });
+  }
+
   if(caps.length||sfx.length)panel.style.display='flex';
 }
 
+// ★ 修正: 再生成ボタンが正しく動くように
 async function reprocessWithEdits(){
-  if(!S.videoFile||!S.lastResult){alert('先に動画を生成してください');return}
-  const orig=S.lastResult.sfx_cues;
-  S.lastResult.ai_captions=S.editedCaptions;
-  S.lastResult.sfx_cues=S.editedSfx.filter(c=>c.enabled!==false);
+  if(!S.videoFile){alert('動画ファイルが見つかりません。再度アップロードしてください。');return}
+  if(!S.lastResult){alert('先にAI解析を実行してください');return}
   await createVideos();
-  S.lastResult.sfx_cues=orig;
 }
 
 onTrimInput();
